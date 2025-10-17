@@ -93,8 +93,8 @@ export function FilterSidebar({ categories, onFilterChange, activeFilters }: Fil
     activeFilters.priceRange;
 
   return (
-    <aside className="flex gap-[20px] pl-[20px] pr-0 py-[40px]">
-      <div className="flex-1 bg-white rounded-[3px] overflow-hidden flex flex-col gap-[30px] sidebar-scroll" style={{ maxHeight: 'calc(100vh - 280px)' }}>
+    <aside className="pl-[20px] pr-0 py-[40px]">
+      <div className="bg-white rounded-[3px] overflow-y-auto flex flex-col gap-[30px] sidebar-scroll" style={{ height: 'calc(100vh - 260px)' }}>
         <div className="bg-white flex flex-col gap-[15px]">
           <div className="border-b border-[#e3e3e3] flex items-center justify-center py-[5px]">
             <h2
@@ -311,10 +311,6 @@ export function FilterSidebar({ categories, onFilterChange, activeFilters }: Fil
             </div>
           )}
         </div>
-      </div>
-
-      <div className="w-[6px] bg-[#e3e3e3] rounded-[60px] relative">
-        <div className="bg-[#858585] h-[400px] w-full rounded-[60px]" />
       </div>
     </aside>
   );
