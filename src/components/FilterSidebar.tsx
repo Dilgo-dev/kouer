@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import Image from 'next/image';
 import type { Category, FilterState } from '@/types/product';
 
 interface FilterSidebarProps {
@@ -10,24 +11,38 @@ interface FilterSidebarProps {
 }
 
 const LABELS = [
-  { id: 'bio', name: 'BIO' },
-  { id: 'label-rouge', name: 'Label Rouge' },
-  { id: 'aoc', name: "Appellation d'origine contrôlée" },
-  { id: 'produit-certifie', name: 'Produit certifié' },
-  { id: 'stg', name: 'Spécialité traditionnelle garantie' },
-  { id: 'igp', name: 'Indication géographique protégée' },
-  { id: 'vbf', name: 'Viande bovine française' },
-  { id: 'peche-durable', name: 'Pêche Durable' },
-  { id: 'college-culinaire', name: 'Collège culinaire de France' },
+  { id: 'bio', name: 'BIO', count: 9999 },
+  { id: 'bleu-blanc-coeur', name: 'Bleu Blanc Coeur', count: 8 },
+  { id: 'peche-durable-msc', name: 'Pêche durable MSC', count: 0 },
+  { id: 'elu-produit-annee', name: "Élu produit de l'année", count: 2 },
+  { id: 'produit-montagne', name: 'Produit de montagne', count: 14 },
+  { id: 'label-rouge', name: 'Label Rouge', count: 9999 },
+  { id: 'aoc', name: "Appellation d'origine contrôlée", count: 9999 },
+  { id: 'demeter', name: 'Demeter', count: 0 },
+  { id: 'fairtrade', name: 'Fairtrade', count: 0 },
+  { id: 'medaille-or', name: "Médaille d'or Paris", count: 2 },
+  { id: 'medaille-argent', name: "Médaille d'argent Paris", count: 2 },
+  { id: 'medaille-bronze', name: 'Médaille de Bronze Paris', count: 3 },
+  { id: 'produit-certifie', name: 'Produit certifié', count: 9999 },
+  { id: 'stg', name: 'Spécialité traditionnelle garantie', count: 9999 },
+  { id: 'aop', name: "Appellation d'origine protégée", count: 9999 },
+  { id: 'igp', name: 'Indication géographique protégée', count: 9999 },
+  { id: 'vbf', name: 'Viande bovine française', count: 9999 },
+  { id: 'peche-durable', name: 'Pêche Durable', count: 9999 },
+  { id: 'vegan', name: 'Vegan', count: 68 },
+  { id: 'excellence-savoir-faire', name: "L'excellence des savoir-faire français", count: 5 },
+  { id: 'prix-excellence', name: "Prix d'excellence", count: 34 },
+  { id: 'college-culinaire', name: 'Collège culinaire de France', count: 9999 },
+  { id: 'prix-epicures', name: 'Prix Épicures', count: 1 },
+  { id: 'sans-gluten', name: 'Sans gluten', count: 16 },
+  { id: 'produit-idf', name: 'Produit en Ile de France', count: 3 },
 ];
 
 export function FilterSidebar({ categories, onFilterChange, activeFilters }: FilterSidebarProps) {
   const [isCategoriesOpen, setIsCategoriesOpen] = useState(true);
   const [isLabelsOpen, setIsLabelsOpen] = useState(true);
-  const [showAllLabels, setShowAllLabels] = useState(false);
 
-  const displayedLabels = showAllLabels ? LABELS : LABELS.slice(0, 8);
-  const hiddenLabelsCount = LABELS.length - 8;
+  const activeLabelsCount = activeFilters.selectedLabels.length;
 
   const handleCategoryToggle = (categoryId: string) => {
     const newCategories = activeFilters.selectedCategories.includes(categoryId)
@@ -51,164 +66,256 @@ export function FilterSidebar({ categories, onFilterChange, activeFilters }: Fil
     });
   };
 
-  const handleClearFilters = () => {
+  const handleRemoveFilter = (type: 'category' | 'label', id: string) => {
+    if (type === 'category') {
+      onFilterChange({
+        ...activeFilters,
+        selectedCategories: activeFilters.selectedCategories.filter((catId) => catId !== id),
+      });
+    } else {
+      onFilterChange({
+        ...activeFilters,
+        selectedLabels: activeFilters.selectedLabels.filter((labelId) => labelId !== id),
+      });
+    }
+  };
+
+  const handleClearAllFilters = () => {
     onFilterChange({
       selectedCategories: [],
       selectedLabels: [],
     });
   };
 
-  const hasActiveFilters = activeFilters.selectedCategories.length > 0 || activeFilters.selectedLabels.length > 0;
+  const hasActiveFilters =
+    activeFilters.selectedCategories.length > 0 ||
+    activeFilters.selectedLabels.length > 0 ||
+    activeFilters.priceRange;
 
   return (
-    <aside className="w-full lg:w-[360px] bg-white border-r border-gray-200">
-      <div className="sticky top-0 p-5">
-        {/* Active Filters Pills */}
-        {hasActiveFilters && (
-          <div className="mb-8">
-            <div className="flex flex-wrap gap-2 mb-3">
-              {activeFilters.priceRange && (
-                <FilterPill
-                  label={`${activeFilters.priceRange.min}€ - ${activeFilters.priceRange.max}€`}
-                  onRemove={() => onFilterChange({ ...activeFilters, priceRange: undefined })}
-                />
-              )}
-              {activeFilters.selectedLabels.map((labelId) => {
-                const label = LABELS.find((l) => l.id === labelId);
-                return label ? (
-                  <FilterPill key={labelId} label={label.name} onRemove={() => handleLabelToggle(labelId)} />
-                ) : null;
-              })}
-            </div>
-            <button
-              onClick={handleClearFilters}
-              className="text-sm text-gray-600 hover:text-gray-900 underline"
+    <aside className="flex gap-[20px] pl-[20px] pr-0 py-[40px]">
+      <div className="flex-1 bg-white rounded-[3px] overflow-hidden flex flex-col gap-[30px] sidebar-scroll" style={{ maxHeight: 'calc(100vh - 280px)' }}>
+        <div className="bg-white flex flex-col gap-[15px]">
+          <div className="border-b border-[#e3e3e3] flex items-center justify-center py-[5px]">
+            <h2
+              className="flex-1 font-poppins font-semibold text-[20px] text-[#4ea04c] leading-normal"
+              style={{ fontFamily: 'var(--font-poppins)' }}
             >
-              Clear filters
-            </button>
+              Filtres
+            </h2>
           </div>
-        )}
 
-        {/* Categories Section */}
-        <div className="mb-8 border-b border-gray-200 pb-8">
-          <button
-            onClick={() => setIsCategoriesOpen(!isCategoriesOpen)}
-            className="flex items-center justify-between w-full mb-4 group"
-          >
-            <h3 className="text-2xl font-normal text-gray-900">Categories</h3>
-            <svg
-              className={`w-5 h-5 text-gray-500 transition-transform ${isCategoriesOpen ? 'rotate-180' : ''}`}
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-            >
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-            </svg>
-          </button>
-
-          {isCategoriesOpen && (
-            <div className="space-y-3">
-              {categories.map((category) => (
-                <label key={category.id} className="flex items-center gap-3 cursor-pointer group">
-                  <input
-                    type="checkbox"
-                    checked={activeFilters.selectedCategories.includes(category.id)}
-                    onChange={() => handleCategoryToggle(category.id)}
-                    className="w-4 h-4 rounded border-gray-300 text-gray-900 focus:ring-gray-900"
-                  />
-                  <span className="flex-1 text-sm text-gray-700 group-hover:text-gray-900">
-                    {category.name}
-                  </span>
-                  <span className="text-sm text-gray-500">{category.count}</span>
-                </label>
-              ))}
-            </div>
-          )}
-        </div>
-
-        {/* Labels Section */}
-        <div className="border-b border-gray-200 pb-8">
-          <button
-            onClick={() => setIsLabelsOpen(!isLabelsOpen)}
-            className="flex items-center justify-between w-full mb-4 group"
-          >
-            <div className="flex items-center gap-2">
-              <h3 className="text-2xl font-normal text-gray-900">Labels</h3>
-              {!showAllLabels && hiddenLabelsCount > 0 && (
-                <span className="bg-gray-100 text-gray-700 text-xs font-medium px-2 py-1 rounded">
-                  +{hiddenLabelsCount}
-                </span>
-              )}
-            </div>
-            <svg
-              className={`w-5 h-5 text-gray-500 transition-transform ${isLabelsOpen ? 'rotate-180' : ''}`}
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-            >
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-            </svg>
-          </button>
-
-          {isLabelsOpen && (
+          {hasActiveFilters && (
             <>
-              <div className="space-y-3 mb-4">
-                {displayedLabels.map((label) => (
-                  <label key={label.id} className="flex items-center gap-3 cursor-pointer group">
-                    <input
-                      type="checkbox"
-                      checked={activeFilters.selectedLabels.includes(label.id)}
-                      onChange={() => handleLabelToggle(label.id)}
-                      className="w-4 h-4 rounded border-gray-300 text-gray-900 focus:ring-gray-900"
-                    />
-                    <span className="text-sm text-gray-700 group-hover:text-gray-900">{label.name}</span>
-                  </label>
-                ))}
+              <div className="bg-white flex flex-wrap gap-[10px] py-[10px]">
+                {activeFilters.priceRange && (
+                  <div className="bg-white flex items-center gap-[5px]">
+                    <div className="w-[14px] h-[14px] overflow-hidden flex items-center justify-center">
+                      <div className="rotate-[315deg]">
+                        <Image src="/icons/close-filter.svg" alt="" width={10} height={10} />
+                      </div>
+                    </div>
+                    <span
+                      className="font-plus-jakarta-sans font-normal text-[16px] text-[#aaaaaa] leading-normal whitespace-nowrap"
+                      style={{ fontFamily: 'var(--font-plus-jakarta-sans)' }}
+                    >
+                      {activeFilters.priceRange.min}€ - {activeFilters.priceRange.max}€
+                    </span>
+                  </div>
+                )}
+                {activeFilters.selectedLabels.map((labelId) => {
+                  const label = LABELS.find((l) => l.id === labelId);
+                  return label ? (
+                    <div key={labelId} className="bg-white flex items-center gap-[5px]">
+                      <button
+                        onClick={() => handleRemoveFilter('label', labelId)}
+                        className="w-[14px] h-[14px] overflow-hidden flex items-center justify-center"
+                      >
+                        <div className="rotate-[315deg]">
+                          <Image src="/icons/close-filter.svg" alt="" width={10} height={10} />
+                        </div>
+                      </button>
+                      <span
+                        className="font-plus-jakarta-sans font-normal text-[16px] text-[#aaaaaa] leading-normal whitespace-nowrap"
+                        style={{ fontFamily: 'var(--font-plus-jakarta-sans)' }}
+                      >
+                        {label.name}
+                      </span>
+                    </div>
+                  ) : null;
+                })}
               </div>
-
-              {!showAllLabels && hiddenLabelsCount > 0 && (
-                <button
-                  onClick={() => setShowAllLabels(true)}
-                  className="text-sm text-gray-600 hover:text-gray-900 underline"
+              <button
+                onClick={handleClearAllFilters}
+                className="bg-[rgba(78,160,76,0.1)] h-[34px] rounded-[60px] flex items-center justify-center px-[20px] w-full"
+              >
+                <span
+                  className="font-outfit font-normal text-[16px] text-[#4ea04c] leading-normal whitespace-nowrap"
+                  style={{ fontFamily: 'var(--font-outfit)' }}
                 >
-                  Show more
-                </button>
-              )}
-
-              {showAllLabels && (
-                <button
-                  onClick={() => setShowAllLabels(false)}
-                  className="text-sm text-gray-600 hover:text-gray-900 underline"
-                >
-                  Show less
-                </button>
-              )}
+                  Effacer tous les filtres
+                </span>
+              </button>
             </>
           )}
         </div>
+
+        <div className="bg-white flex flex-col gap-[20px]">
+          <div className="border-b border-[#e3e3e3] flex items-center justify-between py-[5px] pr-[10px]">
+            <h3
+              className="flex-1 font-poppins font-semibold text-[20px] text-[#4ea04c] leading-normal"
+              style={{ fontFamily: 'var(--font-poppins)' }}
+            >
+              Catégories
+            </h3>
+            <button onClick={() => setIsCategoriesOpen(!isCategoriesOpen)} className="w-[20px] h-[20px]">
+              <Image
+                src="/icons/chevron-collapse.svg"
+                alt=""
+                width={20}
+                height={20}
+                className={`transition-transform ${isCategoriesOpen ? '' : '-rotate-90'}`}
+              />
+            </button>
+          </div>
+
+          {isCategoriesOpen && (
+            <div className="bg-white flex flex-col gap-[10px] p-[10px]">
+              {categories.map((category) => {
+                const isChecked = activeFilters.selectedCategories.includes(category.id);
+                return (
+                  <div key={category.id} className="flex items-center justify-between">
+                    <button
+                      onClick={() => handleCategoryToggle(category.id)}
+                      className="flex items-center h-[24px] py-[5px]"
+                    >
+                      <span
+                        className={`font-plus-jakarta-sans font-normal text-[16px] leading-normal whitespace-nowrap ${
+                          isChecked ? 'text-[#4ea04c]' : 'text-[#aaaaaa]'
+                        }`}
+                        style={{ fontFamily: 'var(--font-plus-jakarta-sans)' }}
+                      >
+                        {category.name}
+                      </span>
+                      <div className="w-[14px] h-[14px]">
+                        <Image
+                          src={isChecked ? '/icons/checkbox-checked.svg' : '/icons/checkbox-empty.svg'}
+                          alt=""
+                          width={14}
+                          height={14}
+                        />
+                      </div>
+                    </button>
+                    <span
+                      className="font-plus-jakarta-sans font-light text-[14px] text-[#aaaaaa] leading-normal text-right w-[50px] overflow-hidden text-ellipsis whitespace-nowrap"
+                      style={{ fontFamily: 'var(--font-plus-jakarta-sans)' }}
+                    >
+                      {category.count > 9999 ? '+9999' : category.count}
+                    </span>
+                  </div>
+                );
+              })}
+            </div>
+          )}
+        </div>
+
+        <div className="bg-white flex flex-col gap-[10px]">
+          <div className="border-b border-[#e3e3e3] flex items-center justify-between py-[5px] pr-[10px]">
+            <div className="flex-1 flex items-center gap-[10px]">
+              <h3
+                className="flex-1 font-poppins font-semibold text-[20px] text-[#4ea04c] leading-normal"
+                style={{ fontFamily: 'var(--font-poppins)' }}
+              >
+                Labels
+              </h3>
+              {activeLabelsCount > 0 && (
+                <div className="bg-[#858585] rounded-[60px] w-[20px] h-[20px] flex items-center justify-center">
+                  <span
+                    className="font-outfit font-semibold text-[14px] text-white leading-normal whitespace-nowrap"
+                    style={{ fontFamily: 'var(--font-outfit)' }}
+                  >
+                    +{activeLabelsCount}
+                  </span>
+                </div>
+              )}
+            </div>
+            <button onClick={() => setIsLabelsOpen(!isLabelsOpen)} className="w-[20px] h-[20px]">
+              <Image
+                src="/icons/chevron-collapse.svg"
+                alt=""
+                width={20}
+                height={20}
+                className={`transition-transform ${isLabelsOpen ? '' : '-rotate-90'}`}
+              />
+            </button>
+          </div>
+
+          {isLabelsOpen && (
+            <div className="p-[10px] flex flex-col gap-[15px]">
+              <div className="flex flex-col gap-[5px] pl-[5px]">
+                {LABELS.map((label) => {
+                  const isChecked = activeFilters.selectedLabels.includes(label.id);
+                  return (
+                    <button
+                      key={label.id}
+                      onClick={() => handleLabelToggle(label.id)}
+                      className="bg-white flex items-center gap-[10px] h-[26px] py-[5px]"
+                    >
+                      <div className="w-[16px] h-[16px]">
+                        {isChecked ? (
+                          <div className="bg-white border border-[#4ea04c] rounded-[3px] w-[16px] h-[16px] flex items-center justify-center p-[3px]">
+                            <div className="bg-[#4ea04c] rounded-[2px] w-full h-full" />
+                          </div>
+                        ) : (
+                          <div className="bg-white border border-[#aaaaaa] rounded-[3px] w-[16px] h-[16px]" />
+                        )}
+                      </div>
+                      <span
+                        className={`flex-1 font-plus-jakarta-sans font-normal text-[16px] leading-normal text-left overflow-hidden text-ellipsis whitespace-nowrap ${
+                          isChecked ? 'text-[#4ea04c]' : 'text-[#aaaaaa]'
+                        }`}
+                        style={{ fontFamily: 'var(--font-plus-jakarta-sans)' }}
+                      >
+                        {label.name}
+                      </span>
+                      <span
+                        className={`font-plus-jakarta-sans font-light text-[14px] leading-normal overflow-hidden text-ellipsis whitespace-nowrap ${
+                          isChecked ? 'text-[#4ea04c]' : 'text-[#aaaaaa]'
+                        }`}
+                        style={{ fontFamily: 'var(--font-plus-jakarta-sans)' }}
+                      >
+                        {label.count > 9999 ? '+9999' : label.count}
+                      </span>
+                    </button>
+                  );
+                })}
+              </div>
+              {activeFilters.selectedLabels.length > 0 && (
+                <button
+                  onClick={() =>
+                    onFilterChange({
+                      ...activeFilters,
+                      selectedLabels: [],
+                    })
+                  }
+                  className="bg-[rgba(78,160,76,0.1)] h-[34px] rounded-[60px] flex items-center justify-center px-[20px] w-full"
+                >
+                  <span
+                    className="font-outfit font-normal text-[16px] text-[#4ea04c] leading-normal whitespace-nowrap"
+                    style={{ fontFamily: 'var(--font-outfit)' }}
+                  >
+                    Effacer le filtre
+                  </span>
+                </button>
+              )}
+            </div>
+          )}
+        </div>
+      </div>
+
+      <div className="w-[6px] bg-[#e3e3e3] rounded-[60px] relative">
+        <div className="bg-[#858585] h-[400px] w-full rounded-[60px]" />
       </div>
     </aside>
-  );
-}
-
-interface FilterPillProps {
-  label: string;
-  onRemove: () => void;
-}
-
-function FilterPill({ label, onRemove }: FilterPillProps) {
-  return (
-    <div className="inline-flex items-center gap-2 bg-gray-100 rounded px-3 py-1.5">
-      <span className="text-xs text-gray-800">{label}</span>
-      <button
-        onClick={onRemove}
-        className="text-gray-600 hover:text-gray-900"
-        aria-label={`Remove ${label} filter`}
-      >
-        <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-        </svg>
-      </button>
-    </div>
   );
 }
