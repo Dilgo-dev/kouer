@@ -1,5 +1,5 @@
-import Image from 'next/image';
-import Link from 'next/link';
+import Image from "next/image";
+import Link from "next/link";
 
 export function ProductsHeader() {
   return (
@@ -38,7 +38,7 @@ export function ProductsHeader() {
               <div className="flex items-center gap-px">
                 <div className="w-[20px] h-[20px]">
                   <Image
-                    src="/icons/chevron-right.svg"
+                    src="/icons/chevron-left.svg"
                     alt=""
                     width={20}
                     height={20}
@@ -48,14 +48,17 @@ export function ProductsHeader() {
                 <Link
                   href="/"
                   className="font-poppins font-medium text-[14px] text-white leading-[0] whitespace-nowrap"
-                  style={{ fontFamily: 'var(--font-poppins)' }}
+                  style={{ fontFamily: "var(--font-poppins)" }}
                 >
                   Accueil
                 </Link>
               </div>
 
               {/* Separator and Current Page */}
-              <div className="flex items-start gap-px font-poppins font-medium text-[14px] text-white leading-[0] whitespace-nowrap" style={{ fontFamily: 'var(--font-poppins)' }}>
+              <div
+                className="flex items-start gap-px font-poppins font-medium text-[14px] text-white leading-[0] whitespace-nowrap"
+                style={{ fontFamily: "var(--font-poppins)" }}
+              >
                 <span>/</span>
                 <span>Tous les produits</span>
               </div>
@@ -67,7 +70,7 @@ export function ProductsHeader() {
         <div className="flex flex-col justify-center py-[10px] flex-grow">
           <h1
             className="font-poppins font-medium text-[60px] text-white leading-[70px] max-w-[600px]"
-            style={{ fontFamily: 'var(--font-poppins)' }}
+            style={{ fontFamily: "var(--font-poppins)" }}
           >
             Tous nos produits
           </h1>
