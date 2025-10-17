@@ -1,8 +1,8 @@
 'use client';
 
 import { useState, useMemo } from 'react';
-import Image from 'next/image';
 import { ProductCard } from '@/components/ProductCard';
+import { ProductsHeader } from '@/components/ProductsHeader';
 import { FilterSidebar } from '@/components/FilterSidebar';
 import { SortDropdown } from '@/components/SortDropdown';
 import { Pagination } from '@/components/Pagination';
@@ -101,22 +101,7 @@ export default function ProductsPage() {
   return (
     <div className="min-h-screen bg-gray-50">
       {/* Hero Section */}
-      <div className="relative h-[200px] bg-gray-900">
-        <Image
-          src="https://images.unsplash.com/photo-1542838132-92c53300491e?w=1920&h=200&fit=crop"
-          alt="All Products"
-          fill
-          className="object-cover opacity-60"
-          priority
-        />
-        <div className="absolute inset-0 flex items-center">
-          <div className="container mx-auto px-5">
-            <h1 className="text-4xl md:text-5xl font-normal text-white">
-              All our products
-            </h1>
-          </div>
-        </div>
-      </div>
+      <ProductsHeader />
 
       {/* Main Content */}
       <div className="flex flex-col lg:flex-row">
