@@ -1,0 +1,196 @@
+'use client';
+
+import { useState, useMemo } from 'react';
+import Image from 'next/image';
+import { ProductCard } from '@/components/ProductCard';
+import { FilterSidebar } from '@/components/FilterSidebar';
+import { SortDropdown } from '@/components/SortDropdown';
+import { Pagination } from '@/components/Pagination';
+import { generateProducts, MOCK_CATEGORIES } from '@/data/mockProducts';
+import type { FilterState, SortOption } from '@/types/product';
+
+const PRODUCTS_PER_PAGE = 30;
+const TOTAL_PRODUCTS = 1465;
+
+const SORT_OPTIONS: SortOption[] = [
+  { id: 'relevance', label: 'Relevance', value: 'relevance' },
+  { id: 'price-asc', label: 'Price: Low to High', value: 'price-asc' },
+  { id: 'price-desc', label: 'Price: High to Low', value: 'price-desc' },
+  { id: 'name-asc', label: 'Name: A to Z', value: 'name-asc' },
+  { id: 'name-desc', label: 'Name: Z to A', value: 'name-desc' },
+];
+
+export default function ProductsPage() {
+  const [currentPage, setCurrentPage] = useState(1);
+  const [sortBy, setSortBy] = useState<string>('relevance');
+  const [filters, setFilters] = useState<FilterState>({
+    selectedCategories: [],
+    selectedLabels: [],
+  });
+
+  const allProducts = useMemo(() => generateProducts(TOTAL_PRODUCTS), []);
+
+  // Apply filters and sorting
+  const filteredAndSortedProducts = useMemo(() => {
+    let filtered = [...allProducts];
+
+    // Apply category filters
+    if (filters.selectedCategories.length > 0) {
+      filtered = filtered.filter((product) =>
+        filters.selectedCategories.includes(product.category)
+      );
+    }
+
+    // Apply label filters
+    if (filters.selectedLabels.length > 0) {
+      filtered = filtered.filter((product) => {
+        if (filters.selectedLabels.includes('bio') && product.isBio) return true;
+        if (filters.selectedLabels.includes('label-rouge') && product.isLabelRouge) return true;
+        return product.labels.some((label) => filters.selectedLabels.includes(label.id));
+      });
+    }
+
+    // Apply price range filter
+    if (filters.priceRange) {
+      filtered = filtered.filter(
+        (product) =>
+          product.price >= filters.priceRange!.min &&
+          product.price <= filters.priceRange!.max
+      );
+    }
+
+    // Apply sorting
+    switch (sortBy) {
+      case 'price-asc':
+        filtered.sort((a, b) => a.price - b.price);
+        break;
+      case 'price-desc':
+        filtered.sort((a, b) => b.price - a.price);
+        break;
+      case 'name-asc':
+        filtered.sort((a, b) => a.name.localeCompare(b.name));
+        break;
+      case 'name-desc':
+        filtered.sort((a, b) => b.name.localeCompare(a.name));
+        break;
+      default:
+        // relevance - keep original order
+        break;
+    }
+
+    return filtered;
+  }, [allProducts, filters, sortBy]);
+
+  // Pagination
+  const totalPages = Math.ceil(filteredAndSortedProducts.length / PRODUCTS_PER_PAGE);
+  const paginatedProducts = useMemo(() => {
+    const startIndex = (currentPage - 1) * PRODUCTS_PER_PAGE;
+    return filteredAndSortedProducts.slice(startIndex, startIndex + PRODUCTS_PER_PAGE);
+  }, [filteredAndSortedProducts, currentPage]);
+
+  const handlePageChange = (page: number) => {
+    setCurrentPage(page);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
+  const handleFilterChange = (newFilters: FilterState) => {
+    setFilters(newFilters);
+    setCurrentPage(1); // Reset to first page when filters change
+  };
+
+  return (
+    <div className="min-h-screen bg-gray-50">
+      {/* Hero Section */}
+      <div className="relative h-[200px] bg-gray-900">
+        <Image
+          src="https://images.unsplash.com/photo-1542838132-92c53300491e?w=1920&h=200&fit=crop"
+          alt="All Products"
+          fill
+          className="object-cover opacity-60"
+          priority
+        />
+        <div className="absolute inset-0 flex items-center">
+          <div className="container mx-auto px-5">
+            <h1 className="text-4xl md:text-5xl font-normal text-white">
+              All our products
+            </h1>
+          </div>
+        </div>
+      </div>
+
+      {/* Main Content */}
+      <div className="flex flex-col lg:flex-row">
+        {/* Sidebar */}
+        <FilterSidebar
+          categories={MOCK_CATEGORIES}
+          onFilterChange={handleFilterChange}
+          activeFilters={filters}
+        />
+
+        {/* Products Grid */}
+        <main className="flex-1">
+          {/* Toolbar */}
+          <div className="sticky top-0 z-10 bg-white border-b border-gray-200">
+            <div className="flex items-center justify-between px-5 py-3">
+              <div className="flex items-center gap-2 text-sm">
+                <span className="font-medium text-gray-900">
+                  {filteredAndSortedProducts.length.toLocaleString()}
+                </span>
+                <span className="text-gray-600">results</span>
+              </div>
+              <SortDropdown
+                options={SORT_OPTIONS}
+                currentSort={sortBy}
+                onSortChange={setSortBy}
+              />
+            </div>
+          </div>
+
+          {/* Products Grid */}
+          <div className="p-5">
+            {paginatedProducts.length > 0 ? (
+              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-5">
+                {paginatedProducts.map((product) => (
+                  <ProductCard key={product.id} product={product} />
+                ))}
+              </div>
+            ) : (
+              <div className="flex flex-col items-center justify-center py-20">
+                <div className="text-center">
+                  <svg
+                    className="mx-auto h-12 w-12 text-gray-400"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
+                    />
+                  </svg>
+                  <h3 className="mt-2 text-lg font-medium text-gray-900">No products found</h3>
+                  <p className="mt-1 text-sm text-gray-500">
+                    Try adjusting your filters to see more results.
+                  </p>
+                </div>
+              </div>
+            )}
+          </div>
+
+          {/* Pagination */}
+          {totalPages > 1 && (
+            <div className="py-10 px-5">
+              <Pagination
+                currentPage={currentPage}
+                totalPages={totalPages}
+                onPageChange={handlePageChange}
+              />
+            </div>
+          )}
+        </main>
+      </div>
+    </div>
+  );
+}
