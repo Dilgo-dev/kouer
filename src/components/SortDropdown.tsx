@@ -2,6 +2,7 @@
 
 import { useState, useRef, useEffect } from "react";
 import Image from "next/image";
+import { motion, AnimatePresence } from "framer-motion";
 import type { SortOption } from "@/types/product";
 
 interface SortDropdownProps {
@@ -66,10 +67,10 @@ export function SortDropdown({
                 {currentOption.label}
               </span>
             </div>
-            <div
-              className={`w-[22.5px] h-[22.5px] transition-transform ${
-                isOpen ? "rotate-180" : "rotate-90"
-              }`}
+            <motion.div
+              className="w-[22.5px] h-[22.5px]"
+              animate={{ rotate: isOpen ? 180 : 90 }}
+              transition={{ duration: 0.3, ease: "easeInOut" }}
             >
               <Image
                 src="/icons/chevron-down.svg"
@@ -78,37 +79,65 @@ export function SortDropdown({
                 height={22.5}
                 className="w-full h-full"
               />
-            </div>
+            </motion.div>
           </div>
+          {isOpen && (
+            <motion.div
+              initial={{ width: 0 }}
+              animate={{ width: "100%" }}
+              exit={{ width: 0 }}
+              transition={{ duration: 0.2 }}
+              className="h-[1px] bg-[#858585]"
+            />
+          )}
         </div>
       </button>
 
-      {isOpen && (
-        <div className="absolute right-0 mt-2 w-[240px] bg-white rounded-[10px] shadow-[2px_4px_40px_0px_rgba(0,0,0,0.25)] overflow-hidden z-20">
-          <ul role="listbox">
-            {options.map((option) => (
-              <li key={option.id}>
-                <button
-                  onClick={() => {
-                    onSortChange(option.value);
-                    setIsOpen(false);
-                  }}
-                  className={`w-full px-[30px] py-[12px] text-left font-poppins font-medium text-[16px] leading-[0] transition-colors ${
-                    option.value === currentSort
-                      ? "bg-[#4ea04c] text-white"
-                      : "bg-white text-[#858585] hover:bg-gray-50"
-                  }`}
-                  style={{ fontFamily: "var(--font-poppins)" }}
-                  role="option"
-                  aria-selected={option.value === currentSort}
+      <AnimatePresence>
+        {isOpen && (
+          <motion.div
+            initial={{ opacity: 0, y: -10 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -10 }}
+            transition={{ duration: 0.2, ease: "easeOut" }}
+            className="absolute right-0 mt-2 w-[240px] bg-white rounded-[10px] shadow-[2px_4px_40px_0px_rgba(0,0,0,0.25)] overflow-hidden z-20"
+          >
+            <ul role="listbox">
+              {options.map((option, index) => (
+                <motion.li
+                  key={option.id}
+                  initial={{ opacity: 0, x: -10 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ duration: 0.2, delay: index * 0.05 }}
                 >
-                  {option.label}
-                </button>
-              </li>
-            ))}
-          </ul>
-        </div>
-      )}
+                  <button
+                    onClick={() => {
+                      onSortChange(option.value);
+                      setIsOpen(false);
+                    }}
+                    className={`w-full px-[30px] py-[12px] text-left transition-colors ${
+                      option.value === currentSort
+                        ? "bg-[#4ea04c] text-white"
+                        : "bg-white text-[#858585] hover:bg-gray-50"
+                    }`}
+                    role="option"
+                    aria-selected={option.value === currentSort}
+                  >
+                    <div className="flex justify-center leading-[0]">
+                      <span
+                        className="font-poppins font-medium text-[16px]"
+                        style={{ fontFamily: "var(--font-poppins)" }}
+                      >
+                        {option.label}
+                      </span>
+                    </div>
+                  </button>
+                </motion.li>
+              ))}
+            </ul>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   );
 }

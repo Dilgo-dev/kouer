@@ -32,7 +32,7 @@ export function ResultsBar({
           className="font-poppins font-normal text-[16px] text-[#858585] leading-[0]"
           style={{ fontFamily: "var(--font-poppins)" }}
         >
-          results
+          résultats
         </span>
       </div>
 
