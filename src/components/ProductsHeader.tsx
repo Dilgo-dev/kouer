@@ -15,7 +15,7 @@ export function ProductsHeader() {
         <div className="absolute inset-0 bg-gradient-to-r from-[rgba(0,0,0,0.55)] to-[rgba(0,0,0,0)]" />
       </div>
 
-      <div className="relative flex flex-col justify-between h-full px-[40px] py-[20px]">
+      <div className="relative flex flex-col justify-between h-full p-5 md:px-[40px] md:py-[20px]">
         <nav aria-label="Fil d'Ariane" className="flex flex-col gap-[10px]">
           <ol className="flex items-center gap-[5px]">
             <li>
@@ -55,7 +55,7 @@ export function ProductsHeader() {
         </nav>
 
         <div className="flex flex-col justify-center py-[10px] flex-grow">
-          <h1 className="font-poppins font-medium text-4xl text-white leading-[70px] max-w-[600px] md:text-6xl">
+          <h1 className="font-poppins font-medium text-4xl text-white leading-10 max-w-[600px] md:text-6xl">
             Tous nos produits
           </h1>
         </div>

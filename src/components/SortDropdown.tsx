@@ -62,9 +62,7 @@ export function SortDropdown({
         <div className="flex flex-col gap-[5px] items-start pt-[6px] pb-0 px-0 min-w-fit">
           <div className="flex items-center justify-between w-full">
             <div className="flex flex-col justify-center leading-[0]">
-              <span
-                className="font-poppins font-medium text-[16px] text-neutral-500 whitespace-nowrap"
-              >
+              <span className="font-poppins font-medium text-[16px] text-neutral-500 whitespace-nowrap">
                 {currentOption.label}
               </span>
             </div>
@@ -97,7 +95,7 @@ export function SortDropdown({
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -10 }}
             transition={{ duration: 0.2, ease: "easeOut" }}
-            className="absolute right-0 mt-2 w-[240px] bg-white rounded-[10px] shadow-dropdown overflow-hidden z-20"
+            className="absolute left-0 md:left-auto md:right-0 mt-2 w-[240px] bg-white rounded-[10px] shadow-dropdown overflow-hidden z-20"
           >
             <ul role="listbox">
               {options.map((option, index) => (
