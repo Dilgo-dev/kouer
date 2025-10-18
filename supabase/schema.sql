@@ -1,4 +1,3 @@
--- Supabase schema for the product catalogue.
 create extension if not exists "pgcrypto";
 
 create table if not exists public.categories (

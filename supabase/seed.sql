@@ -1,4 +1,3 @@
--- Seed dataset for the Supabase catalogue.
 insert into public.categories (slug, name, display_name)
 values
   ('fruits-legumes', 'Fruits & Légumes', 'Fruits & Légumes'),
@@ -21,7 +20,6 @@ values
   ('seasonal', 'Produit de saison', 'Produit de saison', 'seasonal')
 on conflict (slug) do nothing;
 
--- Products
 insert into public.products (id, name, image_url, price, category_slug, is_bio, is_label_rouge, rating)
 values
   ('5ed2f22b-252d-4cfa-9975-006fbdb8e462', 'Bourriche d''huîtres "l''Authentique" de Paimpol - 50n°3', '/images/huitre.png', 45.99, 'poissons-fruits-mer', false, true, 4.6),
@@ -36,7 +34,6 @@ values
   ('863ae758-e96d-4f03-92c5-8e1588e4d598', 'Pommes Golden Bio', 'https://images.unsplash.com/photo-1579613832111-ac7dfcc7723f?w=400&h=400&fit=crop', 4.20, 'fruits-legumes', true, false, 4.1)
 on conflict (id) do nothing;
 
--- Product labels
 insert into public.product_labels (product_id, label_slug)
 values
   ('5ed2f22b-252d-4cfa-9975-006fbdb8e462', 'igp'),
