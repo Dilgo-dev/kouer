@@ -1,6 +1,6 @@
-import Image from 'next/image';
-import { SortDropdown } from './SortDropdown';
-import type { SortOption } from '@/types/product';
+import Image from "next/image";
+import { SortDropdown } from "./SortDropdown";
+import type { SortOption } from "@/types/product";
 
 interface ResultsBarProps {
   resultsCount: number;
@@ -17,26 +17,26 @@ export function ResultsBar({
   currentSort,
   onSortChange,
   onFilterClick,
-  activeFiltersCount = 0
+  activeFiltersCount = 0,
 }: ResultsBarProps) {
   return (
     <div className="bg-white w-full px-[20px] py-[10px] flex items-center justify-between gap-[10px]">
       <div className="hidden md:flex items-center gap-[5px]">
         <span
           className="font-poppins font-medium text-[16px] text-[#505050] leading-[0]"
-          style={{ fontFamily: 'var(--font-poppins)' }}
+          style={{ fontFamily: "var(--font-poppins)" }}
         >
-          {resultsCount.toLocaleString('fr-FR')}
+          {resultsCount.toLocaleString("fr-FR")}
         </span>
         <span
           className="font-poppins font-normal text-[16px] text-[#858585] leading-[0]"
-          style={{ fontFamily: 'var(--font-poppins)' }}
+          style={{ fontFamily: "var(--font-poppins)" }}
         >
           results
         </span>
       </div>
 
-      <div className="flex items-center gap-[10px]">
+      <div className="flex items-center gap-[10px] w-full justify-between md:justify-end">
         <SortDropdown
           options={sortOptions}
           currentSort={currentSort}
@@ -50,7 +50,7 @@ export function ResultsBar({
             >
               <span
                 className="font-poppins font-medium text-[16px] text-white leading-normal whitespace-nowrap"
-                style={{ fontFamily: 'var(--font-poppins)' }}
+                style={{ fontFamily: "var(--font-poppins)" }}
               >
                 Filters {activeFiltersCount > 0 && `(${activeFiltersCount})`}
               </span>
