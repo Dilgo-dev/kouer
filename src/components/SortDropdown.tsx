@@ -117,7 +117,7 @@ export function SortDropdown({
                       onSortChange(option.value);
                       setIsOpen(false);
                     }}
-                    className={`w-full px-[30px] py-[12px] text-left transition-colors ${
+                    className={`w-full px-7 py-3 text-left transition-colors ${
                       option.value === currentSort
                         ? "bg-[#4ea04c] text-white"
                         : "bg-white text-[#858585] hover:bg-gray-50"
@@ -125,7 +125,7 @@ export function SortDropdown({
                     role="option"
                     aria-selected={option.value === currentSort}
                   >
-                    <div className="flex justify-center leading-[0]">
+                    <div className="flex">
                       <span
                         className="font-poppins font-medium text-[16px]"
                         style={{ fontFamily: "var(--font-poppins)" }}
