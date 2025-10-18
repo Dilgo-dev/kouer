@@ -2,11 +2,7 @@
 
 import { useId, useState } from "react";
 import Image from "next/image";
-import type {
-  Category,
-  FilterState,
-  FilterLabelOption,
-} from "@/types/product";
+import type { Category, FilterState, FilterLabelOption } from "@/types/product";
 
 interface FilterOverlayProps {
   isOpen: boolean;
@@ -46,8 +42,7 @@ export function FilterOverlay({
     activeFilters.selectedCategories.length +
     activeFilters.selectedLabels.length +
     (activeFilters.priceRange ? 1 : 0);
-  const summaryId =
-    activeFiltersCount > 0 ? `${titleId}-summary` : undefined;
+  const summaryId = activeFiltersCount > 0 ? `${titleId}-summary` : undefined;
   const dialogAriaProps: { "aria-describedby"?: string } = summaryId
     ? { "aria-describedby": summaryId }
     : {};
@@ -195,7 +190,7 @@ function OverlayHeader({ activeFiltersCount, titleId }: OverlayHeaderProps) {
   return (
     <header className="flex flex-col gap-[15px]">
       <div className="flex gap-[10px] h-[38px] items-center justify-center">
-        <div className="flex-1 flex gap-[5px] items-end">
+        <div className="flex-1 flex gap-[5px] items-center">
           <h2
             id={titleId}
             className="font-poppins font-medium text-[25px] text-primary leading-normal"
