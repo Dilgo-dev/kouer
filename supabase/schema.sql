@@ -39,3 +39,24 @@ create index if not exists products_category_slug_idx
 
 create index if not exists product_labels_label_slug_idx
   on public.product_labels (label_slug);
+
+alter table public.categories enable row level security;
+alter table public.labels enable row level security;
+alter table public.products enable row level security;
+alter table public.product_labels enable row level security;
+
+create policy "Allow public read access on categories"
+  on public.categories for select
+  using (true);
+
+create policy "Allow public read access on labels"
+  on public.labels for select
+  using (true);
+
+create policy "Allow public read access on products"
+  on public.products for select
+  using (true);
+
+create policy "Allow public read access on product_labels"
+  on public.product_labels for select
+  using (true);
