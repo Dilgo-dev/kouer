@@ -19,7 +19,7 @@ const labelConfig: Record<LabelType, LabelConfig | undefined> = {
   [LabelType.SEASONAL]: {
     text: "Produit de saison",
     textClass: "text-primary",
-    fontWeight: "semibold"
+    fontWeight: "semibold",
   },
   [LabelType.LABEL_ROUGE]: undefined,
   [LabelType.AOC]: undefined,
@@ -68,7 +68,7 @@ export function ProductCard({ product }: ProductCardProps) {
 
       <div className="bg-white p-[18px] flex">
         <h3
-          className="flex-1 font-poppins font-semibold text-sm text-neutral-600 leading-normal h-[48px] overflow-hidden line-clamp-2"
+          className="flex-1 font-poppins font-semibold text-sm text-neutral-600 leading-normal md:h-[48px] overflow-hidden line-clamp-2 break-words"
           style={{
             display: "-webkit-box",
             WebkitLineClamp: 2,
