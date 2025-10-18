@@ -58,7 +58,7 @@ export function ProductsHeader() {
 
         <div className="flex flex-col justify-center py-[10px] flex-grow">
           <h1
-            className="font-poppins font-medium text-[60px] text-white leading-[70px] max-w-[600px]"
+            className="font-poppins font-medium text-6xl text-white leading-[70px] max-w-[600px]"
             style={{ fontFamily: "var(--font-poppins)" }}
           >
             Tous nos produits
