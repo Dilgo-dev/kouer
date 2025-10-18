@@ -1,0 +1,327 @@
+import type { Product, Category } from '@/types/product';
+import { LabelType } from '@/types/product';
+
+export const MOCK_CATEGORIES: Category[] = [
+  { id: 'fruits-legumes', name: 'Fruits & Légumes', count: 234 },
+  { id: 'viandes-charcuteries', name: 'Viandes & Charcuteries', count: 189 },
+  { id: 'poissons-fruits-mer', name: 'Poissons & Fruits de mer', count: 156 },
+  { id: 'produits-laitiers', name: 'Produits laitiers', count: 298 },
+  { id: 'epicerie-salee', name: 'Épicerie salée', count: 412 },
+  { id: 'epicerie-sucree', name: 'Épicerie sucrée', count: 176 },
+  { id: 'produits-verts', name: 'Produits verts', count: 89 },
+  { id: 'boissons', name: 'Boissons', count: 203 },
+];
+
+const PRODUCT_IMAGES = [
+  '/images/huitre.png',
+  '/images/confit-de-vin-rouge.png',
+  '/images/sorbet-pomme-verte.png',
+  '/images/confit-de-vin-rouge-2.png',
+  '/images/confit-de-vin-rouge-3.png',
+];
+
+export const MOCK_PRODUCTS: Product[] = [
+  {
+    id: '1',
+    name: 'Bourriche d\'huîtres "l\'Authentique" de Paimpol - 50n°3',
+    imageUrl: PRODUCT_IMAGES[0],
+    price: 45.99,
+    labels: [
+      { id: 'igp', name: 'IGP', type: LabelType.IGP },
+      { id: 'label-rouge', name: 'Label Rouge', type: LabelType.LABEL_ROUGE },
+    ],
+    category: 'poissons-fruits-mer',
+  },
+  {
+    id: '2',
+    name: 'Confit de vin rouge Bio',
+    imageUrl: PRODUCT_IMAGES[1],
+    price: 12.50,
+    labels: [
+      { id: 'bio', name: 'BIO', type: LabelType.BIO },
+      { id: 'stg', name: 'STG', type: LabelType.STG },
+    ],
+    category: 'epicerie-salee',
+    isBio: true,
+  },
+  {
+    id: '3',
+    name: 'Sorbet Pomme Verte 0.5L',
+    imageUrl: PRODUCT_IMAGES[2],
+    price: 8.90,
+    labels: [],
+    category: 'epicerie-sucree',
+  },
+  {
+    id: '4',
+    name: 'Confit de vin rouge Bio',
+    imageUrl: PRODUCT_IMAGES[3],
+    price: 15.20,
+    labels: [
+      { id: 'seasonal', name: 'Produit de saison', type: LabelType.SEASONAL },
+    ],
+    category: 'produits-laitiers',
+    isBio: true,
+  },
+  {
+    id: '5',
+    name: 'Confit de vin rouge Bio',
+    imageUrl: PRODUCT_IMAGES[4],
+    price: 18.75,
+    labels: [
+      { id: 'bio', name: 'BIO', type: LabelType.BIO },
+      { id: 'seasonal', name: 'Produit de saison', type: LabelType.SEASONAL },
+    ],
+    category: 'viandes-charcuteries',
+    isLabelRouge: true,
+  },
+  {
+    id: '6',
+    name: 'Miel de lavande IGP',
+    imageUrl: 'https://images.unsplash.com/photo-1587049352846-4a222e784e38?w=400&h=400&fit=crop',
+    price: 14.30,
+    labels: [{ id: 'igp', name: 'IGP', type: LabelType.IGP }],
+    category: 'epicerie-sucree',
+  },
+  {
+    id: '7',
+    name: 'Tomates anciennes Bio',
+    imageUrl: 'https://images.unsplash.com/photo-1546470427-d20e2f5d57e7?w=400&h=400&fit=crop',
+    price: 6.50,
+    labels: [{ id: 'bio', name: 'BIO', type: LabelType.BIO }],
+    category: 'fruits-legumes',
+    isBio: true,
+  },
+  {
+    id: '8',
+    name: 'Terrine de canard Label Rouge',
+    imageUrl: 'https://images.unsplash.com/photo-1626200419199-391ae4be7a41?w=400&h=400&fit=crop',
+    price: 22.40,
+    labels: [{ id: 'label-rouge', name: 'Label Rouge', type: LabelType.LABEL_ROUGE }],
+    category: 'viandes-charcuteries',
+    isLabelRouge: true,
+  },
+  {
+    id: '9',
+    name: 'Huile d\'olive extra vierge AOP',
+    imageUrl: 'https://images.unsplash.com/photo-1474979266404-7eaacbcd87c5?w=400&h=400&fit=crop',
+    price: 28.90,
+    labels: [{ id: 'aoc', name: 'AOP', type: LabelType.AOC }],
+    category: 'epicerie-salee',
+  },
+  {
+    id: '10',
+    name: 'Pommes Golden Bio',
+    imageUrl: 'https://images.unsplash.com/photo-1579613832111-ac7dfcc7723f?w=400&h=400&fit=crop',
+    price: 4.20,
+    labels: [{ id: 'bio', name: 'BIO', type: LabelType.BIO }],
+    category: 'fruits-legumes',
+    isBio: true,
+  },
+  {
+    id: '11',
+    name: 'Jambon de Bayonne IGP',
+    imageUrl: 'https://images.unsplash.com/photo-1600891964092-4316c288032e?w=400&h=400&fit=crop',
+    price: 32.50,
+    labels: [{ id: 'igp', name: 'IGP', type: LabelType.IGP }],
+    category: 'viandes-charcuteries',
+  },
+  {
+    id: '12',
+    name: 'Yaourt fermier Bio',
+    imageUrl: 'https://images.unsplash.com/photo-1488477181946-6428a0291777?w=400&h=400&fit=crop',
+    price: 5.80,
+    labels: [{ id: 'bio', name: 'BIO', type: LabelType.BIO }],
+    category: 'produits-laitiers',
+    isBio: true,
+  },
+  {
+    id: '13',
+    name: 'Filet de bœuf Label Rouge',
+    imageUrl: 'https://images.unsplash.com/photo-1603048297172-c92544798d5a?w=400&h=400&fit=crop',
+    price: 42.00,
+    labels: [
+      { id: 'label-rouge', name: 'Label Rouge', type: LabelType.LABEL_ROUGE },
+      { id: 'vbf', name: 'VBF', type: LabelType.VBF },
+    ],
+    category: 'viandes-charcuteries',
+    isLabelRouge: true,
+  },
+  {
+    id: '14',
+    name: 'Confiture de fraises Bio',
+    imageUrl: 'https://images.unsplash.com/photo-1484723091739-30a097e8f929?w=400&h=400&fit=crop',
+    price: 7.90,
+    labels: [{ id: 'bio', name: 'BIO', type: LabelType.BIO }],
+    category: 'epicerie-sucree',
+    isBio: true,
+  },
+  {
+    id: '15',
+    name: 'Saumon de Norvège Label Rouge',
+    imageUrl: 'https://images.unsplash.com/photo-1519708227418-c8fd9a32b7a2?w=400&h=400&fit=crop',
+    price: 28.60,
+    labels: [
+      { id: 'label-rouge', name: 'Label Rouge', type: LabelType.LABEL_ROUGE },
+      { id: 'peche-durable', name: 'Pêche Durable', type: LabelType.PECHE_DURABLE },
+    ],
+    category: 'poissons-fruits-mer',
+    isLabelRouge: true,
+  },
+  {
+    id: '16',
+    name: 'Pain artisanal Bio',
+    imageUrl: 'https://images.unsplash.com/photo-1509440159596-0249088772ff?w=400&h=400&fit=crop',
+    price: 3.50,
+    labels: [{ id: 'bio', name: 'BIO', type: LabelType.BIO }],
+    category: 'epicerie-salee',
+    isBio: true,
+  },
+  {
+    id: '17',
+    name: 'Champagne AOP Brut',
+    imageUrl: 'https://images.unsplash.com/photo-1547595628-c61a29f496f0?w=400&h=400&fit=crop',
+    price: 38.90,
+    labels: [{ id: 'aoc', name: 'AOP', type: LabelType.AOC }],
+    category: 'boissons',
+  },
+  {
+    id: '18',
+    name: 'Carottes Bio du terroir',
+    imageUrl: 'https://images.unsplash.com/photo-1598170845058-32b9d6a5da37?w=400&h=400&fit=crop',
+    price: 3.20,
+    labels: [{ id: 'bio', name: 'BIO', type: LabelType.BIO }],
+    category: 'fruits-legumes',
+    isBio: true,
+  },
+  {
+    id: '19',
+    name: 'Pâté en croûte artisanal',
+    imageUrl: 'https://images.unsplash.com/photo-1615485500834-bc10199bc727?w=400&h=400&fit=crop',
+    price: 16.80,
+    labels: [{ id: 'college-culinaire', name: 'Collège Culinaire', type: LabelType.COLLEGE_CULINAIRE }],
+    category: 'viandes-charcuteries',
+  },
+  {
+    id: '20',
+    name: 'Beurre AOP demi-sel',
+    imageUrl: 'https://images.unsplash.com/photo-1589985270826-4b7bb135bc9d?w=400&h=400&fit=crop',
+    price: 6.40,
+    labels: [{ id: 'aoc', name: 'AOP', type: LabelType.AOC }],
+    category: 'produits-laitiers',
+  },
+  {
+    id: '21',
+    name: 'Chocolat noir Bio 70%',
+    imageUrl: 'https://images.unsplash.com/photo-1511381939415-e44015466834?w=400&h=400&fit=crop',
+    price: 9.50,
+    labels: [{ id: 'bio', name: 'BIO', type: LabelType.BIO }],
+    category: 'epicerie-sucree',
+    isBio: true,
+  },
+  {
+    id: '22',
+    name: 'Poulet fermier Label Rouge',
+    imageUrl: 'https://images.unsplash.com/photo-1587593810167-a84920ea0781?w=400&h=400&fit=crop',
+    price: 18.90,
+    labels: [{ id: 'label-rouge', name: 'Label Rouge', type: LabelType.LABEL_ROUGE }],
+    category: 'viandes-charcuteries',
+    isLabelRouge: true,
+  },
+  {
+    id: '23',
+    name: 'Jus de pomme Bio artisanal',
+    imageUrl: 'https://images.unsplash.com/photo-1600271886742-f049cd451bba?w=400&h=400&fit=crop',
+    price: 5.30,
+    labels: [{ id: 'bio', name: 'BIO', type: LabelType.BIO }],
+    category: 'boissons',
+    isBio: true,
+  },
+  {
+    id: '24',
+    name: 'Rillettes de Tours IGP',
+    imageUrl: 'https://images.unsplash.com/photo-1615485290382-441e4d049cb5?w=400&h=400&fit=crop',
+    price: 11.20,
+    labels: [{ id: 'igp', name: 'IGP', type: LabelType.IGP }],
+    category: 'viandes-charcuteries',
+  },
+  {
+    id: '25',
+    name: 'Lentilles vertes Bio',
+    imageUrl: 'https://images.unsplash.com/photo-1587735243475-46452447514b?w=400&h=400&fit=crop',
+    price: 4.80,
+    labels: [{ id: 'bio', name: 'BIO', type: LabelType.BIO }],
+    category: 'epicerie-salee',
+    isBio: true,
+  },
+  {
+    id: '26',
+    name: 'Crème fraîche AOP',
+    imageUrl: 'https://images.unsplash.com/photo-1628088062854-d1870b4553da?w=400&h=400&fit=crop',
+    price: 4.60,
+    labels: [{ id: 'aoc', name: 'AOP', type: LabelType.AOC }],
+    category: 'produits-laitiers',
+  },
+  {
+    id: '27',
+    name: 'Magret de canard IGP',
+    imageUrl: 'https://images.unsplash.com/photo-1607623814075-e51df1bdc82f?w=400&h=400&fit=crop',
+    price: 24.50,
+    labels: [{ id: 'igp', name: 'IGP', type: LabelType.IGP }],
+    category: 'viandes-charcuteries',
+  },
+  {
+    id: '28',
+    name: 'Moutarde de Dijon IGP',
+    imageUrl: 'https://images.unsplash.com/photo-1597164557155-8a8fc5a2d55f?w=400&h=400&fit=crop',
+    price: 5.90,
+    labels: [{ id: 'igp', name: 'IGP', type: LabelType.IGP }],
+    category: 'epicerie-salee',
+  },
+  {
+    id: '29',
+    name: 'Bar de ligne Label Rouge',
+    imageUrl: 'https://images.unsplash.com/photo-1544943910-4c1dc44aab44?w=400&h=400&fit=crop',
+    price: 35.80,
+    labels: [
+      { id: 'label-rouge', name: 'Label Rouge', type: LabelType.LABEL_ROUGE },
+      { id: 'peche-durable', name: 'Pêche Durable', type: LabelType.PECHE_DURABLE },
+    ],
+    category: 'poissons-fruits-mer',
+    isLabelRouge: true,
+  },
+  {
+    id: '30',
+    name: 'Pâtes artisanales Bio',
+    imageUrl: 'https://images.unsplash.com/photo-1551462147-ff29053bfc14?w=400&h=400&fit=crop',
+    price: 6.20,
+    labels: [{ id: 'bio', name: 'BIO', type: LabelType.BIO }],
+    category: 'epicerie-salee',
+    isBio: true,
+  },
+];
+
+export function generateProducts(count: number): Product[] {
+  const baseProducts = [...MOCK_PRODUCTS];
+  const products: Product[] = [];
+
+  for (let i = 0; i < count; i++) {
+    const template = baseProducts[i % baseProducts.length];
+    const imageIndex = i % PRODUCT_IMAGES.length;
+    const rating =
+      template.rating ?? Math.min(5, 3 + ((i % 5) + 1) * 0.4);
+    const createdAt =
+      template.createdAt ??
+      new Date(Date.now() - i * 12 * 60 * 60 * 1000).toISOString();
+
+    products.push({
+      ...template,
+      id: `${i + 1}`,
+      imageUrl: PRODUCT_IMAGES[imageIndex],
+      rating,
+      createdAt,
+    });
+  }
+
+  return products;
+}
