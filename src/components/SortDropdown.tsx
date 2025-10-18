@@ -102,40 +102,63 @@ export function SortDropdown({
           >
             <ul role="listbox">
               {options.map((option, index) => (
-                <motion.li
+                <SortDropdownOption
                   key={option.id}
-                  initial={{ opacity: 0, x: -10 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  transition={{ duration: 0.2, delay: index * 0.05 }}
-                >
-                  <button
-                    onClick={() => {
-                      onSortChange(option.value);
-                      setIsOpen(false);
-                    }}
-                    className={`w-full px-7 py-3 text-left transition-colors ${
-                      option.value === currentSort
-                        ? "bg-[#4ea04c] text-white"
-                        : "bg-white text-[#858585] hover:bg-gray-50"
-                    }`}
-                    role="option"
-                    aria-selected={option.value === currentSort}
-                  >
-                    <div className="flex">
-                      <span
-                        className="font-poppins font-medium text-[16px]"
-                        style={{ fontFamily: "var(--font-poppins)" }}
-                      >
-                        {option.label}
-                      </span>
-                    </div>
-                  </button>
-                </motion.li>
+                  option={option}
+                  isSelected={option.value === currentSort}
+                  animationDelay={index * 0.05}
+                  onSelect={(value) => {
+                    onSortChange(value);
+                    setIsOpen(false);
+                  }}
+                />
               ))}
             </ul>
           </motion.div>
         )}
       </AnimatePresence>
     </div>
+  );
+}
+
+interface SortDropdownOptionProps {
+  option: SortOption;
+  isSelected: boolean;
+  animationDelay: number;
+  onSelect: (value: string) => void;
+}
+
+function SortDropdownOption({
+  option,
+  isSelected,
+  animationDelay,
+  onSelect,
+}: SortDropdownOptionProps) {
+  return (
+    <motion.li
+      initial={{ opacity: 0, x: -10 }}
+      animate={{ opacity: 1, x: 0 }}
+      transition={{ duration: 0.2, delay: animationDelay }}
+    >
+      <button
+        onClick={() => onSelect(option.value)}
+        className={`w-full px-7 py-3 text-left transition-colors ${
+          isSelected
+            ? "bg-[#4ea04c] text-white"
+            : "bg-white text-[#858585] hover:bg-gray-50"
+        }`}
+        role="option"
+        aria-selected={isSelected}
+      >
+        <div className="flex">
+          <span
+            className="font-poppins font-medium text-[16px]"
+            style={{ fontFamily: "var(--font-poppins)" }}
+          >
+            {option.label}
+          </span>
+        </div>
+      </button>
+    </motion.li>
   );
 }
