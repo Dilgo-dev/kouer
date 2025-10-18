@@ -40,15 +40,11 @@ export function ProductsHeader() {
                 <Link
                   href="/"
                   className="font-poppins font-medium text-[14px] text-white leading-[0] whitespace-nowrap"
-                  style={{ fontFamily: "var(--font-poppins)" }}
                 >
                   Accueil
                 </Link>
               </div>
-              <div
-                className="flex items-start gap-px font-poppins font-medium text-[14px] text-white leading-[0] whitespace-nowrap"
-                style={{ fontFamily: "var(--font-poppins)" }}
-              >
+              <div className="flex items-start gap-px font-poppins font-medium text-[14px] text-white leading-[0] whitespace-nowrap">
                 <span>/</span>
                 <span>Tous les produits</span>
               </div>
@@ -57,10 +53,7 @@ export function ProductsHeader() {
         </div>
 
         <div className="flex flex-col justify-center py-[10px] flex-grow">
-          <h1
-            className="font-poppins font-medium text-6xl text-white leading-[70px] max-w-[600px]"
-            style={{ fontFamily: "var(--font-poppins)" }}
-          >
+          <h1 className="font-poppins font-medium text-6xl text-white leading-[70px] max-w-[600px]">
             Tous nos produits
           </h1>
         </div>

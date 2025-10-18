@@ -78,10 +78,7 @@ export function FilterSidebar({
       <div className="bg-white rounded-[3px] overflow-y-auto flex flex-col gap-[30px] sidebar-scroll">
         <div className="bg-white flex flex-col gap-[15px]">
           <div className="border-b border-border flex items-center justify-center py-[5px]">
-            <h2
-              className="flex-1 font-poppins font-semibold text-[20px] text-primary leading-normal"
-              style={{ fontFamily: "var(--font-poppins)" }}
-            >
+            <h2 className="flex-1 font-poppins font-semibold text-[20px] text-primary leading-normal">
               Filtres
             </h2>
           </div>
@@ -166,10 +163,7 @@ function ActiveFilterPanel({
                 height={10}
               />
             </div>
-            <span
-              className="font-plus-jakarta-sans font-normal text-[16px] text-neutral-400 leading-normal whitespace-nowrap"
-              style={{ fontFamily: "var(--font-plus-jakarta-sans)" }}
-            >
+            <span className="font-plus-jakarta-sans font-normal text-[16px] text-neutral-400 leading-normal whitespace-nowrap">
               {activeFilters.priceRange.min}€ - {activeFilters.priceRange.max}€
             </span>
           </div>
@@ -197,10 +191,7 @@ function ActiveFilterPanel({
                   height={10}
                 />
               </button>
-              <span
-                className="font-plus-jakarta-sans font-normal text-[16px] text-neutral-400 leading-normal whitespace-nowrap"
-                style={{ fontFamily: "var(--font-plus-jakarta-sans)" }}
-              >
+              <span className="font-plus-jakarta-sans font-normal text-[16px] text-neutral-400 leading-normal whitespace-nowrap">
                 {category.name}
               </span>
             </div>
@@ -226,10 +217,7 @@ function ActiveFilterPanel({
                   height={10}
                 />
               </button>
-              <span
-                className="font-plus-jakarta-sans font-normal text-[16px] text-neutral-400 leading-normal whitespace-nowrap"
-                style={{ fontFamily: "var(--font-plus-jakarta-sans)" }}
-              >
+              <span className="font-plus-jakarta-sans font-normal text-[16px] text-neutral-400 leading-normal whitespace-nowrap">
                 {label.name}
               </span>
             </div>
@@ -240,10 +228,7 @@ function ActiveFilterPanel({
         onClick={onClearAll}
         className="bg-primary/10 h-[34px] rounded-[60px] flex items-center justify-center px-[20px] w-full"
       >
-        <span
-          className="font-outfit font-normal text-[16px] text-primary leading-normal whitespace-nowrap"
-          style={{ fontFamily: "var(--font-outfit)" }}
-        >
+        <span className="font-outfit font-normal text-[16px] text-primary leading-normal whitespace-nowrap">
           {clearButtonLabel}
         </span>
       </button>
@@ -273,10 +258,7 @@ function CategorySection({
   return (
     <div className="bg-white flex flex-col gap-[20px]">
       <div className="border-b border-border flex items-center justify-between py-[5px] pr-[10px]">
-        <h3
-          className="flex-1 font-poppins font-semibold text-[20px] text-primary leading-normal"
-          style={{ fontFamily: "var(--font-poppins)" }}
-        >
+        <h3 className="flex-1 font-poppins font-semibold text-[20px] text-primary leading-normal">
           Catégories
         </h3>
         <button onClick={onToggleOpen} className="w-[20px] h-[20px]">
@@ -313,7 +295,6 @@ function CategorySection({
                         ? "text-primary"
                         : "text-neutral-400 group-hover:text-neutral-600"
                     }`}
-                    style={{ fontFamily: "var(--font-plus-jakarta-sans)" }}
                   >
                     {category.name}
                   </span>
@@ -334,10 +315,7 @@ function CategorySection({
                     />
                   </motion.div>
                 </button>
-                <span
-                  className="font-plus-jakarta-sans font-light text-[14px] text-neutral-400 leading-normal text-right w-[50px] overflow-hidden text-ellipsis whitespace-nowrap"
-                  style={{ fontFamily: "var(--font-plus-jakarta-sans)" }}
-                >
+                <span className="font-plus-jakarta-sans font-light text-[14px] text-neutral-400 leading-normal text-right w-[50px] overflow-hidden text-ellipsis whitespace-nowrap">
                   {category.count > 9999 ? "+9999" : category.count}
                 </span>
               </div>
@@ -374,18 +352,12 @@ function LabelSection({
     <div className="bg-white flex flex-col gap-[10px]">
       <div className="border-b border-border flex items-center justify-between py-[5px] pr-[10px]">
         <div className="flex-1 flex items-center gap-[10px]">
-          <h3
-            className="flex-1 font-poppins font-semibold text-[20px] text-primary leading-normal"
-            style={{ fontFamily: "var(--font-poppins)" }}
-          >
+          <h3 className="flex-1 font-poppins font-semibold text-[20px] text-primary leading-normal">
             Labels
           </h3>
           {activeLabelsCount > 0 && (
             <div className="bg-neutral-500 rounded-[60px] w-[20px] h-[20px] flex items-center justify-center">
-              <span
-                className="font-outfit font-semibold text-[14px] text-white leading-normal whitespace-nowrap"
-                style={{ fontFamily: "var(--font-outfit)" }}
-              >
+              <span className="font-outfit font-semibold text-[14px] text-white leading-normal whitespace-nowrap">
                 +{activeLabelsCount}
               </span>
             </div>
@@ -427,7 +399,6 @@ function LabelSection({
                     className={`flex-1 font-plus-jakarta-sans font-normal text-[16px] leading-normal text-left overflow-hidden text-ellipsis whitespace-nowrap ${
                       isChecked ? "text-primary" : "text-neutral-400"
                     }`}
-                    style={{ fontFamily: "var(--font-plus-jakarta-sans)" }}
                   >
                     {label.name}
                   </span>
@@ -435,7 +406,6 @@ function LabelSection({
                     className={`font-plus-jakarta-sans font-light text-[14px] leading-normal overflow-hidden text-ellipsis whitespace-nowrap ${
                       isChecked ? "text-primary" : "text-neutral-400"
                     }`}
-                    style={{ fontFamily: "var(--font-plus-jakarta-sans)" }}
                   >
                     {label.count > 9999 ? "+9999" : label.count}
                   </span>
@@ -448,10 +418,7 @@ function LabelSection({
               onClick={onClearLabels}
               className="bg-primary/10 h-[34px] rounded-[60px] flex items-center justify-center px-[20px] w-full"
             >
-              <span
-                className="font-outfit font-normal text-[16px] text-primary leading-normal whitespace-nowrap"
-                style={{ fontFamily: "var(--font-outfit)" }}
-              >
+              <span className="font-outfit font-normal text-[16px] text-primary leading-normal whitespace-nowrap">
                 {clearButtonLabel}
               </span>
             </button>

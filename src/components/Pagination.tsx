@@ -121,10 +121,7 @@ function PaginationItem({ page, isActive, onSelect }: PaginationItemProps) {
   if (page === "...") {
     return (
       <div className="bg-white h-[40px] flex flex-col items-center justify-center px-[10px]">
-        <p
-          className="font-poppins font-medium text-[20px] text-neutral-400 leading-[0]"
-          style={{ fontFamily: "var(--font-poppins)" }}
-        >
+        <p className="font-poppins font-medium text-[20px] text-neutral-400 leading-[0]">
           ...
         </p>
       </div>
@@ -141,7 +138,6 @@ function PaginationItem({ page, isActive, onSelect }: PaginationItemProps) {
         className={`font-poppins font-medium text-[20px] ${
           isActive ? "text-primary" : "text-neutral-400"
         }`}
-        style={{ fontFamily: "var(--font-poppins)" }}
       >
         {page}
       </p>

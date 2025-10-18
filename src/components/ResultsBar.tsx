@@ -22,16 +22,10 @@ export function ResultsBar({
   return (
     <div className="bg-white w-full px-[20px] py-[10px] flex items-center justify-between gap-[10px] border-b border-border">
       <div className="hidden md:flex items-center gap-[5px]">
-        <span
-          className="font-poppins font-medium text-[16px] text-neutral-600 leading-[0]"
-          style={{ fontFamily: "var(--font-poppins)" }}
-        >
+        <span className="font-poppins font-medium text-[16px] text-neutral-600 leading-[0]">
           {resultsCount.toLocaleString("fr-FR")}
         </span>
-        <span
-          className="font-poppins font-normal text-[16px] text-neutral-500 leading-[0]"
-          style={{ fontFamily: "var(--font-poppins)" }}
-        >
+        <span className="font-poppins font-normal text-[16px] text-neutral-500 leading-[0]">
           résultats
         </span>
       </div>
@@ -48,10 +42,7 @@ export function ResultsBar({
               onClick={onFilterClick}
               className="hidden md:flex lg:hidden bg-primary h-[44px] pl-[25px] pr-[20px] rounded-[60px] items-center justify-center gap-[10px]"
             >
-              <span
-                className="font-poppins font-medium text-[16px] text-primary-foreground leading-normal whitespace-nowrap"
-                style={{ fontFamily: "var(--font-poppins)" }}
-              >
+              <span className="font-poppins font-medium text-[16px] text-primary-foreground leading-normal whitespace-nowrap">
                 Filtres {activeFiltersCount > 0 && `(${activeFiltersCount})`}
               </span>
               <Image

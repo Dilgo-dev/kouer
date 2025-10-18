@@ -54,7 +54,6 @@ export function SortDropdown({
             className={`font-poppins font-medium text-[16px] text-neutral-600 whitespace-nowrap ${
               isOpen ? "" : "pt-[6px]"
             }`}
-            style={{ fontFamily: "var(--font-poppins)" }}
           >
             Trier par
           </span>
@@ -64,7 +63,6 @@ export function SortDropdown({
             <div className="flex flex-col justify-center leading-[0]">
               <span
                 className="font-poppins font-medium text-[16px] text-neutral-500 whitespace-nowrap"
-                style={{ fontFamily: "var(--font-poppins)" }}
               >
                 {currentOption.label}
               </span>
@@ -151,10 +149,7 @@ function SortDropdownOption({
         aria-selected={isSelected}
       >
         <div className="flex">
-          <span
-            className="font-poppins font-medium text-[16px]"
-            style={{ fontFamily: "var(--font-poppins)" }}
-          >
+          <span className="font-poppins font-medium text-[16px]">
             {option.label}
           </span>
         </div>

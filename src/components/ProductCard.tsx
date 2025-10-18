@@ -59,7 +59,6 @@ export function ProductCard({ product }: ProductCardProps) {
         <h3
           className="flex-1 font-poppins font-semibold text-sm text-neutral-600 leading-normal h-[48px] overflow-hidden line-clamp-2"
           style={{
-            fontFamily: "var(--font-poppins)",
             display: "-webkit-box",
             WebkitLineClamp: 2,
             WebkitBoxOrient: "vertical",
