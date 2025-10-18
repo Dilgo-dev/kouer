@@ -51,12 +51,24 @@ export function FilterOverlay({
   onFilterChange,
   activeFilters,
 }: FilterOverlayProps) {
+  const [isCategoriesOpen, setIsCategoriesOpen] = useState(true);
   const [isLabelsOpen, setIsLabelsOpen] = useState(true);
 
   const activeFiltersCount =
     activeFilters.selectedCategories.length +
     activeFilters.selectedLabels.length +
     (activeFilters.priceRange ? 1 : 0);
+
+  const handleCategoryToggle = (categoryId: string) => {
+    const newCategories = activeFilters.selectedCategories.includes(categoryId)
+      ? activeFilters.selectedCategories.filter((id) => id !== categoryId)
+      : [...activeFilters.selectedCategories, categoryId];
+
+    onFilterChange({
+      ...activeFilters,
+      selectedCategories: newCategories,
+    });
+  };
 
   const handleLabelToggle = (labelId: string) => {
     const newLabels = activeFilters.selectedLabels.includes(labelId)
@@ -163,6 +175,35 @@ export function FilterOverlay({
                       </span>
                     </div>
                   )}
+                  {activeFilters.selectedCategories.map((categoryId) => {
+                    const category = categories.find((c) => c.id === categoryId);
+                    return category ? (
+                      <div
+                        key={categoryId}
+                        className="bg-white flex items-center gap-[5px]"
+                      >
+                        <button
+                          onClick={() => handleRemoveFilter("category", categoryId)}
+                          className="w-[14px] h-[14px] overflow-hidden flex items-center justify-center"
+                        >
+                          <Image
+                            src="/icons/close-filter.svg"
+                            alt=""
+                            width={10}
+                            height={10}
+                          />
+                        </button>
+                        <span
+                          className="font-plus-jakarta-sans font-normal text-[16px] text-[#aaaaaa] leading-normal whitespace-nowrap"
+                          style={{
+                            fontFamily: "var(--font-plus-jakarta-sans)",
+                          }}
+                        >
+                          {category.name}
+                        </span>
+                      </div>
+                    ) : null;
+                  })}
                   {activeFilters.selectedLabels.map((labelId) => {
                     const label = LABELS.find((l) => l.id === labelId);
                     return label ? (
@@ -206,6 +247,67 @@ export function FilterOverlay({
                 </button>
               </div>
             )}
+
+            <div className="bg-white flex flex-col gap-[20px]">
+              <div className="border-b border-[#e3e3e3] flex items-center justify-between py-[5px] pr-[10px]">
+                <h3
+                  className="flex-1 font-poppins font-semibold text-[20px] text-[#4ea04c] leading-normal"
+                  style={{ fontFamily: "var(--font-poppins)" }}
+                >
+                  Categories
+                </h3>
+                <button
+                  onClick={() => setIsCategoriesOpen(!isCategoriesOpen)}
+                  className="w-[20px] h-[20px]"
+                >
+                  <Image
+                    src="/icons/chevron-collapse.svg"
+                    alt=""
+                    width={20}
+                    height={20}
+                    className={`transition-transform ${
+                      isCategoriesOpen ? "" : "-rotate-90"
+                    }`}
+                  />
+                </button>
+              </div>
+
+              {isCategoriesOpen && (
+                <div className="bg-white flex flex-col gap-[10px] p-[10px]">
+                  {categories.map((category) => {
+                    const isChecked = activeFilters.selectedCategories.includes(
+                      category.id
+                    );
+                    return (
+                      <div
+                        key={category.id}
+                        className="flex items-center justify-between group"
+                      >
+                        <button
+                          onClick={() => handleCategoryToggle(category.id)}
+                          className="flex items-center h-[24px] py-[5px] border-b border-transparent group-hover:border-[#505050] transition-colors duration-200"
+                        >
+                          <span
+                            className={`font-plus-jakarta-sans font-normal text-[16px] leading-normal whitespace-nowrap transition-colors duration-200 ${
+                              isChecked ? "text-[#4ea04c]" : "text-[#aaaaaa] group-hover:text-[#505050]"
+                            }`}
+                            style={{ fontFamily: "var(--font-plus-jakarta-sans)" }}
+                          >
+                            {category.name}
+                          </span>
+                        </button>
+                        <span
+                          className="font-plus-jakarta-sans font-light text-[14px] text-[#aaaaaa] leading-normal text-right w-[50px] overflow-hidden text-ellipsis whitespace-nowrap"
+                          style={{ fontFamily: "var(--font-plus-jakarta-sans)" }}
+                        >
+                          {category.count > 9999 ? "+9999" : category.count}
+                        </span>
+                      </div>
+                    );
+                  })}
+                </div>
+              )}
+            </div>
 
             <div className="bg-white flex flex-col gap-[10px]">
               <div className="border-b border-[#e3e3e3] flex items-center justify-between py-[5px] pr-[10px]">

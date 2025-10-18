@@ -140,6 +140,33 @@ export function FilterSidebar({
                     </span>
                   </div>
                 )}
+                {activeFilters.selectedCategories.map((categoryId) => {
+                  const category = categories.find((c) => c.id === categoryId);
+                  return category ? (
+                    <div
+                      key={categoryId}
+                      className="bg-white flex items-center gap-[5px]"
+                    >
+                      <button
+                        onClick={() => handleRemoveFilter("category", categoryId)}
+                        className="w-[14px] h-[14px] overflow-hidden flex items-center justify-center"
+                      >
+                        <Image
+                          src="/icons/close-filter.svg"
+                          alt=""
+                          width={10}
+                          height={10}
+                        />
+                      </button>
+                      <span
+                        className="font-plus-jakarta-sans font-normal text-[16px] text-[#aaaaaa] leading-normal whitespace-nowrap"
+                        style={{ fontFamily: "var(--font-plus-jakarta-sans)" }}
+                      >
+                        {category.name}
+                      </span>
+                    </div>
+                  ) : null;
+                })}
                 {activeFilters.selectedLabels.map((labelId) => {
                   const label = LABELS.find((l) => l.id === labelId);
                   return label ? (
