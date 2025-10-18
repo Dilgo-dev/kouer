@@ -2,7 +2,6 @@
 
 import { useId, useState } from "react";
 import Image from "next/image";
-import { FILTER_LABEL_OPTIONS } from "@/data/filterLabels";
 import type {
   Category,
   FilterState,
@@ -13,6 +12,7 @@ interface FilterOverlayProps {
   isOpen: boolean;
   onClose: () => void;
   categories: Category[];
+  labels: FilterLabelOption[];
   onFilterChange: (filters: FilterState) => void;
   activeFilters: FilterState;
 }
@@ -30,6 +30,7 @@ export function FilterOverlay({
   isOpen,
   onClose,
   categories,
+  labels,
   onFilterChange,
   activeFilters,
 }: FilterOverlayProps) {
@@ -134,7 +135,7 @@ export function FilterOverlay({
             <ActiveFilterSummary
               activeFilters={activeFilters}
               categories={categories}
-              labels={FILTER_LABEL_OPTIONS}
+              labels={labels}
               onRemoveCategory={handleRemoveCategory}
               onRemoveLabel={handleRemoveLabel}
               onClearAll={handleClearAllFilters}
@@ -151,7 +152,7 @@ export function FilterOverlay({
             />
 
             <OverlayLabelSection
-              labels={FILTER_LABEL_OPTIONS}
+              labels={labels}
               selectedLabels={activeFilters.selectedLabels}
               isOpen={isLabelsOpen}
               onToggleOpen={() => setIsLabelsOpen((prev) => !prev)}
