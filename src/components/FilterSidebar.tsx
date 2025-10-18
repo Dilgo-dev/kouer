@@ -105,7 +105,7 @@ export function FilterSidebar({
     activeFilters.priceRange;
 
   return (
-    <aside className="pl-[20px] pr-0 py-[40px]">
+    <aside className="pl-[20px] pr-0 py-[40px] max-w-[20rem]">
       <div className="bg-white rounded-[3px] overflow-y-auto flex flex-col gap-[30px] sidebar-scroll">
         <div className="bg-white flex flex-col gap-[15px]">
           <div className="border-b border-[#e3e3e3] flex items-center justify-center py-[5px]">
