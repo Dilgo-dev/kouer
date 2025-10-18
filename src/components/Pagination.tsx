@@ -42,26 +42,26 @@ export function Pagination({ currentPage, totalPages, onPageChange }: Pagination
   const pages = getPageNumbers();
 
   return (
-    <nav className="flex items-center justify-center gap-2" aria-label="Pagination">
-      {/* Previous Button */}
+    <nav className="flex items-center justify-center gap-[10px] p-[10px]" aria-label="Pagination">
       <button
         onClick={() => onPageChange(currentPage - 1)}
         disabled={currentPage === 1}
-        className="p-2 rounded hover:bg-gray-100 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+        className="bg-[#f4f4f4] rounded-[37.5px] w-[25px] h-[25px] flex items-center justify-center disabled:opacity-50 disabled:cursor-not-allowed transition-colors hover:bg-[#e4e4e4]"
         aria-label="Previous page"
       >
-        <svg className="w-5 h-5 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+        <svg width="18.75" height="18.75" viewBox="0 0 19 19" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M11.875 14.25L7.125 9.5L11.875 4.75" stroke="#333333" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
         </svg>
       </button>
 
-      {/* Page Numbers */}
       {pages.map((page, index) => {
         if (page === '...') {
           return (
-            <span key={`ellipsis-${index}`} className="px-3 py-2 text-gray-500">
-              ...
-            </span>
+            <div key={`ellipsis-${index}`} className="bg-white h-[40px] flex flex-col items-center justify-center px-[10px]">
+              <p className="font-['var(--font-poppins)'] font-medium text-[20px] text-[#aaaaaa] leading-[0]">
+                ...
+              </p>
+            </div>
           );
         }
 
@@ -72,27 +72,29 @@ export function Pagination({ currentPage, totalPages, onPageChange }: Pagination
           <button
             key={pageNumber}
             onClick={() => onPageChange(pageNumber)}
-            className={`min-w-[40px] px-3 py-2 rounded text-sm font-medium transition-colors ${
-              isActive
-                ? 'bg-gray-900 text-white'
-                : 'text-gray-700 hover:bg-gray-100'
-            }`}
+            className="bg-white h-[40px] flex flex-col items-center justify-center px-[10px] relative hover:bg-gray-50 transition-colors"
             aria-current={isActive ? 'page' : undefined}
           >
-            {pageNumber}
+            <p className={`font-['var(--font-poppins)'] font-medium text-[20px] leading-[0] ${
+              isActive ? 'text-[#4ea04c]' : 'text-[#aaaaaa]'
+            }`}>
+              {pageNumber}
+            </p>
+            {isActive && (
+              <div className="w-[5px] h-[5px] bg-[#4ea04c] rounded-full mt-[2px]" />
+            )}
           </button>
         );
       })}
 
-      {/* Next Button */}
       <button
         onClick={() => onPageChange(currentPage + 1)}
         disabled={currentPage === totalPages}
-        className="p-2 rounded hover:bg-gray-100 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+        className="bg-[#f4f4f4] rounded-[37.5px] w-[25px] h-[25px] flex items-center justify-center disabled:opacity-50 disabled:cursor-not-allowed transition-colors hover:bg-[#e4e4e4]"
         aria-label="Next page"
       >
-        <svg className="w-5 h-5 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+        <svg width="18.75" height="18.75" viewBox="0 0 19 19" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M7.125 4.75L11.875 9.5L7.125 14.25" stroke="#333333" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
         </svg>
       </button>
     </nav>
