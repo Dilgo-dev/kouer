@@ -20,7 +20,10 @@ export function ResultsBar({
   activeFiltersCount = 0,
 }: ResultsBarProps) {
   return (
-    <div className="bg-white w-full px-[20px] py-[10px] flex items-center justify-between gap-[10px] border-b border-border">
+    <section
+      className="bg-white w-full px-[20px] py-[10px] flex items-center justify-between gap-[10px] border-b border-border"
+      aria-label="Résultats et options de tri"
+    >
       <div className="hidden md:flex items-center gap-[5px]">
         <span className="font-poppins font-medium text-[16px] text-neutral-600 leading-[0]">
           {resultsCount.toLocaleString("fr-FR")}
@@ -39,6 +42,7 @@ export function ResultsBar({
         {onFilterClick && (
           <>
             <button
+              type="button"
               onClick={onFilterClick}
               className="hidden md:flex lg:hidden bg-primary h-[44px] pl-[25px] pr-[20px] rounded-[60px] items-center justify-center gap-[10px]"
             >
@@ -53,6 +57,7 @@ export function ResultsBar({
               />
             </button>
             <button
+              type="button"
               onClick={onFilterClick}
               className="md:hidden bg-primary w-[44px] h-[44px] rounded-full flex items-center justify-center"
             >
@@ -66,6 +71,6 @@ export function ResultsBar({
           </>
         )}
       </div>
-    </div>
+    </section>
   );
 }

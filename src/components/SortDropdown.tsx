@@ -44,6 +44,7 @@ export function SortDropdown({
   return (
     <div className="relative" ref={dropdownRef}>
       <button
+        type="button"
         onClick={() => setIsOpen(!isOpen)}
         className="flex items-center justify-between cursor-pointer gap-2"
         aria-haspopup="listbox"
@@ -139,6 +140,7 @@ function SortDropdownOption({
       transition={{ duration: 0.2, delay: animationDelay }}
     >
       <button
+        type="button"
         onClick={() => onSelect(option.value)}
         className={`w-full px-7 py-3 text-left transition-colors ${
           isSelected

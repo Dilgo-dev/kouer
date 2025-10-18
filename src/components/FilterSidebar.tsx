@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useId, useState } from "react";
 import Image from "next/image";
 import { motion } from "framer-motion";
 import { FILTER_LABEL_OPTIONS } from "@/data/filterLabels";
@@ -151,22 +151,26 @@ function ActiveFilterPanel({
   }
 
   return (
-    <>
-      <div className="bg-white flex flex-wrap gap-[10px] py-[10px]">
+    <section
+      className="flex flex-col gap-[10px]"
+      aria-label="Filtres actifs"
+    >
+      <ul className="bg-white flex flex-wrap gap-[10px] py-[10px]" role="list">
         {activeFilters.priceRange && (
-          <div className="bg-white flex items-center gap-[5px]">
+          <li className="bg-white flex items-center gap-[5px]">
             <div className="w-[14px] h-[14px] overflow-hidden flex items-center justify-center">
               <Image
                 src="/icons/close-filter.svg"
                 alt=""
                 width={10}
                 height={10}
+                aria-hidden="true"
               />
             </div>
             <span className="font-plus-jakarta-sans font-normal text-[16px] text-neutral-400 leading-normal whitespace-nowrap">
               {activeFilters.priceRange.min}€ - {activeFilters.priceRange.max}€
             </span>
-          </div>
+          </li>
         )}
         {activeFilters.selectedCategories.map((categoryId) => {
           const category = categories.find((c) => c.id === categoryId);
@@ -175,11 +179,9 @@ function ActiveFilterPanel({
           }
 
           return (
-            <div
-              key={categoryId}
-              className="bg-white flex items-center gap-[5px]"
-            >
+            <li key={categoryId} className="bg-white flex items-center gap-[5px]">
               <button
+                type="button"
                 onClick={() => onRemoveCategory(categoryId)}
                 className="w-[14px] h-[14px] overflow-hidden flex items-center justify-center"
                 aria-label={`Retirer le filtre ${category.name}`}
@@ -189,12 +191,13 @@ function ActiveFilterPanel({
                   alt=""
                   width={10}
                   height={10}
+                  aria-hidden="true"
                 />
               </button>
               <span className="font-plus-jakarta-sans font-normal text-[16px] text-neutral-400 leading-normal whitespace-nowrap">
                 {category.name}
               </span>
-            </div>
+            </li>
           );
         })}
         {activeFilters.selectedLabels.map((labelId) => {
@@ -204,8 +207,9 @@ function ActiveFilterPanel({
           }
 
           return (
-            <div key={labelId} className="bg-white flex items-center gap-[5px]">
+            <li key={labelId} className="bg-white flex items-center gap-[5px]">
               <button
+                type="button"
                 onClick={() => onRemoveLabel(labelId)}
                 className="w-[14px] h-[14px] overflow-hidden flex items-center justify-center"
                 aria-label={`Retirer le filtre ${label.name}`}
@@ -215,16 +219,18 @@ function ActiveFilterPanel({
                   alt=""
                   width={10}
                   height={10}
+                  aria-hidden="true"
                 />
               </button>
               <span className="font-plus-jakarta-sans font-normal text-[16px] text-neutral-400 leading-normal whitespace-nowrap">
                 {label.name}
               </span>
-            </div>
+            </li>
           );
         })}
-      </div>
+      </ul>
       <button
+        type="button"
         onClick={onClearAll}
         className="bg-primary/10 h-[34px] rounded-[60px] flex items-center justify-center px-[20px] w-full"
       >
@@ -232,7 +238,7 @@ function ActiveFilterPanel({
           {clearButtonLabel}
         </span>
       </button>
-    </>
+    </section>
   );
 }
 
@@ -254,14 +260,27 @@ function CategorySection({
   const [hoveredCategoryId, setHoveredCategoryId] = useState<string | null>(
     null
   );
+  const headingId = useId();
 
   return (
-    <div className="bg-white flex flex-col gap-[20px]">
+    <section
+      className="bg-white flex flex-col gap-[20px]"
+      aria-labelledby={headingId}
+    >
       <div className="border-b border-border flex items-center justify-between py-[5px] pr-[10px]">
-        <h3 className="flex-1 font-poppins font-semibold text-[20px] text-primary leading-normal">
+        <h3
+          id={headingId}
+          className="flex-1 font-poppins font-semibold text-[20px] text-primary leading-normal"
+        >
           Catégories
         </h3>
-        <button onClick={onToggleOpen} className="w-[20px] h-[20px]">
+        <button
+          type="button"
+          onClick={onToggleOpen}
+          className="w-[20px] h-[20px]"
+          aria-expanded={isOpen}
+          aria-controls={`${headingId}-list`}
+        >
           <Image
             src="/icons/chevron-collapse.svg"
             alt=""
@@ -273,17 +292,22 @@ function CategorySection({
       </div>
 
       {isOpen && (
-        <div className="bg-white flex flex-col gap-[10px] p-[10px]">
+        <ul
+          id={`${headingId}-list`}
+          className="bg-white flex flex-col gap-[10px] p-[10px]"
+          role="list"
+        >
           {categories.map((category) => {
             const isChecked = selectedCategories.includes(category.id);
             const isHovered = hoveredCategoryId === category.id;
 
             return (
-              <div
+              <li
                 key={category.id}
                 className="flex items-center justify-between group"
               >
                 <button
+                  type="button"
                   onClick={() => onToggleCategory(category.id)}
                   onMouseEnter={() => setHoveredCategoryId(category.id)}
                   onMouseLeave={() => setHoveredCategoryId(null)}
@@ -318,12 +342,12 @@ function CategorySection({
                 <span className="font-plus-jakarta-sans font-light text-[14px] text-neutral-400 leading-normal text-right w-[50px] overflow-hidden text-ellipsis whitespace-nowrap">
                   {category.count > 9999 ? "+9999" : category.count}
                 </span>
-              </div>
+              </li>
             );
           })}
-        </div>
+        </ul>
       )}
-    </div>
+    </section>
   );
 }
 
@@ -348,11 +372,18 @@ function LabelSection({
   activeLabelsCount,
   clearButtonLabel,
 }: LabelSectionProps) {
+  const headingId = useId();
   return (
-    <div className="bg-white flex flex-col gap-[10px]">
+    <section
+      className="bg-white flex flex-col gap-[10px]"
+      aria-labelledby={headingId}
+    >
       <div className="border-b border-border flex items-center justify-between py-[5px] pr-[10px]">
         <div className="flex-1 flex items-center gap-[10px]">
-          <h3 className="flex-1 font-poppins font-semibold text-[20px] text-primary leading-normal">
+          <h3
+            id={headingId}
+            className="flex-1 font-poppins font-semibold text-[20px] text-primary leading-normal"
+          >
             Labels
           </h3>
           {activeLabelsCount > 0 && (
@@ -363,7 +394,13 @@ function LabelSection({
             </div>
           )}
         </div>
-        <button onClick={onToggleOpen} className="w-[20px] h-[20px]">
+        <button
+          type="button"
+          onClick={onToggleOpen}
+          className="w-[20px] h-[20px]"
+          aria-expanded={isOpen}
+          aria-controls={`${headingId}-list`}
+        >
           <Image
             src="/icons/chevron-collapse.svg"
             alt=""
@@ -376,45 +413,52 @@ function LabelSection({
 
       {isOpen && (
         <div className="p-[10px] flex flex-col gap-[15px]">
-          <div className="flex flex-col gap-[5px] pl-[5px]">
+          <ul
+            id={`${headingId}-list`}
+            className="flex flex-col gap-[5px] pl-[5px]"
+            role="list"
+          >
             {labels.map((label) => {
               const isChecked = selectedLabels.includes(label.id);
 
               return (
-                <button
-                  key={label.id}
-                  onClick={() => onToggleLabel(label.id)}
-                  className="bg-white flex items-center gap-[10px] h-[26px] py-[5px]"
-                >
-                  <div className="w-[16px] h-[16px]">
-                    {isChecked ? (
-                      <div className="bg-white border border-primary rounded-[3px] w-[16px] h-[16px] flex items-center justify-center p-[3px]">
-                        <div className="bg-primary rounded-[2px] w-full h-full" />
-                      </div>
-                    ) : (
-                      <div className="bg-white border border-neutral-400 rounded-[3px] w-[16px] h-[16px]" />
-                    )}
-                  </div>
-                  <span
-                    className={`flex-1 font-plus-jakarta-sans font-normal text-[16px] leading-normal text-left overflow-hidden text-ellipsis whitespace-nowrap ${
-                      isChecked ? "text-primary" : "text-neutral-400"
-                    }`}
+                <li key={label.id}>
+                  <button
+                    type="button"
+                    onClick={() => onToggleLabel(label.id)}
+                    className="bg-white flex items-center gap-[10px] h-[26px] py-[5px]"
                   >
-                    {label.name}
-                  </span>
-                  <span
-                    className={`font-plus-jakarta-sans font-light text-[14px] leading-normal overflow-hidden text-ellipsis whitespace-nowrap ${
-                      isChecked ? "text-primary" : "text-neutral-400"
-                    }`}
-                  >
-                    {label.count > 9999 ? "+9999" : label.count}
-                  </span>
-                </button>
+                    <div className="w-[16px] h-[16px]">
+                      {isChecked ? (
+                        <div className="bg-white border border-primary rounded-[3px] w-[16px] h-[16px] flex items-center justify-center p-[3px]">
+                          <div className="bg-primary rounded-[2px] w-full h-full" />
+                        </div>
+                      ) : (
+                        <div className="bg-white border border-neutral-400 rounded-[3px] w-[16px] h-[16px]" />
+                      )}
+                    </div>
+                    <span
+                      className={`flex-1 font-plus-jakarta-sans font-normal text-[16px] leading-normal text-left overflow-hidden text-ellipsis whitespace-nowrap ${
+                        isChecked ? "text-primary" : "text-neutral-400"
+                      }`}
+                    >
+                      {label.name}
+                    </span>
+                    <span
+                      className={`font-plus-jakarta-sans font-light text-[14px] leading-normal overflow-hidden text-ellipsis whitespace-nowrap ${
+                        isChecked ? "text-primary" : "text-neutral-400"
+                      }`}
+                    >
+                      {label.count > 9999 ? "+9999" : label.count}
+                    </span>
+                  </button>
+                </li>
               );
             })}
-          </div>
+          </ul>
           {selectedLabels.length > 0 && (
             <button
+              type="button"
               onClick={onClearLabels}
               className="bg-primary/10 h-[34px] rounded-[60px] flex items-center justify-center px-[20px] w-full"
             >
@@ -425,6 +469,6 @@ function LabelSection({
           )}
         </div>
       )}
-    </div>
+    </section>
   );
 }
