@@ -30,9 +30,23 @@ const labelConfig: Record<LabelType, LabelConfig | undefined> = {
   [LabelType.COLLEGE_CULINAIRE]: undefined,
 };
 
+const labelPriority: Record<LabelType, number> = {
+  [LabelType.SEASONAL]: 1,
+  [LabelType.BIO]: 2,
+  [LabelType.STG]: 3,
+  [LabelType.LABEL_ROUGE]: 4,
+  [LabelType.AOC]: 5,
+  [LabelType.PRODUIT_CERTIFIE]: 6,
+  [LabelType.IGP]: 7,
+  [LabelType.VBF]: 8,
+  [LabelType.PECHE_DURABLE]: 9,
+  [LabelType.COLLEGE_CULINAIRE]: 10,
+};
+
 export function ProductCard({ product }: ProductCardProps) {
   const visibleLabels = product.labels
     .filter((label) => labelConfig[label.type])
+    .sort((a, b) => labelPriority[a.type] - labelPriority[b.type])
     .slice(0, 2);
 
   return (
