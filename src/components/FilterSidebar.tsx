@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import Image from "next/image";
+import { motion } from "framer-motion";
 import type { Category, FilterState } from "@/types/product";
 
 interface FilterSidebarProps {
@@ -212,35 +213,44 @@ export function FilterSidebar({
                 const isChecked = activeFilters.selectedCategories.includes(
                   category.id
                 );
+                const [isHovered, setIsHovered] = useState(false);
                 return (
                   <div
                     key={category.id}
-                    className="flex items-center justify-between"
+                    className="flex items-center justify-between group"
                   >
                     <button
                       onClick={() => handleCategoryToggle(category.id)}
-                      className="flex items-center h-[24px] py-[5px]"
+                      onMouseEnter={() => setIsHovered(true)}
+                      onMouseLeave={() => setIsHovered(false)}
+                      className="flex items-center h-[24px] py-[5px] border-b border-transparent group-hover:border-[#505050] transition-colors duration-200"
                     >
                       <span
-                        className={`font-plus-jakarta-sans font-normal text-[16px] leading-normal whitespace-nowrap ${
-                          isChecked ? "text-[#4ea04c]" : "text-[#aaaaaa]"
+                        className={`font-plus-jakarta-sans font-normal text-[16px] leading-normal whitespace-nowrap transition-colors duration-200 ${
+                          isChecked ? "text-[#4ea04c]" : "text-[#aaaaaa] group-hover:text-[#505050]"
                         }`}
                         style={{ fontFamily: "var(--font-plus-jakarta-sans)" }}
                       >
                         {category.name}
                       </span>
-                      <div className="w-[14px] h-[14px]">
+                      <motion.div
+                        className="ml-3"
+                        initial={{ opacity: 0, x: -5 }}
+                        animate={
+                          isHovered
+                            ? { opacity: 1, x: 0 }
+                            : { opacity: 0, x: -5 }
+                        }
+                        transition={{ duration: 0.2, ease: "easeOut" }}
+                      >
                         <Image
-                          src={
-                            isChecked
-                              ? "/icons/checkbox-checked.svg"
-                              : "/icons/checkbox-empty.svg"
-                          }
+                          src="/icons/chevron-left.svg"
                           alt=""
-                          width={14}
-                          height={14}
+                          width={8}
+                          height={8}
+                          className="rotate-180"
                         />
-                      </div>
+                      </motion.div>
                     </button>
                     <span
                       className="font-plus-jakarta-sans font-light text-[14px] text-[#aaaaaa] leading-normal text-right w-[50px] overflow-hidden text-ellipsis whitespace-nowrap"
