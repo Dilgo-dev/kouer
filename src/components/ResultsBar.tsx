@@ -21,7 +21,7 @@ export function ResultsBar({
 }: ResultsBarProps) {
   return (
     <div className="bg-white w-full px-[20px] py-[10px] flex items-center justify-between gap-[10px]">
-      <div className="flex items-center gap-[5px]">
+      <div className="hidden md:flex items-center gap-[5px]">
         <span
           className="font-poppins font-medium text-[16px] text-[#505050] leading-[0]"
           style={{ fontFamily: 'var(--font-poppins)' }}
@@ -29,7 +29,7 @@ export function ResultsBar({
           {resultsCount.toLocaleString('fr-FR')}
         </span>
         <span
-          className="hidden md:inline font-poppins font-normal text-[16px] text-[#858585] leading-[0]"
+          className="font-poppins font-normal text-[16px] text-[#858585] leading-[0]"
           style={{ fontFamily: 'var(--font-poppins)' }}
         >
           results
@@ -63,7 +63,7 @@ export function ResultsBar({
             </button>
             <button
               onClick={onFilterClick}
-              className="md:hidden bg-[#4ea04c] w-[45px] h-[45px] rounded-full flex items-center justify-center"
+              className="md:hidden bg-[#4ea04c] w-[44px] h-[44px] rounded-full flex items-center justify-center"
             >
               <Image
                 src="/icons/rivet.svg"
