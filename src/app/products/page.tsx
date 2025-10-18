@@ -1,28 +1,28 @@
-'use client';
+"use client";
 
-import { useState, useMemo } from 'react';
-import { ProductCard } from '@/components/ProductCard';
-import { ProductsHeader } from '@/components/ProductsHeader';
-import { ResultsBar } from '@/components/ResultsBar';
-import { FilterSidebar } from '@/components/FilterSidebar';
-import { Pagination } from '@/components/Pagination';
-import { generateProducts, MOCK_CATEGORIES } from '@/data/mockProducts';
-import type { FilterState, SortOption } from '@/types/product';
+import { useState, useMemo } from "react";
+import { ProductCard } from "@/components/ProductCard";
+import { ProductsHeader } from "@/components/ProductsHeader";
+import { ResultsBar } from "@/components/ResultsBar";
+import { FilterSidebar } from "@/components/FilterSidebar";
+import { Pagination } from "@/components/Pagination";
+import { generateProducts, MOCK_CATEGORIES } from "@/data/mockProducts";
+import type { FilterState, SortOption } from "@/types/product";
 
 const PRODUCTS_PER_PAGE = 30;
 const TOTAL_PRODUCTS = 1465;
 
 const SORT_OPTIONS: SortOption[] = [
-  { id: 'relevance', label: 'Pertinence', value: 'relevance' },
-  { id: 'newest', label: 'Nouveauté', value: 'newest' },
-  { id: 'price-asc', label: 'Prix croissant', value: 'price-asc' },
-  { id: 'price-desc', label: 'Prix décroissant', value: 'price-desc' },
-  { id: 'rating', label: 'Meilleures notes', value: 'rating' },
+  { id: "relevance", label: "Pertinence", value: "relevance" },
+  { id: "newest", label: "Nouveauté", value: "newest" },
+  { id: "price-asc", label: "Prix croissant", value: "price-asc" },
+  { id: "price-desc", label: "Prix décroissant", value: "price-desc" },
+  { id: "rating", label: "Meilleures notes", value: "rating" },
 ];
 
 export default function ProductsPage() {
   const [currentPage, setCurrentPage] = useState(1);
-  const [sortBy, setSortBy] = useState<string>('relevance');
+  const [sortBy, setSortBy] = useState<string>("relevance");
   const [filters, setFilters] = useState<FilterState>({
     selectedCategories: [],
     selectedLabels: [],
@@ -44,9 +44,16 @@ export default function ProductsPage() {
     // Apply label filters
     if (filters.selectedLabels.length > 0) {
       filtered = filtered.filter((product) => {
-        if (filters.selectedLabels.includes('bio') && product.isBio) return true;
-        if (filters.selectedLabels.includes('label-rouge') && product.isLabelRouge) return true;
-        return product.labels.some((label) => filters.selectedLabels.includes(label.id));
+        if (filters.selectedLabels.includes("bio") && product.isBio)
+          return true;
+        if (
+          filters.selectedLabels.includes("label-rouge") &&
+          product.isLabelRouge
+        )
+          return true;
+        return product.labels.some((label) =>
+          filters.selectedLabels.includes(label.id)
+        );
       });
     }
 
@@ -61,16 +68,16 @@ export default function ProductsPage() {
 
     // Apply sorting
     switch (sortBy) {
-      case 'price-asc':
+      case "price-asc":
         filtered.sort((a, b) => a.price - b.price);
         break;
-      case 'price-desc':
+      case "price-desc":
         filtered.sort((a, b) => b.price - a.price);
         break;
-      case 'name-asc':
+      case "name-asc":
         filtered.sort((a, b) => a.name.localeCompare(b.name));
         break;
-      case 'name-desc':
+      case "name-desc":
         filtered.sort((a, b) => b.name.localeCompare(a.name));
         break;
       default:
@@ -82,15 +89,20 @@ export default function ProductsPage() {
   }, [allProducts, filters, sortBy]);
 
   // Pagination
-  const totalPages = Math.ceil(filteredAndSortedProducts.length / PRODUCTS_PER_PAGE);
+  const totalPages = Math.ceil(
+    filteredAndSortedProducts.length / PRODUCTS_PER_PAGE
+  );
   const paginatedProducts = useMemo(() => {
     const startIndex = (currentPage - 1) * PRODUCTS_PER_PAGE;
-    return filteredAndSortedProducts.slice(startIndex, startIndex + PRODUCTS_PER_PAGE);
+    return filteredAndSortedProducts.slice(
+      startIndex,
+      startIndex + PRODUCTS_PER_PAGE
+    );
   }, [filteredAndSortedProducts, currentPage]);
 
   const handlePageChange = (page: number) => {
     setCurrentPage(page);
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
   const handleFilterChange = (newFilters: FilterState) => {
@@ -109,7 +121,7 @@ export default function ProductsPage() {
         onSortChange={setSortBy}
       />
 
-      <div className="flex flex-col lg:flex-row">
+      <div className="flex flex-col lg:flex-row bg-white">
         <FilterSidebar
           categories={MOCK_CATEGORIES}
           onFilterChange={handleFilterChange}
@@ -140,7 +152,9 @@ export default function ProductsPage() {
                       d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
                     />
                   </svg>
-                  <h3 className="mt-2 text-lg font-medium text-gray-900">Aucun produit trouvé</h3>
+                  <h3 className="mt-2 text-lg font-medium text-gray-900">
+                    Aucun produit trouvé
+                  </h3>
                   <p className="mt-1 text-sm text-gray-500">
                     Essayez d'ajuster vos filtres pour voir plus de résultats.
                   </p>

@@ -11,11 +11,19 @@ export const MOCK_CATEGORIES: Category[] = [
   { id: 'boissons', name: 'Boissons', count: 203 },
 ];
 
+const PRODUCT_IMAGES = [
+  '/images/huitre.png',
+  '/images/confit-de-vin-rouge.png',
+  '/images/sorbet-pomme-verte.png',
+  '/images/confit-de-vin-rouge-2.png',
+  '/images/confit-de-vin-rouge-3.png',
+];
+
 export const MOCK_PRODUCTS: Product[] = [
   {
     id: '1',
     name: 'Bourriche d\'huîtres "l\'Authentique" de Paimpol - 50n°3',
-    imageUrl: 'https://images.unsplash.com/photo-1580674285054-bed31e145f59?w=400&h=400&fit=crop',
+    imageUrl: PRODUCT_IMAGES[0],
     price: 45.99,
     labels: [
       { id: 'igp', name: 'IGP', type: 'igp' as any },
@@ -26,7 +34,7 @@ export const MOCK_PRODUCTS: Product[] = [
   {
     id: '2',
     name: 'Confit de vin rouge Bio',
-    imageUrl: 'https://images.unsplash.com/photo-1612170153139-6f881ff067e0?w=400&h=400&fit=crop',
+    imageUrl: PRODUCT_IMAGES[1],
     price: 12.50,
     labels: [{ id: 'bio', name: 'BIO', type: 'bio' as any }],
     category: 'epicerie-salee',
@@ -35,15 +43,15 @@ export const MOCK_PRODUCTS: Product[] = [
   {
     id: '3',
     name: 'Sorbet Pomme Verte 0.5L',
-    imageUrl: 'https://images.unsplash.com/photo-1501443762994-82bd5dace89a?w=400&h=400&fit=crop',
+    imageUrl: PRODUCT_IMAGES[2],
     price: 8.90,
     labels: [],
     category: 'epicerie-sucree',
   },
   {
     id: '4',
-    name: 'Fromage de chèvre affiné',
-    imageUrl: 'https://images.unsplash.com/photo-1486297678162-eb2a19b0a32d?w=400&h=400&fit=crop',
+    name: 'Confit de vin rouge Bio',
+    imageUrl: PRODUCT_IMAGES[3],
     price: 15.20,
     labels: [
       { id: 'bio', name: 'BIO', type: 'bio' as any },
@@ -54,8 +62,8 @@ export const MOCK_PRODUCTS: Product[] = [
   },
   {
     id: '5',
-    name: 'Saucisson sec artisanal',
-    imageUrl: 'https://images.unsplash.com/photo-1599974989275-54a4d854d9f2?w=400&h=400&fit=crop',
+    name: 'Confit de vin rouge Bio',
+    imageUrl: PRODUCT_IMAGES[4],
     price: 18.75,
     labels: [{ id: 'label-rouge', name: 'Label Rouge', type: 'label_rouge' as any }],
     category: 'viandes-charcuteries',
@@ -287,18 +295,20 @@ export const MOCK_PRODUCTS: Product[] = [
   },
 ];
 
-// Generate additional products to reach 1465 total
 export function generateProducts(count: number): Product[] {
   const baseProducts = [...MOCK_PRODUCTS];
-  const products: Product[] = [...baseProducts];
+  const products: Product[] = [];
 
-  while (products.length < count) {
-    const template = baseProducts[products.length % baseProducts.length];
+  for (let i = 0; i < count; i++) {
+    const template = baseProducts[i % baseProducts.length];
+    const imageIndex = i % PRODUCT_IMAGES.length;
+
     products.push({
       ...template,
-      id: `${products.length + 1}`,
+      id: `${i + 1}`,
+      imageUrl: PRODUCT_IMAGES[imageIndex],
     });
   }
 
-  return products.slice(0, count);
+  return products;
 }
