@@ -50,37 +50,7 @@ export function ProductCard({ product }: ProductCardProps) {
             const config = labelConfig[label.type];
             if (!config) return null;
 
-            const hasIcon = !!config.icon;
-            const textColor = config.textColor || "#505050";
-            const fontWeight = config.fontWeight || "normal";
-
-            return (
-              <div
-                key={label.id}
-                className={`bg-white flex gap-[5px] items-center py-[3px] rounded-[20px] w-fit ${
-                  hasIcon ? "pl-[3px] pr-[8px]" : "px-[10px]"
-                }`}
-              >
-                {hasIcon && (
-                  <div className="relative size-[20px] shrink-0">
-                    <Image
-                      src={config.icon}
-                      alt={config.text}
-                      fill
-                      className="object-contain"
-                    />
-                  </div>
-                )}
-                <p
-                  className={`font-poppins text-[12px] leading-normal whitespace-nowrap ${
-                    fontWeight === "semibold" ? "font-semibold" : ""
-                  }`}
-                  style={{ color: textColor }}
-                >
-                  {config.text}
-                </p>
-              </div>
-            );
+            return <ProductLabelBadge key={label.id} config={config} />;
           })}
         </div>
       </div>
@@ -99,5 +69,42 @@ export function ProductCard({ product }: ProductCardProps) {
         </h3>
       </div>
     </article>
+  );
+}
+
+interface ProductLabelBadgeProps {
+  config: LabelConfig;
+}
+
+function ProductLabelBadge({ config }: ProductLabelBadgeProps) {
+  const hasIcon = Boolean(config.icon);
+  const textColor = config.textColor ?? "#505050";
+  const fontWeight = config.fontWeight ?? "normal";
+
+  return (
+    <div
+      className={`bg-white flex gap-[5px] items-center py-[3px] rounded-[20px] w-fit ${
+        hasIcon ? "pl-[3px] pr-[8px]" : "px-[10px]"
+      }`}
+    >
+      {hasIcon && (
+        <div className="relative size-[20px] shrink-0">
+          <Image
+            src={config.icon!}
+            alt={config.text}
+            fill
+            className="object-contain"
+          />
+        </div>
+      )}
+      <p
+        className={`font-poppins text-[12px] leading-normal whitespace-nowrap ${
+          fontWeight === "semibold" ? "font-semibold" : ""
+        }`}
+        style={{ color: textColor }}
+      >
+        {config.text}
+      </p>
+    </div>
   );
 }
