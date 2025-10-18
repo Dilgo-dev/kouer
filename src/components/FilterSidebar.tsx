@@ -3,11 +3,11 @@
 import { useId, useState } from "react";
 import Image from "next/image";
 import { motion } from "framer-motion";
-import { FILTER_LABEL_OPTIONS } from "@/data/filterLabels";
 import type { Category, FilterState, FilterLabelOption } from "@/types/product";
 
 interface FilterSidebarProps {
   categories: Category[];
+  labels: FilterLabelOption[];
   onFilterChange: (filters: FilterState) => void;
   activeFilters: FilterState;
 }
@@ -23,6 +23,7 @@ function truncateLabelName(label: string) {
 
 export function FilterSidebar({
   categories,
+  labels,
   onFilterChange,
   activeFilters,
 }: FilterSidebarProps) {
@@ -91,7 +92,7 @@ export function FilterSidebar({
           <ActiveFilterPanel
             activeFilters={activeFilters}
             categories={categories}
-            labels={FILTER_LABEL_OPTIONS}
+            labels={labels}
             onRemoveCategory={handleRemoveCategory}
             onRemoveLabel={handleRemoveLabel}
             onClearAll={handleClearAllFilters}
@@ -108,7 +109,7 @@ export function FilterSidebar({
         />
 
         <LabelSection
-          labels={FILTER_LABEL_OPTIONS}
+          labels={labels}
           selectedLabels={activeFilters.selectedLabels}
           isOpen={isLabelsOpen}
           onToggleOpen={() => setIsLabelsOpen((prev) => !prev)}
