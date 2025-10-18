@@ -21,7 +21,7 @@ export function Pagination({
       <button
         onClick={() => onPageChange(currentPage - 1)}
         disabled={currentPage === 1}
-        className="bg-[#f4f4f4] rounded-[37.5px] w-[25px] h-[25px] flex items-center justify-center disabled:opacity-50 disabled:cursor-not-allowed transition-colors hover:bg-[#e4e4e4]"
+        className="bg-neutral-50 rounded-[37.5px] w-[25px] h-[25px] flex items-center justify-center disabled:opacity-50 disabled:cursor-not-allowed transition-colors hover:bg-neutral-100 text-neutral-600"
         aria-label="Previous page"
       >
         <svg
@@ -33,7 +33,7 @@ export function Pagination({
         >
           <path
             d="M11.875 14.25L7.125 9.5L11.875 4.75"
-            stroke="#333333"
+            stroke="currentColor"
             strokeWidth="1.5"
             strokeLinecap="round"
             strokeLinejoin="round"
@@ -53,7 +53,7 @@ export function Pagination({
       <button
         onClick={() => onPageChange(currentPage + 1)}
         disabled={currentPage === totalPages}
-        className="bg-[#f4f4f4] rounded-[37.5px] w-[25px] h-[25px] flex items-center justify-center disabled:opacity-50 disabled:cursor-not-allowed transition-colors hover:bg-[#e4e4e4]"
+        className="bg-neutral-50 rounded-[37.5px] w-[25px] h-[25px] flex items-center justify-center disabled:opacity-50 disabled:cursor-not-allowed transition-colors hover:bg-neutral-100 text-neutral-600"
         aria-label="Next page"
       >
         <svg
@@ -65,7 +65,7 @@ export function Pagination({
         >
           <path
             d="M7.125 4.75L11.875 9.5L7.125 14.25"
-            stroke="#333333"
+            stroke="currentColor"
             strokeWidth="1.5"
             strokeLinecap="round"
             strokeLinejoin="round"
@@ -122,7 +122,7 @@ function PaginationItem({ page, isActive, onSelect }: PaginationItemProps) {
     return (
       <div className="bg-white h-[40px] flex flex-col items-center justify-center px-[10px]">
         <p
-          className="font-poppins font-medium text-[20px] text-[#aaaaaa] leading-[0]"
+          className="font-poppins font-medium text-[20px] text-neutral-400 leading-[0]"
           style={{ fontFamily: "var(--font-poppins)" }}
         >
           ...
@@ -134,19 +134,19 @@ function PaginationItem({ page, isActive, onSelect }: PaginationItemProps) {
   return (
     <button
       onClick={() => onSelect(page)}
-      className="bg-white h-[40px] flex flex-col items-center justify-center px-[10px] relative hover:bg-gray-50 transition-colors"
+      className="bg-white h-[40px] flex flex-col items-center justify-center px-[10px] relative hover:bg-neutral-150 transition-colors"
       aria-current={isActive ? "page" : undefined}
     >
       <p
         className={`font-poppins font-medium text-[20px] ${
-          isActive ? "text-[#4ea04c]" : "text-[#aaaaaa]"
+          isActive ? "text-primary" : "text-neutral-400"
         }`}
         style={{ fontFamily: "var(--font-poppins)" }}
       >
         {page}
       </p>
       {isActive && (
-        <div className="w-[5px] h-[5px] bg-[#4ea04c] rounded-full mt-[2px]" />
+        <div className="w-[5px] h-[5px] bg-primary rounded-full mt-[2px]" />
       )}
     </button>
   );

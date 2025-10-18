@@ -9,7 +9,7 @@ interface ProductCardProps {
 interface LabelConfig {
   text: string;
   icon?: string;
-  textColor?: string;
+  textClass?: string;
   fontWeight?: "normal" | "semibold";
 }
 
@@ -18,7 +18,7 @@ const labelConfig: Record<LabelType, LabelConfig | undefined> = {
   [LabelType.STG]: { text: "STG", icon: "/logo/stg.png" },
   [LabelType.SEASONAL]: {
     text: "Produit de saison",
-    textColor: "#4ea04c",
+    textClass: "text-primary",
     fontWeight: "semibold"
   },
   [LabelType.LABEL_ROUGE]: undefined,
@@ -36,7 +36,7 @@ export function ProductCard({ product }: ProductCardProps) {
     .slice(0, 2);
 
   return (
-    <article className="bg-white rounded-[10px] overflow-hidden flex flex-col shadow-[4px_4px_20px_0px_rgba(0,0,0,0.1)]">
+    <article className="bg-white rounded-[10px] overflow-hidden flex flex-col shadow-card">
       <div className="relative h-[240px] w-full overflow-hidden">
         <Image
           src={product.imageUrl}
@@ -57,7 +57,7 @@ export function ProductCard({ product }: ProductCardProps) {
 
       <div className="bg-white p-[18px] flex">
         <h3
-          className="flex-1 font-poppins font-semibold text-sm text-[#505050] leading-normal h-[48px] overflow-hidden line-clamp-2"
+          className="flex-1 font-poppins font-semibold text-sm text-neutral-600 leading-normal h-[48px] overflow-hidden line-clamp-2"
           style={{
             fontFamily: "var(--font-poppins)",
             display: "-webkit-box",
@@ -78,7 +78,7 @@ interface ProductLabelBadgeProps {
 
 function ProductLabelBadge({ config }: ProductLabelBadgeProps) {
   const hasIcon = Boolean(config.icon);
-  const textColor = config.textColor ?? "#505050";
+  const textClass = config.textClass ?? "text-neutral-600";
   const fontWeight = config.fontWeight ?? "normal";
 
   return (
@@ -98,10 +98,9 @@ function ProductLabelBadge({ config }: ProductLabelBadgeProps) {
         </div>
       )}
       <p
-        className={`font-poppins text-[12px] leading-normal whitespace-nowrap ${
+        className={`font-poppins text-[12px] leading-normal whitespace-nowrap ${textClass} ${
           fontWeight === "semibold" ? "font-semibold" : ""
         }`}
-        style={{ color: textColor }}
       >
         {config.text}
       </p>

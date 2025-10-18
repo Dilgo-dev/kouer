@@ -8,6 +8,18 @@
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
+  --color-primary: #4ea04c;
+  --color-primary-foreground: #ffffff;
+  --color-border: #e3e3e3;
+  --color-neutral-50: #f4f4f4;
+  --color-neutral-100: #e4e4e4;
+  --color-neutral-150: #f2f2f2;
+  --color-neutral-200: #cccccc;
+  --color-neutral-400: #aaaaaa;
+  --color-neutral-500: #858585;
+  --color-neutral-600: #505050;
+  --color-neutral-800: #383838;
+  --color-neutral-900: #1a1a1a;
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
   --font-poppins: var(--font-poppins);
@@ -15,6 +27,9 @@
   --font-outfit: var(--font-outfit);
 
   --breakpoint-3xl: 120rem;
+  --shadow-card: 4px 4px 20px 0px rgba(0, 0, 0, 0.1);
+  --shadow-dropdown: 2px 4px 40px 0px rgba(0, 0, 0, 0.25);
+  --shadow-filter-overlay: 0px -4px 30px 0px rgba(87, 117, 92, 0.25);
 }
 
 @media (prefers-color-scheme: dark) {
@@ -33,7 +48,7 @@ body {
 .sidebar-scroll {
   overflow-y: auto;
   scrollbar-width: thin;
-  scrollbar-color: #858585 #e3e3e3;
+  scrollbar-color: var(--color-neutral-500) var(--color-border);
 }
 
 .sidebar-scroll::-webkit-scrollbar {
@@ -41,12 +56,12 @@ body {
 }
 
 .sidebar-scroll::-webkit-scrollbar-track {
-  background: #e3e3e3;
+  background: var(--color-border);
   border-radius: 60px;
 }
 
 .sidebar-scroll::-webkit-scrollbar-thumb {
-  background: #858585;
+  background: var(--color-neutral-500);
   border-radius: 60px;
 }
 

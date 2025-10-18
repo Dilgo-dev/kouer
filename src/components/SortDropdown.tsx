@@ -51,7 +51,7 @@ export function SortDropdown({
       >
         <div className="flex flex-col justify-center leading-[0]">
           <span
-            className={`font-poppins font-medium text-[16px] text-[#505050] whitespace-nowrap ${
+            className={`font-poppins font-medium text-[16px] text-neutral-600 whitespace-nowrap ${
               isOpen ? "" : "pt-[6px]"
             }`}
             style={{ fontFamily: "var(--font-poppins)" }}
@@ -63,7 +63,7 @@ export function SortDropdown({
           <div className="flex items-center justify-between w-full">
             <div className="flex flex-col justify-center leading-[0]">
               <span
-                className="font-poppins font-medium text-[16px] text-[#858585] whitespace-nowrap"
+                className="font-poppins font-medium text-[16px] text-neutral-500 whitespace-nowrap"
                 style={{ fontFamily: "var(--font-poppins)" }}
               >
                 {currentOption.label}
@@ -85,7 +85,7 @@ export function SortDropdown({
               animate={{ width: "100%" }}
               exit={{ width: 0 }}
               transition={{ duration: 0.2 }}
-              className="h-[1px] bg-[#858585]"
+              className="h-[1px] bg-neutral-500"
             />
           )}
         </div>
@@ -98,7 +98,7 @@ export function SortDropdown({
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -10 }}
             transition={{ duration: 0.2, ease: "easeOut" }}
-            className="absolute right-0 mt-2 w-[240px] bg-white rounded-[10px] shadow-[2px_4px_40px_0px_rgba(0,0,0,0.25)] overflow-hidden z-20"
+            className="absolute right-0 mt-2 w-[240px] bg-white rounded-[10px] shadow-dropdown overflow-hidden z-20"
           >
             <ul role="listbox">
               {options.map((option, index) => (
@@ -144,8 +144,8 @@ function SortDropdownOption({
         onClick={() => onSelect(option.value)}
         className={`w-full px-7 py-3 text-left transition-colors ${
           isSelected
-            ? "bg-[#4ea04c] text-white"
-            : "bg-white text-[#858585] hover:bg-gray-50"
+            ? "bg-primary text-primary-foreground"
+            : "bg-white text-neutral-500 hover:bg-neutral-150"
         }`}
         role="option"
         aria-selected={isSelected}

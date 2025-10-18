@@ -138,19 +138,19 @@ export function FilterOverlay({
           </div>
         </div>
 
-        <div className="bg-white border-t border-[#e3e3e3] shadow-[0px_-4px_30px_0px_rgba(87,117,92,0.25)] p-[20px]">
+        <div className="bg-white border-t border-border shadow-filter-overlay p-[20px]">
           <button
             onClick={onClose}
-            className="w-full bg-[#4ea04c] h-[44px] rounded-[60px] flex items-center justify-center gap-[5px] px-[25px]"
+            className="w-full bg-primary h-[44px] rounded-[60px] flex items-center justify-center gap-[5px] px-[25px]"
           >
             <span
-              className="font-poppins font-medium text-[16px] text-white leading-normal"
+              className="font-poppins font-medium text-[16px] text-primary-foreground leading-normal"
               style={{ fontFamily: "var(--font-poppins)" }}
             >
               Appliquer
             </span>
             <span
-              className="font-poppins font-medium text-[16px] text-white leading-normal"
+              className="font-poppins font-medium text-[16px] text-primary-foreground leading-normal"
               style={{ fontFamily: "var(--font-poppins)" }}
             >
               ({activeFiltersCount})
@@ -172,13 +172,13 @@ function OverlayHeader({ activeFiltersCount }: OverlayHeaderProps) {
       <div className="flex gap-[10px] h-[38px] items-center justify-center">
         <div className="flex-1 flex gap-[5px] items-end">
           <h2
-            className="font-poppins font-medium text-[25px] text-[#4ea04c] leading-normal"
+            className="font-poppins font-medium text-[25px] text-primary leading-normal"
             style={{ fontFamily: "var(--font-poppins)" }}
           >
             Filtres
           </h2>
           <span
-            className="font-plus-jakarta-sans font-normal text-[14px] text-[#aaaaaa] leading-normal"
+            className="font-plus-jakarta-sans font-normal text-[14px] text-neutral-400 leading-normal"
             style={{ fontFamily: "var(--font-plus-jakarta-sans)" }}
           >
             ({activeFiltersCount})
@@ -186,7 +186,7 @@ function OverlayHeader({ activeFiltersCount }: OverlayHeaderProps) {
         </div>
       </div>
 
-      <div className="h-[1px] bg-[#e3e3e3]" />
+      <div className="h-[1px] bg-border" />
     </div>
   );
 }
@@ -233,7 +233,7 @@ function ActiveFilterSummary({
               />
             </div>
             <span
-              className="font-plus-jakarta-sans font-normal text-[16px] text-[#aaaaaa] leading-normal whitespace-nowrap"
+              className="font-plus-jakarta-sans font-normal text-[16px] text-neutral-400 leading-normal whitespace-nowrap"
               style={{ fontFamily: "var(--font-plus-jakarta-sans)" }}
             >
               {activeFilters.priceRange.min}€ - {activeFilters.priceRange.max}€
@@ -265,7 +265,7 @@ function ActiveFilterSummary({
                 />
               </button>
               <span
-                className="font-plus-jakarta-sans font-normal text-[16px] text-[#aaaaaa] leading-normal whitespace-nowrap"
+                className="font-plus-jakarta-sans font-normal text-[16px] text-neutral-400 leading-normal whitespace-nowrap"
                 style={{ fontFamily: "var(--font-plus-jakarta-sans)" }}
               >
                 {category.name}
@@ -295,7 +295,7 @@ function ActiveFilterSummary({
                 />
               </button>
               <span
-                className="font-plus-jakarta-sans font-normal text-[16px] text-[#aaaaaa] leading-normal whitespace-nowrap"
+                className="font-plus-jakarta-sans font-normal text-[16px] text-neutral-400 leading-normal whitespace-nowrap"
                 style={{ fontFamily: "var(--font-plus-jakarta-sans)" }}
               >
                 {label.name}
@@ -307,10 +307,10 @@ function ActiveFilterSummary({
 
       <button
         onClick={onClearAll}
-        className="bg-[rgba(78,160,76,0.1)] h-[34px] rounded-[60px] flex items-center justify-center px-[20px] w-full"
+        className="bg-primary/10 h-[34px] rounded-[60px] flex items-center justify-center px-[20px] w-full"
       >
         <span
-          className="font-outfit font-normal text-[16px] text-[#4ea04c] leading-normal whitespace-nowrap"
+          className="font-outfit font-normal text-[16px] text-primary leading-normal whitespace-nowrap"
           style={{ fontFamily: "var(--font-outfit)" }}
         >
           {clearButtonLabel}
@@ -337,9 +337,9 @@ function OverlayCategorySection({
 }: OverlayCategorySectionProps) {
   return (
     <div className="bg-white flex flex-col gap-[20px]">
-      <div className="border-b border-[#e3e3e3] flex items-center justify-between py-[5px] pr-[10px]">
+      <div className="border-b border-border flex items-center justify-between py-[5px] pr-[10px]">
         <h3
-          className="flex-1 font-poppins font-semibold text-[20px] text-[#4ea04c] leading-normal"
+          className="flex-1 font-poppins font-semibold text-[20px] text-primary leading-normal"
           style={{ fontFamily: "var(--font-poppins)" }}
         >
           Catégories
@@ -367,13 +367,13 @@ function OverlayCategorySection({
               >
                 <button
                   onClick={() => onToggleCategory(category.id)}
-                  className="flex items-center h-[24px] py-[5px] border-b border-transparent group-hover:border-[#505050] transition-colors duration-200"
+                  className="flex items-center h-[24px] py-[5px] border-b border-transparent group-hover:border-neutral-600 transition-colors duration-200"
                 >
                   <span
                     className={`font-plus-jakarta-sans font-normal text-[16px] leading-normal whitespace-nowrap transition-colors duration-200 ${
                       isChecked
-                        ? "text-[#4ea04c]"
-                        : "text-[#aaaaaa] group-hover:text-[#505050]"
+                        ? "text-primary"
+                        : "text-neutral-400 group-hover:text-neutral-600"
                     }`}
                     style={{ fontFamily: "var(--font-plus-jakarta-sans)" }}
                   >
@@ -381,7 +381,7 @@ function OverlayCategorySection({
                   </span>
                 </button>
                 <span
-                  className="font-plus-jakarta-sans font-light text-[14px] text-[#aaaaaa] leading-normal text-right w-[50px] overflow-hidden text-ellipsis whitespace-nowrap"
+                  className="font-plus-jakarta-sans font-light text-[14px] text-neutral-400 leading-normal text-right w-[50px] overflow-hidden text-ellipsis whitespace-nowrap"
                   style={{ fontFamily: "var(--font-plus-jakarta-sans)" }}
                 >
                   {category.count > 9999 ? "+9999" : category.count}
@@ -414,16 +414,16 @@ function OverlayLabelSection({
 }: OverlayLabelSectionProps) {
   return (
     <div className="bg-white flex flex-col gap-[10px]">
-      <div className="border-b border-[#e3e3e3] flex items-center justify-between py-[5px] pr-[10px]">
+      <div className="border-b border-border flex items-center justify-between py-[5px] pr-[10px]">
         <div className="flex-1 flex items-center gap-[10px]">
           <h3
-            className="flex-1 font-poppins font-semibold text-[20px] text-[#4ea04c] leading-normal"
+            className="flex-1 font-poppins font-semibold text-[20px] text-primary leading-normal"
             style={{ fontFamily: "var(--font-poppins)" }}
           >
             Labels de qualité
           </h3>
           {selectedLabels.length > 0 && (
-            <div className="bg-[#858585] rounded-[60px] w-[20px] h-[20px] flex items-center justify-center">
+            <div className="bg-neutral-500 rounded-[60px] w-[20px] h-[20px] flex items-center justify-center">
               <span
                 className="font-outfit font-semibold text-[14px] text-white leading-normal whitespace-nowrap"
                 style={{ fontFamily: "var(--font-outfit)" }}
@@ -458,16 +458,16 @@ function OverlayLabelSection({
                 >
                   <div className="w-[16px] h-[16px]">
                     {isChecked ? (
-                      <div className="bg-white border border-[#4ea04c] rounded-[3px] w-[16px] h-[16px] flex items-center justify-center p-[3px]">
-                        <div className="bg-[#4ea04c] rounded-[2px] w-full h-full" />
+                      <div className="bg-white border border-primary rounded-[3px] w-[16px] h-[16px] flex items-center justify-center p-[3px]">
+                        <div className="bg-primary rounded-[2px] w-full h-full" />
                       </div>
                     ) : (
-                      <div className="bg-white border border-[#aaaaaa] rounded-[3px] w-[16px] h-[16px]" />
+                      <div className="bg-white border border-neutral-400 rounded-[3px] w-[16px] h-[16px]" />
                     )}
                   </div>
                   <span
                     className={`flex-1 font-plus-jakarta-sans font-normal text-[16px] leading-normal text-left overflow-hidden text-ellipsis whitespace-nowrap ${
-                      isChecked ? "text-[#4ea04c]" : "text-[#aaaaaa]"
+                      isChecked ? "text-primary" : "text-neutral-400"
                     }`}
                     style={{ fontFamily: "var(--font-plus-jakarta-sans)" }}
                   >
@@ -475,7 +475,7 @@ function OverlayLabelSection({
                   </span>
                   <span
                     className={`font-plus-jakarta-sans font-light text-[14px] leading-normal overflow-hidden text-ellipsis whitespace-nowrap ${
-                      isChecked ? "text-[#4ea04c]" : "text-[#aaaaaa]"
+                      isChecked ? "text-primary" : "text-neutral-400"
                     }`}
                     style={{ fontFamily: "var(--font-plus-jakarta-sans)" }}
                   >
@@ -488,10 +488,10 @@ function OverlayLabelSection({
           {selectedLabels.length > 0 && (
             <button
               onClick={onClearLabels}
-              className="bg-[rgba(78,160,76,0.1)] h-[34px] rounded-[60px] flex items-center justify-center px-[20px] w-full"
+              className="bg-primary/10 h-[34px] rounded-[60px] flex items-center justify-center px-[20px] w-full"
             >
               <span
-                className="font-outfit font-normal text-[16px] text-[#4ea04c] leading-normal whitespace-nowrap"
+                className="font-outfit font-normal text-[16px] text-primary leading-normal whitespace-nowrap"
                 style={{ fontFamily: "var(--font-outfit)" }}
               >
                 Effacer le filtre
