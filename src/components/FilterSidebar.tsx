@@ -123,14 +123,12 @@ export function FilterSidebar({
                 {activeFilters.priceRange && (
                   <div className="bg-white flex items-center gap-[5px]">
                     <div className="w-[14px] h-[14px] overflow-hidden flex items-center justify-center">
-                      <div className="rotate-[315deg]">
-                        <Image
-                          src="/icons/close-filter.svg"
-                          alt=""
-                          width={10}
-                          height={10}
-                        />
-                      </div>
+                      <Image
+                        src="/icons/close-filter.svg"
+                        alt=""
+                        width={10}
+                        height={10}
+                      />
                     </div>
                     <span
                       className="font-plus-jakarta-sans font-normal text-[16px] text-[#aaaaaa] leading-normal whitespace-nowrap"
@@ -152,14 +150,12 @@ export function FilterSidebar({
                         onClick={() => handleRemoveFilter("label", labelId)}
                         className="w-[14px] h-[14px] overflow-hidden flex items-center justify-center"
                       >
-                        <div className="rotate-[315deg]">
-                          <Image
-                            src="/icons/close-filter.svg"
-                            alt=""
-                            width={10}
-                            height={10}
-                          />
-                        </div>
+                        <Image
+                          src="/icons/close-filter.svg"
+                          alt=""
+                          width={10}
+                          height={10}
+                        />
                       </button>
                       <span
                         className="font-plus-jakarta-sans font-normal text-[16px] text-[#aaaaaa] leading-normal whitespace-nowrap"

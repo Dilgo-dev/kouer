@@ -69,11 +69,7 @@ export function SortDropdown({
                 {currentOption.label}
               </span>
             </div>
-            <motion.div
-              className="w-[22.5px] h-[22.5px]"
-              animate={{ rotate: isOpen ? 180 : 90 }}
-              transition={{ duration: 0.3, ease: "easeInOut" }}
-            >
+            <div className="w-[22.5px] h-[22.5px]">
               <Image
                 src="/icons/chevron-down.svg"
                 alt=""
@@ -81,7 +77,7 @@ export function SortDropdown({
                 height={22.5}
                 className="w-full h-full"
               />
-            </motion.div>
+            </div>
           </div>
           {isOpen && (
             <motion.div
