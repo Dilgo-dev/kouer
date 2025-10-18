@@ -11,39 +11,7 @@ export function Pagination({
   totalPages,
   onPageChange,
 }: PaginationProps) {
-  const getPageNumbers = () => {
-    const pages: (number | string)[] = [];
-    const maxVisible = 7;
-
-    if (totalPages <= maxVisible) {
-      for (let i = 1; i <= totalPages; i++) {
-        pages.push(i);
-      }
-    } else {
-      pages.push(1);
-
-      if (currentPage > 3) {
-        pages.push("...");
-      }
-
-      const start = Math.max(2, currentPage - 1);
-      const end = Math.min(totalPages - 1, currentPage + 1);
-
-      for (let i = start; i <= end; i++) {
-        pages.push(i);
-      }
-
-      if (currentPage < totalPages - 2) {
-        pages.push("...");
-      }
-
-      pages.push(totalPages);
-    }
-
-    return pages;
-  };
-
-  const pages = getPageNumbers();
+  const pages = buildPageSequence(currentPage, totalPages);
 
   return (
     <nav
@@ -73,47 +41,14 @@ export function Pagination({
         </svg>
       </button>
 
-      {pages.map((page, index) => {
-        if (page === "...") {
-          return (
-            <div
-              key={`ellipsis-${index}`}
-              className="bg-white h-[40px] flex flex-col items-center justify-center px-[10px]"
-            >
-              <p
-                className="font-poppins font-medium text-[20px] text-[#aaaaaa] leading-[0]"
-                style={{ fontFamily: "var(--font-poppins)" }}
-              >
-                ...
-              </p>
-            </div>
-          );
-        }
-
-        const pageNumber = page as number;
-        const isActive = pageNumber === currentPage;
-
-        return (
-          <button
-            key={pageNumber}
-            onClick={() => onPageChange(pageNumber)}
-            className="bg-white h-[40px] flex flex-col items-center justify-center px-[10px] relative hover:bg-gray-50 transition-colors"
-            aria-current={isActive ? "page" : undefined}
-          >
-            <p
-              className={`font-poppins font-medium text-[20px] ${
-                isActive ? "text-[#4ea04c]" : "text-[#aaaaaa]"
-              }`}
-              style={{ fontFamily: "var(--font-poppins)" }}
-            >
-              {pageNumber}
-            </p>
-            {isActive && (
-              <div className="w-[5px] h-[5px] bg-[#4ea04c] rounded-full mt-[2px]" />
-            )}
-          </button>
-        );
-      })}
+      {pages.map((page, index) => (
+        <PaginationItem
+          key={typeof page === "number" ? page : `ellipsis-${index}`}
+          page={page}
+          isActive={typeof page === "number" && page === currentPage}
+          onSelect={onPageChange}
+        />
+      ))}
 
       <button
         onClick={() => onPageChange(currentPage + 1)}
@@ -138,5 +73,81 @@ export function Pagination({
         </svg>
       </button>
     </nav>
+  );
+}
+
+type PageEntry = number | "...";
+
+function buildPageSequence(currentPage: number, totalPages: number): PageEntry[] {
+  const pages: PageEntry[] = [];
+  const maxVisible = 7;
+
+  if (totalPages <= maxVisible) {
+    for (let i = 1; i <= totalPages; i++) {
+      pages.push(i);
+    }
+    return pages;
+  }
+
+  pages.push(1);
+
+  if (currentPage > 3) {
+    pages.push("...");
+  }
+
+  const start = Math.max(2, currentPage - 1);
+  const end = Math.min(totalPages - 1, currentPage + 1);
+
+  for (let i = start; i <= end; i++) {
+    pages.push(i);
+  }
+
+  if (currentPage < totalPages - 2) {
+    pages.push("...");
+  }
+
+  pages.push(totalPages);
+
+  return pages;
+}
+
+interface PaginationItemProps {
+  page: PageEntry;
+  isActive: boolean;
+  onSelect: (page: number) => void;
+}
+
+function PaginationItem({ page, isActive, onSelect }: PaginationItemProps) {
+  if (page === "...") {
+    return (
+      <div className="bg-white h-[40px] flex flex-col items-center justify-center px-[10px]">
+        <p
+          className="font-poppins font-medium text-[20px] text-[#aaaaaa] leading-[0]"
+          style={{ fontFamily: "var(--font-poppins)" }}
+        >
+          ...
+        </p>
+      </div>
+    );
+  }
+
+  return (
+    <button
+      onClick={() => onSelect(page)}
+      className="bg-white h-[40px] flex flex-col items-center justify-center px-[10px] relative hover:bg-gray-50 transition-colors"
+      aria-current={isActive ? "page" : undefined}
+    >
+      <p
+        className={`font-poppins font-medium text-[20px] ${
+          isActive ? "text-[#4ea04c]" : "text-[#aaaaaa]"
+        }`}
+        style={{ fontFamily: "var(--font-poppins)" }}
+      >
+        {page}
+      </p>
+      {isActive && (
+        <div className="w-[5px] h-[5px] bg-[#4ea04c] rounded-full mt-[2px]" />
+      )}
+    </button>
   );
 }
