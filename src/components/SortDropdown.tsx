@@ -51,7 +51,9 @@ export function SortDropdown({
       >
         <div className="flex flex-col justify-center leading-[0]">
           <span
-            className="font-poppins font-medium text-[16px] text-[#505050] whitespace-nowrap pt-6"
+            className={`font-poppins font-medium text-[16px] text-[#505050] whitespace-nowrap ${
+              isOpen ? "" : "pt-[6px]"
+            }`}
             style={{ fontFamily: "var(--font-poppins)" }}
           >
             Trier par
