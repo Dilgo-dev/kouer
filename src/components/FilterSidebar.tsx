@@ -188,6 +188,7 @@ function ActiveFilterPanel({
               <button
                 onClick={() => onRemoveCategory(categoryId)}
                 className="w-[14px] h-[14px] overflow-hidden flex items-center justify-center"
+                aria-label={`Retirer le filtre ${category.name}`}
               >
                 <Image
                   src="/icons/close-filter.svg"
@@ -216,6 +217,7 @@ function ActiveFilterPanel({
               <button
                 onClick={() => onRemoveLabel(labelId)}
                 className="w-[14px] h-[14px] overflow-hidden flex items-center justify-center"
+                aria-label={`Retirer le filtre ${label.name}`}
               >
                 <Image
                   src="/icons/close-filter.svg"
