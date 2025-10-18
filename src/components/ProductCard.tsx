@@ -8,15 +8,15 @@ interface ProductCardProps {
 export function ProductCard({ product }: ProductCardProps) {
   return (
     <article className="bg-white rounded-[10px] overflow-hidden flex flex-col shadow-[4px_4px_20px_0px_rgba(0,0,0,0.1)]">
-      <div className="relative h-[260px] w-full p-[20px]">
+      <div className="relative h-[260px] w-full overflow-hidden">
         <Image
           src={product.imageUrl}
           alt={product.name}
           fill
-          className="object-cover absolute inset-0 -z-10"
+          className="object-cover"
           sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 20vw"
         />
-        <div className="flex flex-col gap-[10px]" />
+        <div className="absolute inset-0 p-[20px] flex flex-col gap-[10px] z-10" />
       </div>
 
       <div className="bg-white p-[20px] flex gap-[10px]">
