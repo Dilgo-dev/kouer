@@ -55,7 +55,7 @@ export function ProductsHeader() {
         </nav>
 
         <div className="flex flex-col justify-center py-[10px] flex-grow">
-          <h1 className="font-poppins font-medium text-6xl text-white leading-[70px] max-w-[600px]">
+          <h1 className="font-poppins font-medium text-4xl text-white leading-[70px] max-w-[600px] md:text-6xl">
             Tous nos produits
           </h1>
         </div>
