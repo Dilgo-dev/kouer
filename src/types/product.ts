@@ -25,6 +25,7 @@ export enum LabelType {
   VBF = 'viande_bovine_francaise',
   PECHE_DURABLE = 'peche_durable',
   COLLEGE_CULINAIRE = 'college_culinaire',
+  SEASONAL = 'seasonal',
 }
 
 export interface Category {

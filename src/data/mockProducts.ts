@@ -36,7 +36,10 @@ export const MOCK_PRODUCTS: Product[] = [
     name: 'Confit de vin rouge Bio',
     imageUrl: PRODUCT_IMAGES[1],
     price: 12.50,
-    labels: [{ id: 'bio', name: 'BIO', type: 'bio' as any }],
+    labels: [
+      { id: 'bio', name: 'BIO', type: 'bio' as any },
+      { id: 'stg', name: 'STG', type: 'stg' as any },
+    ],
     category: 'epicerie-salee',
     isBio: true,
   },
@@ -54,8 +57,7 @@ export const MOCK_PRODUCTS: Product[] = [
     imageUrl: PRODUCT_IMAGES[3],
     price: 15.20,
     labels: [
-      { id: 'bio', name: 'BIO', type: 'bio' as any },
-      { id: 'aoc', name: 'AOC', type: 'aoc' as any },
+      { id: 'seasonal', name: 'Produit de saison', type: 'seasonal' as any },
     ],
     category: 'produits-laitiers',
     isBio: true,
@@ -65,7 +67,10 @@ export const MOCK_PRODUCTS: Product[] = [
     name: 'Confit de vin rouge Bio',
     imageUrl: PRODUCT_IMAGES[4],
     price: 18.75,
-    labels: [{ id: 'label-rouge', name: 'Label Rouge', type: 'label_rouge' as any }],
+    labels: [
+      { id: 'bio', name: 'BIO', type: 'bio' as any },
+      { id: 'seasonal', name: 'Produit de saison', type: 'seasonal' as any },
+    ],
     category: 'viandes-charcuteries',
     isLabelRouge: true,
   },
