@@ -32,18 +32,15 @@ export default function ProductsPage() {
 
   const allProducts = useMemo(() => generateProducts(TOTAL_PRODUCTS), []);
 
-  // Apply filters and sorting
   const filteredAndSortedProducts = useMemo(() => {
     let filtered = [...allProducts];
 
-    // Apply category filters
     if (filters.selectedCategories.length > 0) {
       filtered = filtered.filter((product) =>
         filters.selectedCategories.includes(product.category)
       );
     }
 
-    // Apply label filters
     if (filters.selectedLabels.length > 0) {
       filtered = filtered.filter((product) => {
         if (filters.selectedLabels.includes("bio") && product.isBio)
@@ -59,7 +56,6 @@ export default function ProductsPage() {
       });
     }
 
-    // Apply price range filter
     if (filters.priceRange) {
       filtered = filtered.filter(
         (product) =>
@@ -68,7 +64,6 @@ export default function ProductsPage() {
       );
     }
 
-    // Apply sorting
     switch (sortBy) {
       case "price-asc":
         filtered.sort((a, b) => a.price - b.price);
@@ -83,14 +78,12 @@ export default function ProductsPage() {
         filtered.sort((a, b) => b.name.localeCompare(a.name));
         break;
       default:
-        // relevance - keep original order
         break;
     }
 
     return filtered;
   }, [allProducts, filters, sortBy]);
 
-  // Pagination
   const totalPages = Math.ceil(
     filteredAndSortedProducts.length / PRODUCTS_PER_PAGE
   );
@@ -173,7 +166,8 @@ export default function ProductsPage() {
                     Aucun produit trouvé
                   </h3>
                   <p className="mt-1 text-sm text-gray-500">
-                    Essayez d'ajuster vos filtres pour voir plus de résultats.
+                    Essayez &apos;ajuster vos filtres pour voir plus de
+                    résultats.
                   </p>
                 </div>
               </div>
