@@ -67,8 +67,8 @@ export async function fetchCatalogData(): Promise<CatalogData> {
       `
       )
       .returns<ProductRow[]>(),
-    supabase.from("categories").select("id, slug, name, display_name"),
-    supabase.from("labels").select("id, slug, name, display_name, type"),
+    supabase.from("categories").select("slug, name, display_name"),
+    supabase.from("labels").select("slug, name, display_name, type"),
   ]);
 
   if (
