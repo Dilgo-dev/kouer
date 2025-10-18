@@ -4,16 +4,21 @@ import { useId, useState } from "react";
 import Image from "next/image";
 import { motion } from "framer-motion";
 import { FILTER_LABEL_OPTIONS } from "@/data/filterLabels";
-import type {
-  Category,
-  FilterState,
-  FilterLabelOption,
-} from "@/types/product";
+import type { Category, FilterState, FilterLabelOption } from "@/types/product";
 
 interface FilterSidebarProps {
   categories: Category[];
   onFilterChange: (filters: FilterState) => void;
   activeFilters: FilterState;
+}
+
+const MAX_LABEL_NAME_LENGTH = 24;
+
+function truncateLabelName(label: string) {
+  if (label.length <= MAX_LABEL_NAME_LENGTH) {
+    return label;
+  }
+  return `${label.slice(0, MAX_LABEL_NAME_LENGTH - 3)}...`;
 }
 
 export function FilterSidebar({
@@ -151,10 +156,7 @@ function ActiveFilterPanel({
   }
 
   return (
-    <section
-      className="flex flex-col gap-[10px]"
-      aria-label="Filtres actifs"
-    >
+    <section className="flex flex-col gap-[10px]" aria-label="Filtres actifs">
       <ul className="bg-white flex flex-wrap gap-[10px] py-[10px]" role="list">
         {activeFilters.priceRange && (
           <li className="bg-white flex items-center gap-[5px]">
@@ -251,7 +253,10 @@ interface ActiveFilterLabelItemProps {
   onRemove: () => void;
 }
 
-function ActiveFilterLabelItem({ label, onRemove }: ActiveFilterLabelItemProps) {
+function ActiveFilterLabelItem({
+  label,
+  onRemove,
+}: ActiveFilterLabelItemProps) {
   return (
     <li className="bg-white flex items-center gap-[5px]">
       <button
@@ -513,6 +518,8 @@ interface LabelListItemProps {
 }
 
 function LabelListItem({ label, isChecked, onToggle }: LabelListItemProps) {
+  const displayName = truncateLabelName(label.name);
+
   return (
     <li>
       <button
@@ -530,11 +537,12 @@ function LabelListItem({ label, isChecked, onToggle }: LabelListItemProps) {
           )}
         </div>
         <span
-          className={`flex-1 font-plus-jakarta-sans font-normal text-[16px] leading-normal text-left overflow-hidden text-ellipsis whitespace-nowrap ${
+          className={`min-w-0 flex-1 font-plus-jakarta-sans font-normal text-[16px] leading-normal text-left overflow-hidden text-ellipsis whitespace-nowrap ${
             isChecked ? "text-primary" : "text-neutral-400"
           }`}
+          title={label.name}
         >
-          {label.name}
+          {displayName}
         </span>
         <span
           className={`font-plus-jakarta-sans font-light text-[14px] leading-normal overflow-hidden text-ellipsis whitespace-nowrap ${

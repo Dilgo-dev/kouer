@@ -17,6 +17,15 @@ interface FilterOverlayProps {
   activeFilters: FilterState;
 }
 
+const MAX_OVERLAY_LABEL_NAME_LENGTH = 36;
+
+function truncateOverlayLabelName(label: string) {
+  if (label.length <= MAX_OVERLAY_LABEL_NAME_LENGTH) {
+    return label;
+  }
+  return `${label.slice(0, MAX_OVERLAY_LABEL_NAME_LENGTH - 3)}...`;
+}
+
 export function FilterOverlay({
   isOpen,
   onClose,
@@ -575,6 +584,8 @@ function OverlayLabelListItem({
   isChecked,
   onToggle,
 }: OverlayLabelListItemProps) {
+  const displayName = truncateOverlayLabelName(label.name);
+
   return (
     <li>
       <button
@@ -592,11 +603,12 @@ function OverlayLabelListItem({
           )}
         </div>
         <span
-          className={`flex-1 font-plus-jakarta-sans font-normal text-[16px] leading-normal text-left overflow-hidden text-ellipsis whitespace-nowrap ${
+          className={`min-w-0 flex-1 font-plus-jakarta-sans font-normal text-[16px] leading-normal text-left overflow-hidden text-ellipsis whitespace-nowrap ${
             isChecked ? "text-primary" : "text-neutral-400"
           }`}
+          title={label.name}
         >
-          {label.name}
+          {displayName}
         </span>
         <span
           className={`font-plus-jakarta-sans font-light text-[14px] leading-normal overflow-hidden text-ellipsis whitespace-nowrap ${
