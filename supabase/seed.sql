@@ -20,32 +20,43 @@ values
   ('seasonal', 'Produit de saison', 'Produit de saison', 'seasonal')
 on conflict (slug) do nothing;
 
-insert into public.products (id, name, image_url, price, category_slug, is_bio, is_label_rouge, rating)
-values
-  ('5ed2f22b-252d-4cfa-9975-006fbdb8e462', 'Bourriche d''huîtres "l''Authentique" de Paimpol - 50n°3', '/images/huitre.png', 45.99, 'poissons-fruits-mer', false, true, 4.6),
-  ('5fdf08dc-930a-423b-82aa-f4b2cbefea37', 'Confit de vin rouge Bio', '/images/confit-de-vin-rouge.png', 12.50, 'epicerie-salee', true, false, 4.2),
-  ('d2ab14fb-0a6d-41bc-b179-0fb9254d85bb', 'Sorbet Pomme Verte 0.5L', '/images/sorbet-pomme-verte.png', 8.90, 'epicerie-sucree', false, false, 4.0),
-  ('c987e614-f18e-43cb-b2f7-1c28a30a68bd', 'Confit de vin rouge Bio', '/images/confit-de-vin-rouge-2.png', 15.20, 'produits-laitiers', true, false, 4.4),
-  ('a7041396-9d48-4803-b9e8-3389f2408fe7', 'Confit de vin rouge Bio', '/images/confit-de-vin-rouge-3.png', 18.75, 'viandes-charcuteries', true, true, 4.7),
-  ('89011abf-83ae-4ce0-b546-bc9522ff8b8d', 'Miel de lavande IGP', 'https://images.unsplash.com/photo-1587049352846-4a222e784e38?w=400&h=400&fit=crop', 14.30, 'epicerie-sucree', false, false, 4.3),
-  ('1835390f-64a7-4977-ab71-329b4bdba06a', 'Tomates anciennes Bio', 'https://images.unsplash.com/photo-1546470427-d20e2f5d57e7?w=400&h=400&fit=crop', 6.50, 'fruits-legumes', true, false, 4.8),
-  ('9ac22c04-238e-43b7-9216-1351a1638224', 'Terrine de canard Label Rouge', 'https://images.unsplash.com/photo-1626200419199-391ae4be7a41?w=400&h=400&fit=crop', 22.40, 'viandes-charcuteries', false, true, 4.5),
-  ('407d662f-72e5-431b-8239-1dbc7d568058', 'Huile d''olive extra vierge AOP', 'https://images.unsplash.com/photo-1474979266404-7eaacbcd87c5?w=400&h=400&fit=crop', 28.90, 'epicerie-salee', false, false, 4.6),
-  ('863ae758-e96d-4f03-92c5-8e1588e4d598', 'Pommes Golden Bio', 'https://images.unsplash.com/photo-1579613832111-ac7dfcc7723f?w=400&h=400&fit=crop', 4.20, 'fruits-legumes', true, false, 4.1)
-on conflict (id) do nothing;
+do $$
+declare
+  base_products jsonb := '[
+    {"name": "Bourriche d''huîtres \"l''Authentique\" de Paimpol - 50n°3", "image_url": "/images/huitre.png", "price": 45.99, "category_slug": "poissons-fruits-mer", "is_bio": false, "is_label_rouge": true, "rating": 4.6, "labels": ["igp", "label-rouge"]},
+    {"name": "Confit de vin rouge Bio", "image_url": "/images/confit-de-vin-rouge.png", "price": 12.50, "category_slug": "epicerie-salee", "is_bio": true, "is_label_rouge": false, "rating": 4.2, "labels": ["bio", "stg"]},
+    {"name": "Sorbet Pomme Verte 0.5L", "image_url": "/images/sorbet-pomme-verte.png", "price": 8.90, "category_slug": "epicerie-sucree", "is_bio": false, "is_label_rouge": false, "rating": 4.0, "labels": []},
+    {"name": "Confit de vin rouge Bio", "image_url": "/images/confit-de-vin-rouge-2.png", "price": 15.20, "category_slug": "produits-laitiers", "is_bio": true, "is_label_rouge": false, "rating": 4.4, "labels": ["seasonal"]},
+    {"name": "Confit de vin rouge Bio", "image_url": "/images/confit-de-vin-rouge-3.png", "price": 18.75, "category_slug": "viandes-charcuteries", "is_bio": true, "is_label_rouge": true, "rating": 4.7, "labels": ["bio", "seasonal"]}
+  ]'::jsonb;
+  product jsonb;
+  i integer;
+  new_id uuid;
+  current_label text;
+begin
+  for i in 1..20 loop
+    for product in select * from jsonb_array_elements(base_products) loop
+      new_id := gen_random_uuid();
 
-insert into public.product_labels (product_id, label_slug)
-values
-  ('5ed2f22b-252d-4cfa-9975-006fbdb8e462', 'igp'),
-  ('5ed2f22b-252d-4cfa-9975-006fbdb8e462', 'label-rouge'),
-  ('5fdf08dc-930a-423b-82aa-f4b2cbefea37', 'bio'),
-  ('5fdf08dc-930a-423b-82aa-f4b2cbefea37', 'stg'),
-  ('c987e614-f18e-43cb-b2f7-1c28a30a68bd', 'seasonal'),
-  ('a7041396-9d48-4803-b9e8-3389f2408fe7', 'bio'),
-  ('a7041396-9d48-4803-b9e8-3389f2408fe7', 'seasonal'),
-  ('89011abf-83ae-4ce0-b546-bc9522ff8b8d', 'igp'),
-  ('1835390f-64a7-4977-ab71-329b4bdba06a', 'bio'),
-  ('9ac22c04-238e-43b7-9216-1351a1638224', 'label-rouge'),
-  ('407d662f-72e5-431b-8239-1dbc7d568058', 'aoc'),
-  ('863ae758-e96d-4f03-92c5-8e1588e4d598', 'bio')
-on conflict (product_id, label_slug) do nothing;
+      insert into public.products (id, name, image_url, price, category_slug, is_bio, is_label_rouge, rating)
+      values (
+        new_id,
+        (product->>'name') || ' #' || i,
+        product->>'image_url',
+        (product->>'price')::numeric,
+        product->>'category_slug',
+        (product->>'is_bio')::boolean,
+        (product->>'is_label_rouge')::boolean,
+        (product->>'rating')::numeric
+      )
+      on conflict (id) do nothing;
+
+      for current_label in select jsonb_array_elements_text(product->'labels') loop
+        insert into public.product_labels (product_id, label_slug)
+        values (new_id, current_label)
+        on conflict (product_id, label_slug) do nothing;
+      end loop;
+    end loop;
+  end loop;
+end $$;
+
