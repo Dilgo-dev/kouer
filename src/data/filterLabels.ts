@@ -1,0 +1,33 @@
+import type { FilterLabelOption } from "@/types/product";
+
+export const FILTER_LABEL_OPTIONS: FilterLabelOption[] = [
+  { id: "bio", name: "BIO", count: 9999 },
+  { id: "bleu-blanc-coeur", name: "Bleu Blanc Coeur", count: 8 },
+  { id: "peche-durable-msc", name: "Pêche durable MSC", count: 0 },
+  { id: "elu-produit-annee", name: "Élu produit de l'année", count: 2 },
+  { id: "produit-montagne", name: "Produit de montagne", count: 14 },
+  { id: "label-rouge", name: "Label Rouge", count: 9999 },
+  { id: "aoc", name: "Appellation d'origine contrôlée", count: 9999 },
+  { id: "demeter", name: "Demeter", count: 0 },
+  { id: "fairtrade", name: "Fairtrade", count: 0 },
+  { id: "medaille-or", name: "Médaille d'or Paris", count: 2 },
+  { id: "medaille-argent", name: "Médaille d'argent Paris", count: 2 },
+  { id: "medaille-bronze", name: "Médaille de Bronze Paris", count: 3 },
+  { id: "produit-certifie", name: "Produit certifié", count: 9999 },
+  { id: "stg", name: "Spécialité traditionnelle garantie", count: 9999 },
+  { id: "aop", name: "Appellation d'origine protégée", count: 9999 },
+  { id: "igp", name: "Indication géographique protégée", count: 9999 },
+  { id: "vbf", name: "Viande bovine française", count: 9999 },
+  { id: "peche-durable", name: "Pêche Durable", count: 9999 },
+  { id: "vegan", name: "Vegan", count: 68 },
+  {
+    id: "excellence-savoir-faire",
+    name: "L'excellence des savoir-faire français",
+    count: 5,
+  },
+  { id: "prix-excellence", name: "Prix d'excellence", count: 34 },
+  { id: "college-culinaire", name: "Collège culinaire de France", count: 9999 },
+  { id: "prix-epicures", name: "Prix Épicures", count: 1 },
+  { id: "sans-gluten", name: "Sans gluten", count: 16 },
+  { id: "produit-idf", name: "Produit en Ile de France", count: 3 },
+];

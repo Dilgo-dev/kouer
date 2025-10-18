@@ -1,0 +1,132 @@
+import Image from "next/image";
+import type { Product } from "@/types/product";
+import { LabelType } from "@/types/product";
+
+interface ProductCardProps {
+  product: Product;
+}
+
+interface LabelConfig {
+  text: string;
+  icon?: string;
+  textClass?: string;
+  fontWeight?: "normal" | "semibold";
+}
+
+const labelConfig: Record<LabelType, LabelConfig | undefined> = {
+  [LabelType.BIO]: { text: "BIO", icon: "/logo/bio.png" },
+  [LabelType.STG]: { text: "STG", icon: "/logo/stg.png" },
+  [LabelType.SEASONAL]: {
+    text: "Produit de saison",
+    textClass: "text-primary",
+    fontWeight: "semibold"
+  },
+  [LabelType.LABEL_ROUGE]: undefined,
+  [LabelType.AOC]: undefined,
+  [LabelType.PRODUIT_CERTIFIE]: undefined,
+  [LabelType.IGP]: undefined,
+  [LabelType.VBF]: undefined,
+  [LabelType.PECHE_DURABLE]: undefined,
+  [LabelType.COLLEGE_CULINAIRE]: undefined,
+};
+
+const labelPriority: Record<LabelType, number> = {
+  [LabelType.SEASONAL]: 1,
+  [LabelType.BIO]: 2,
+  [LabelType.STG]: 3,
+  [LabelType.LABEL_ROUGE]: 4,
+  [LabelType.AOC]: 5,
+  [LabelType.PRODUIT_CERTIFIE]: 6,
+  [LabelType.IGP]: 7,
+  [LabelType.VBF]: 8,
+  [LabelType.PECHE_DURABLE]: 9,
+  [LabelType.COLLEGE_CULINAIRE]: 10,
+};
+
+export function ProductCard({ product }: ProductCardProps) {
+  const visibleLabels = product.labels
+    .filter((label) => labelConfig[label.type])
+    .sort((a, b) => labelPriority[a.type] - labelPriority[b.type])
+    .slice(0, 2);
+
+  return (
+    <article className="bg-white rounded-[10px] overflow-hidden flex flex-col shadow-card">
+      <div className="relative h-[240px] w-full overflow-hidden">
+        <Image
+          src={product.imageUrl}
+          alt={product.name}
+          fill
+          className="object-cover"
+          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 20vw"
+        />
+        <div className="absolute inset-0 p-[20px] flex flex-col gap-[10px] z-10">
+          {visibleLabels.map((label) => (
+            <ProductLabelItem key={label.id} label={label} />
+          ))}
+        </div>
+      </div>
+
+      <div className="bg-white p-[18px] flex">
+        <h3
+          className="flex-1 font-poppins font-semibold text-sm text-neutral-600 leading-normal h-[48px] overflow-hidden line-clamp-2"
+          style={{
+            display: "-webkit-box",
+            WebkitLineClamp: 2,
+            WebkitBoxOrient: "vertical",
+          }}
+        >
+          {product.name}
+        </h3>
+      </div>
+    </article>
+  );
+}
+
+interface ProductLabelItemProps {
+  label: Product["labels"][number];
+}
+
+function ProductLabelItem({ label }: ProductLabelItemProps) {
+  const config = labelConfig[label.type];
+  if (!config) {
+    return null;
+  }
+
+  return <ProductLabelBadge config={config} />;
+}
+
+interface ProductLabelBadgeProps {
+  config: LabelConfig;
+}
+
+function ProductLabelBadge({ config }: ProductLabelBadgeProps) {
+  const hasIcon = Boolean(config.icon);
+  const textClass = config.textClass ?? "text-neutral-600";
+  const fontWeight = config.fontWeight ?? "normal";
+
+  return (
+    <div
+      className={`bg-white flex gap-[5px] items-center py-[3px] rounded-[20px] w-fit ${
+        hasIcon ? "pl-[3px] pr-[8px]" : "px-[10px]"
+      }`}
+    >
+      {hasIcon && (
+        <div className="relative size-[20px] shrink-0">
+          <Image
+            src={config.icon!}
+            alt={config.text}
+            fill
+            className="object-contain"
+          />
+        </div>
+      )}
+      <p
+        className={`font-poppins text-[12px] leading-normal whitespace-nowrap ${textClass} ${
+          fontWeight === "semibold" ? "font-semibold" : ""
+        }`}
+      >
+        {config.text}
+      </p>
+    </div>
+  );
+}
