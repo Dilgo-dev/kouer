@@ -52,11 +52,11 @@ export function ResultsBar({
                 className="font-poppins font-medium text-[16px] text-white leading-normal whitespace-nowrap"
                 style={{ fontFamily: "var(--font-poppins)" }}
               >
-                Filters {activeFiltersCount > 0 && `(${activeFiltersCount})`}
+                Filtres {activeFiltersCount > 0 && `(${activeFiltersCount})`}
               </span>
               <Image
                 src="/icons/rivet.svg"
-                alt="Filters"
+                alt="Filtres"
                 width={16}
                 height={16}
               />
@@ -67,7 +67,7 @@ export function ResultsBar({
             >
               <Image
                 src="/icons/rivet.svg"
-                alt="Filters"
+                alt="Filtres"
                 width={16}
                 height={16}
               />

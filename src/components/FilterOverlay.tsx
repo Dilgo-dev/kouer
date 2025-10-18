@@ -111,7 +111,7 @@ export function FilterOverlay({
               onRemoveCategory={handleRemoveCategory}
               onRemoveLabel={handleRemoveLabel}
               onClearAll={handleClearAllFilters}
-              clearButtonLabel="Clear all filters"
+              clearButtonLabel="Effacer tous les filtres"
             />
 
             <OverlayCategorySection
@@ -147,7 +147,7 @@ export function FilterOverlay({
               className="font-poppins font-medium text-[16px] text-white leading-normal"
               style={{ fontFamily: "var(--font-poppins)" }}
             >
-              Apply
+              Appliquer
             </span>
             <span
               className="font-poppins font-medium text-[16px] text-white leading-normal"
@@ -175,7 +175,7 @@ function OverlayHeader({ activeFiltersCount }: OverlayHeaderProps) {
             className="font-poppins font-medium text-[25px] text-[#4ea04c] leading-normal"
             style={{ fontFamily: "var(--font-poppins)" }}
           >
-            Filters
+            Filtres
           </h2>
           <span
             className="font-plus-jakarta-sans font-normal text-[14px] text-[#aaaaaa] leading-normal"
@@ -342,7 +342,7 @@ function OverlayCategorySection({
           className="flex-1 font-poppins font-semibold text-[20px] text-[#4ea04c] leading-normal"
           style={{ fontFamily: "var(--font-poppins)" }}
         >
-          Categories
+          Catégories
         </h3>
         <button onClick={onToggleOpen} className="w-[20px] h-[20px]">
           <Image
@@ -420,7 +420,7 @@ function OverlayLabelSection({
             className="flex-1 font-poppins font-semibold text-[20px] text-[#4ea04c] leading-normal"
             style={{ fontFamily: "var(--font-poppins)" }}
           >
-            Labels
+            Labels de qualité
           </h3>
           {selectedLabels.length > 0 && (
             <div className="bg-[#858585] rounded-[60px] w-[20px] h-[20px] flex items-center justify-center">
@@ -494,7 +494,7 @@ function OverlayLabelSection({
                 className="font-outfit font-normal text-[16px] text-[#4ea04c] leading-normal whitespace-nowrap"
                 style={{ fontFamily: "var(--font-outfit)" }}
               >
-                Clear filter
+                Effacer le filtre
               </span>
             </button>
           )}
