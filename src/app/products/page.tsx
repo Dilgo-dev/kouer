@@ -5,6 +5,7 @@ import { ProductCard } from "@/components/ProductCard";
 import { ProductsHeader } from "@/components/ProductsHeader";
 import { ResultsBar } from "@/components/ResultsBar";
 import { FilterSidebar } from "@/components/FilterSidebar";
+import { FilterOverlay } from "@/components/FilterOverlay";
 import { Pagination } from "@/components/Pagination";
 import { generateProducts, MOCK_CATEGORIES } from "@/data/mockProducts";
 import type { FilterState, SortOption } from "@/types/product";
@@ -27,6 +28,7 @@ export default function ProductsPage() {
     selectedCategories: [],
     selectedLabels: [],
   });
+  const [isFilterOverlayOpen, setIsFilterOverlayOpen] = useState(false);
 
   const allProducts = useMemo(() => generateProducts(TOTAL_PRODUCTS), []);
 
@@ -107,8 +109,13 @@ export default function ProductsPage() {
 
   const handleFilterChange = (newFilters: FilterState) => {
     setFilters(newFilters);
-    setCurrentPage(1); // Reset to first page when filters change
+    setCurrentPage(1);
   };
+
+  const activeFiltersCount =
+    filters.selectedCategories.length +
+    filters.selectedLabels.length +
+    (filters.priceRange ? 1 : 0);
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -119,6 +126,16 @@ export default function ProductsPage() {
         sortOptions={SORT_OPTIONS}
         currentSort={sortBy}
         onSortChange={setSortBy}
+        onFilterClick={() => setIsFilterOverlayOpen(true)}
+        activeFiltersCount={activeFiltersCount}
+      />
+
+      <FilterOverlay
+        isOpen={isFilterOverlayOpen}
+        onClose={() => setIsFilterOverlayOpen(false)}
+        categories={MOCK_CATEGORIES}
+        onFilterChange={handleFilterChange}
+        activeFilters={filters}
       />
 
       <div className="flex flex-col lg:flex-row bg-white">
@@ -131,7 +148,7 @@ export default function ProductsPage() {
         <main className="flex-1">
           <div className="p-5">
             {paginatedProducts.length > 0 ? (
-              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-5">
+              <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-5">
                 {paginatedProducts.map((product) => (
                   <ProductCard key={product.id} product={product} />
                 ))}
