@@ -2,7 +2,12 @@
 
 import { useState } from "react";
 import Image from "next/image";
-import type { Category, FilterState } from "@/types/product";
+import { FILTER_LABEL_OPTIONS } from "@/data/filterLabels";
+import type {
+  Category,
+  FilterState,
+  FilterLabelOption,
+} from "@/types/product";
 
 interface FilterOverlayProps {
   isOpen: boolean;
@@ -11,38 +16,6 @@ interface FilterOverlayProps {
   onFilterChange: (filters: FilterState) => void;
   activeFilters: FilterState;
 }
-
-const LABELS = [
-  { id: "bio", name: "BIO", count: 9999 },
-  { id: "bleu-blanc-coeur", name: "Bleu Blanc Coeur", count: 8 },
-  { id: "peche-durable-msc", name: "Pêche durable MSC", count: 0 },
-  { id: "elu-produit-annee", name: "Élu produit de l'année", count: 2 },
-  { id: "produit-montagne", name: "Produit de montagne", count: 14 },
-  { id: "label-rouge", name: "Label Rouge", count: 9999 },
-  { id: "aoc", name: "Appellation d'origine contrôlée", count: 9999 },
-  { id: "demeter", name: "Demeter", count: 0 },
-  { id: "fairtrade", name: "Fairtrade", count: 0 },
-  { id: "medaille-or", name: "Médaille d'or Paris", count: 2 },
-  { id: "medaille-argent", name: "Médaille d'argent Paris", count: 2 },
-  { id: "medaille-bronze", name: "Médaille de Bronze Paris", count: 3 },
-  { id: "produit-certifie", name: "Produit certifié", count: 9999 },
-  { id: "stg", name: "Spécialité traditionnelle garantie", count: 9999 },
-  { id: "aop", name: "Appellation d'origine protégée", count: 9999 },
-  { id: "igp", name: "Indication géographique protégée", count: 9999 },
-  { id: "vbf", name: "Viande bovine française", count: 9999 },
-  { id: "peche-durable", name: "Pêche Durable", count: 9999 },
-  { id: "vegan", name: "Vegan", count: 68 },
-  {
-    id: "excellence-savoir-faire",
-    name: "L'excellence des savoir-faire français",
-    count: 5,
-  },
-  { id: "prix-excellence", name: "Prix d'excellence", count: 34 },
-  { id: "college-culinaire", name: "Collège culinaire de France", count: 9999 },
-  { id: "prix-epicures", name: "Prix Épicures", count: 1 },
-  { id: "sans-gluten", name: "Sans gluten", count: 16 },
-  { id: "produit-idf", name: "Produit en Ile de France", count: 3 },
-];
 
 export function FilterOverlay({
   isOpen,
@@ -53,6 +26,10 @@ export function FilterOverlay({
 }: FilterOverlayProps) {
   const [isCategoriesOpen, setIsCategoriesOpen] = useState(true);
   const [isLabelsOpen, setIsLabelsOpen] = useState(true);
+
+  if (!isOpen) {
+    return null;
+  }
 
   const activeFiltersCount =
     activeFilters.selectedCategories.length +
@@ -81,22 +58,22 @@ export function FilterOverlay({
     });
   };
 
-  const handleRemoveFilter = (type: "category" | "label", id: string) => {
-    if (type === "category") {
-      onFilterChange({
-        ...activeFilters,
-        selectedCategories: activeFilters.selectedCategories.filter(
-          (catId) => catId !== id
-        ),
-      });
-    } else {
-      onFilterChange({
-        ...activeFilters,
-        selectedLabels: activeFilters.selectedLabels.filter(
-          (labelId) => labelId !== id
-        ),
-      });
-    }
+  const handleRemoveCategory = (categoryId: string) => {
+    onFilterChange({
+      ...activeFilters,
+      selectedCategories: activeFilters.selectedCategories.filter(
+        (id) => id !== categoryId
+      ),
+    });
+  };
+
+  const handleRemoveLabel = (labelId: string) => {
+    onFilterChange({
+      ...activeFilters,
+      selectedLabels: activeFilters.selectedLabels.filter(
+        (id) => id !== labelId
+      ),
+    });
   };
 
   const handleClearAllFilters = () => {
@@ -105,13 +82,6 @@ export function FilterOverlay({
       selectedLabels: [],
     });
   };
-
-  const hasActiveFilters =
-    activeFilters.selectedCategories.length > 0 ||
-    activeFilters.selectedLabels.length > 0 ||
-    activeFilters.priceRange;
-
-  if (!isOpen) return null;
 
   return (
     <div className="fixed inset-0 z-50 bg-white">
@@ -131,287 +101,40 @@ export function FilterOverlay({
         </div>
 
         <div className="flex-1 overflow-y-auto px-[40px] py-[10px]">
-          <div className="flex flex-col gap-[15px]">
-            <div className="flex gap-[10px] h-[38px] items-center justify-center">
-              <div className="flex-1 flex gap-[5px] items-end">
-                <h2
-                  className="font-poppins font-medium text-[25px] text-[#4ea04c] leading-normal"
-                  style={{ fontFamily: "var(--font-poppins)" }}
-                >
-                  Filters
-                </h2>
-                <span
-                  className="font-plus-jakarta-sans font-normal text-[14px] text-[#aaaaaa] leading-normal"
-                  style={{ fontFamily: "var(--font-plus-jakarta-sans)" }}
-                >
-                  ({activeFiltersCount})
-                </span>
-              </div>
-            </div>
-
-            <div className="h-[1px] bg-[#e3e3e3]" />
-          </div>
+          <OverlayHeader activeFiltersCount={activeFiltersCount} />
 
           <div className="flex flex-col gap-[30px] py-[20px] pb-[140px]">
-            {hasActiveFilters && (
-              <div className="flex flex-col gap-[10px]">
-                <div className="bg-white flex flex-wrap gap-[10px] py-[10px]">
-                  {activeFilters.priceRange && (
-                    <div className="bg-white flex items-center gap-[5px]">
-                      <div className="w-[14px] h-[14px] overflow-hidden flex items-center justify-center">
-                        <Image
-                          src="/icons/close-filter.svg"
-                          alt=""
-                          width={10}
-                          height={10}
-                        />
-                      </div>
-                      <span
-                        className="font-plus-jakarta-sans font-normal text-[16px] text-[#aaaaaa] leading-normal whitespace-nowrap"
-                        style={{ fontFamily: "var(--font-plus-jakarta-sans)" }}
-                      >
-                        {activeFilters.priceRange.min}€ -{" "}
-                        {activeFilters.priceRange.max}€
-                      </span>
-                    </div>
-                  )}
-                  {activeFilters.selectedCategories.map((categoryId) => {
-                    const category = categories.find((c) => c.id === categoryId);
-                    return category ? (
-                      <div
-                        key={categoryId}
-                        className="bg-white flex items-center gap-[5px]"
-                      >
-                        <button
-                          onClick={() => handleRemoveFilter("category", categoryId)}
-                          className="w-[14px] h-[14px] overflow-hidden flex items-center justify-center"
-                        >
-                          <Image
-                            src="/icons/close-filter.svg"
-                            alt=""
-                            width={10}
-                            height={10}
-                          />
-                        </button>
-                        <span
-                          className="font-plus-jakarta-sans font-normal text-[16px] text-[#aaaaaa] leading-normal whitespace-nowrap"
-                          style={{
-                            fontFamily: "var(--font-plus-jakarta-sans)",
-                          }}
-                        >
-                          {category.name}
-                        </span>
-                      </div>
-                    ) : null;
-                  })}
-                  {activeFilters.selectedLabels.map((labelId) => {
-                    const label = LABELS.find((l) => l.id === labelId);
-                    return label ? (
-                      <div
-                        key={labelId}
-                        className="bg-white flex items-center gap-[5px]"
-                      >
-                        <button
-                          onClick={() => handleRemoveFilter("label", labelId)}
-                          className="w-[14px] h-[14px] overflow-hidden flex items-center justify-center"
-                        >
-                          <Image
-                            src="/icons/close-filter.svg"
-                            alt=""
-                            width={10}
-                            height={10}
-                          />
-                        </button>
-                        <span
-                          className="font-plus-jakarta-sans font-normal text-[16px] text-[#aaaaaa] leading-normal whitespace-nowrap"
-                          style={{
-                            fontFamily: "var(--font-plus-jakarta-sans)",
-                          }}
-                        >
-                          {label.name}
-                        </span>
-                      </div>
-                    ) : null;
-                  })}
-                </div>
-                <button
-                  onClick={handleClearAllFilters}
-                  className="bg-[rgba(78,160,76,0.1)] h-[34px] rounded-[60px] flex items-center justify-center px-[20px] w-full"
-                >
-                  <span
-                    className="font-outfit font-normal text-[16px] text-[#4ea04c] leading-normal whitespace-nowrap"
-                    style={{ fontFamily: "var(--font-outfit)" }}
-                  >
-                    Clear all filters
-                  </span>
-                </button>
-              </div>
-            )}
+            <ActiveFilterSummary
+              activeFilters={activeFilters}
+              categories={categories}
+              labels={FILTER_LABEL_OPTIONS}
+              onRemoveCategory={handleRemoveCategory}
+              onRemoveLabel={handleRemoveLabel}
+              onClearAll={handleClearAllFilters}
+              clearButtonLabel="Clear all filters"
+            />
 
-            <div className="bg-white flex flex-col gap-[20px]">
-              <div className="border-b border-[#e3e3e3] flex items-center justify-between py-[5px] pr-[10px]">
-                <h3
-                  className="flex-1 font-poppins font-semibold text-[20px] text-[#4ea04c] leading-normal"
-                  style={{ fontFamily: "var(--font-poppins)" }}
-                >
-                  Categories
-                </h3>
-                <button
-                  onClick={() => setIsCategoriesOpen(!isCategoriesOpen)}
-                  className="w-[20px] h-[20px]"
-                >
-                  <Image
-                    src="/icons/chevron-collapse.svg"
-                    alt=""
-                    width={20}
-                    height={20}
-                    className={`transition-transform ${
-                      isCategoriesOpen ? "" : "-rotate-90"
-                    }`}
-                  />
-                </button>
-              </div>
+            <OverlayCategorySection
+              categories={categories}
+              selectedCategories={activeFilters.selectedCategories}
+              isOpen={isCategoriesOpen}
+              onToggleOpen={() => setIsCategoriesOpen((prev) => !prev)}
+              onToggleCategory={handleCategoryToggle}
+            />
 
-              {isCategoriesOpen && (
-                <div className="bg-white flex flex-col gap-[10px] p-[10px]">
-                  {categories.map((category) => {
-                    const isChecked = activeFilters.selectedCategories.includes(
-                      category.id
-                    );
-                    return (
-                      <div
-                        key={category.id}
-                        className="flex items-center justify-between group"
-                      >
-                        <button
-                          onClick={() => handleCategoryToggle(category.id)}
-                          className="flex items-center h-[24px] py-[5px] border-b border-transparent group-hover:border-[#505050] transition-colors duration-200"
-                        >
-                          <span
-                            className={`font-plus-jakarta-sans font-normal text-[16px] leading-normal whitespace-nowrap transition-colors duration-200 ${
-                              isChecked ? "text-[#4ea04c]" : "text-[#aaaaaa] group-hover:text-[#505050]"
-                            }`}
-                            style={{ fontFamily: "var(--font-plus-jakarta-sans)" }}
-                          >
-                            {category.name}
-                          </span>
-                        </button>
-                        <span
-                          className="font-plus-jakarta-sans font-light text-[14px] text-[#aaaaaa] leading-normal text-right w-[50px] overflow-hidden text-ellipsis whitespace-nowrap"
-                          style={{ fontFamily: "var(--font-plus-jakarta-sans)" }}
-                        >
-                          {category.count > 9999 ? "+9999" : category.count}
-                        </span>
-                      </div>
-                    );
-                  })}
-                </div>
-              )}
-            </div>
-
-            <div className="bg-white flex flex-col gap-[10px]">
-              <div className="border-b border-[#e3e3e3] flex items-center justify-between py-[5px] pr-[10px]">
-                <div className="flex-1 flex items-center gap-[10px]">
-                  <h3
-                    className="flex-1 font-poppins font-semibold text-[20px] text-[#4ea04c] leading-normal"
-                    style={{ fontFamily: "var(--font-poppins)" }}
-                  >
-                    Labels
-                  </h3>
-                  {activeFilters.selectedLabels.length > 0 && (
-                    <div className="bg-[#858585] rounded-[60px] w-[20px] h-[20px] flex items-center justify-center">
-                      <span
-                        className="font-outfit font-semibold text-[14px] text-white leading-normal whitespace-nowrap"
-                        style={{ fontFamily: "var(--font-outfit)" }}
-                      >
-                        +{activeFilters.selectedLabels.length}
-                      </span>
-                    </div>
-                  )}
-                </div>
-                <button
-                  onClick={() => setIsLabelsOpen(!isLabelsOpen)}
-                  className="w-[20px] h-[20px]"
-                >
-                  <Image
-                    src="/icons/chevron-collapse.svg"
-                    alt=""
-                    width={20}
-                    height={20}
-                    className={`transition-transform ${
-                      isLabelsOpen ? "" : "-rotate-90"
-                    }`}
-                  />
-                </button>
-              </div>
-
-              {isLabelsOpen && (
-                <div className="p-[10px] flex flex-col gap-[15px]">
-                  <div className="flex flex-col gap-[5px] pl-[5px]">
-                    {LABELS.map((label) => {
-                      const isChecked = activeFilters.selectedLabels.includes(
-                        label.id
-                      );
-                      return (
-                        <button
-                          key={label.id}
-                          onClick={() => handleLabelToggle(label.id)}
-                          className="bg-white flex items-center gap-[10px] h-[26px] py-[5px]"
-                        >
-                          <div className="w-[16px] h-[16px]">
-                            {isChecked ? (
-                              <div className="bg-white border border-[#4ea04c] rounded-[3px] w-[16px] h-[16px] flex items-center justify-center p-[3px]">
-                                <div className="bg-[#4ea04c] rounded-[2px] w-full h-full" />
-                              </div>
-                            ) : (
-                              <div className="bg-white border border-[#aaaaaa] rounded-[3px] w-[16px] h-[16px]" />
-                            )}
-                          </div>
-                          <span
-                            className={`flex-1 font-plus-jakarta-sans font-normal text-[16px] leading-normal text-left overflow-hidden text-ellipsis whitespace-nowrap ${
-                              isChecked ? "text-[#4ea04c]" : "text-[#aaaaaa]"
-                            }`}
-                            style={{
-                              fontFamily: "var(--font-plus-jakarta-sans)",
-                            }}
-                          >
-                            {label.name}
-                          </span>
-                          <span
-                            className={`font-plus-jakarta-sans font-light text-[14px] leading-normal overflow-hidden text-ellipsis whitespace-nowrap ${
-                              isChecked ? "text-[#4ea04c]" : "text-[#aaaaaa]"
-                            }`}
-                            style={{
-                              fontFamily: "var(--font-plus-jakarta-sans)",
-                            }}
-                          >
-                            {label.count > 9999 ? "+9999" : label.count}
-                          </span>
-                        </button>
-                      );
-                    })}
-                  </div>
-                  {activeFilters.selectedLabels.length > 0 && (
-                    <button
-                      onClick={() =>
-                        onFilterChange({
-                          ...activeFilters,
-                          selectedLabels: [],
-                        })
-                      }
-                      className="bg-[rgba(78,160,76,0.1)] h-[34px] rounded-[60px] flex items-center justify-center px-[20px] w-full"
-                    >
-                      <span
-                        className="font-outfit font-normal text-[16px] text-[#4ea04c] leading-normal whitespace-nowrap"
-                        style={{ fontFamily: "var(--font-outfit)" }}
-                      >
-                        Clear filter
-                      </span>
-                    </button>
-                  )}
-                </div>
-              )}
-            </div>
+            <OverlayLabelSection
+              labels={FILTER_LABEL_OPTIONS}
+              selectedLabels={activeFilters.selectedLabels}
+              isOpen={isLabelsOpen}
+              onToggleOpen={() => setIsLabelsOpen((prev) => !prev)}
+              onToggleLabel={handleLabelToggle}
+              onClearLabels={() =>
+                onFilterChange({
+                  ...activeFilters,
+                  selectedLabels: [],
+                })
+              }
+            />
           </div>
         </div>
 
@@ -435,6 +158,346 @@ export function FilterOverlay({
           </button>
         </div>
       </div>
+    </div>
+  );
+}
+
+interface OverlayHeaderProps {
+  activeFiltersCount: number;
+}
+
+function OverlayHeader({ activeFiltersCount }: OverlayHeaderProps) {
+  return (
+    <div className="flex flex-col gap-[15px]">
+      <div className="flex gap-[10px] h-[38px] items-center justify-center">
+        <div className="flex-1 flex gap-[5px] items-end">
+          <h2
+            className="font-poppins font-medium text-[25px] text-[#4ea04c] leading-normal"
+            style={{ fontFamily: "var(--font-poppins)" }}
+          >
+            Filters
+          </h2>
+          <span
+            className="font-plus-jakarta-sans font-normal text-[14px] text-[#aaaaaa] leading-normal"
+            style={{ fontFamily: "var(--font-plus-jakarta-sans)" }}
+          >
+            ({activeFiltersCount})
+          </span>
+        </div>
+      </div>
+
+      <div className="h-[1px] bg-[#e3e3e3]" />
+    </div>
+  );
+}
+
+interface ActiveFilterSummaryProps {
+  activeFilters: FilterState;
+  categories: Category[];
+  labels: FilterLabelOption[];
+  onRemoveCategory: (categoryId: string) => void;
+  onRemoveLabel: (labelId: string) => void;
+  onClearAll: () => void;
+  clearButtonLabel: string;
+}
+
+function ActiveFilterSummary({
+  activeFilters,
+  categories,
+  labels,
+  onRemoveCategory,
+  onRemoveLabel,
+  onClearAll,
+  clearButtonLabel,
+}: ActiveFilterSummaryProps) {
+  const hasActiveFilters =
+    activeFilters.selectedCategories.length > 0 ||
+    activeFilters.selectedLabels.length > 0 ||
+    activeFilters.priceRange;
+
+  if (!hasActiveFilters) {
+    return null;
+  }
+
+  return (
+    <div className="flex flex-col gap-[10px]">
+      <div className="bg-white flex flex-wrap gap-[10px] py-[10px]">
+        {activeFilters.priceRange && (
+          <div className="bg-white flex items-center gap-[5px]">
+            <div className="w-[14px] h-[14px] overflow-hidden flex items-center justify-center">
+              <Image
+                src="/icons/close-filter.svg"
+                alt=""
+                width={10}
+                height={10}
+              />
+            </div>
+            <span
+              className="font-plus-jakarta-sans font-normal text-[16px] text-[#aaaaaa] leading-normal whitespace-nowrap"
+              style={{ fontFamily: "var(--font-plus-jakarta-sans)" }}
+            >
+              {activeFilters.priceRange.min}€ - {activeFilters.priceRange.max}€
+            </span>
+          </div>
+        )}
+
+        {activeFilters.selectedCategories.map((categoryId) => {
+          const category = categories.find((c) => c.id === categoryId);
+          if (!category) {
+            return null;
+          }
+
+          return (
+            <div
+              key={categoryId}
+              className="bg-white flex items-center gap-[5px]"
+            >
+              <button
+                onClick={() => onRemoveCategory(categoryId)}
+                className="w-[14px] h-[14px] overflow-hidden flex items-center justify-center"
+              >
+                <Image
+                  src="/icons/close-filter.svg"
+                  alt=""
+                  width={10}
+                  height={10}
+                />
+              </button>
+              <span
+                className="font-plus-jakarta-sans font-normal text-[16px] text-[#aaaaaa] leading-normal whitespace-nowrap"
+                style={{ fontFamily: "var(--font-plus-jakarta-sans)" }}
+              >
+                {category.name}
+              </span>
+            </div>
+          );
+        })}
+
+        {activeFilters.selectedLabels.map((labelId) => {
+          const label = labels.find((l) => l.id === labelId);
+          if (!label) {
+            return null;
+          }
+
+          return (
+            <div key={labelId} className="bg-white flex items-center gap-[5px]">
+              <button
+                onClick={() => onRemoveLabel(labelId)}
+                className="w-[14px] h-[14px] overflow-hidden flex items-center justify-center"
+              >
+                <Image
+                  src="/icons/close-filter.svg"
+                  alt=""
+                  width={10}
+                  height={10}
+                />
+              </button>
+              <span
+                className="font-plus-jakarta-sans font-normal text-[16px] text-[#aaaaaa] leading-normal whitespace-nowrap"
+                style={{ fontFamily: "var(--font-plus-jakarta-sans)" }}
+              >
+                {label.name}
+              </span>
+            </div>
+          );
+        })}
+      </div>
+
+      <button
+        onClick={onClearAll}
+        className="bg-[rgba(78,160,76,0.1)] h-[34px] rounded-[60px] flex items-center justify-center px-[20px] w-full"
+      >
+        <span
+          className="font-outfit font-normal text-[16px] text-[#4ea04c] leading-normal whitespace-nowrap"
+          style={{ fontFamily: "var(--font-outfit)" }}
+        >
+          {clearButtonLabel}
+        </span>
+      </button>
+    </div>
+  );
+}
+
+interface OverlayCategorySectionProps {
+  categories: Category[];
+  selectedCategories: string[];
+  isOpen: boolean;
+  onToggleOpen: () => void;
+  onToggleCategory: (categoryId: string) => void;
+}
+
+function OverlayCategorySection({
+  categories,
+  selectedCategories,
+  isOpen,
+  onToggleOpen,
+  onToggleCategory,
+}: OverlayCategorySectionProps) {
+  return (
+    <div className="bg-white flex flex-col gap-[20px]">
+      <div className="border-b border-[#e3e3e3] flex items-center justify-between py-[5px] pr-[10px]">
+        <h3
+          className="flex-1 font-poppins font-semibold text-[20px] text-[#4ea04c] leading-normal"
+          style={{ fontFamily: "var(--font-poppins)" }}
+        >
+          Categories
+        </h3>
+        <button onClick={onToggleOpen} className="w-[20px] h-[20px]">
+          <Image
+            src="/icons/chevron-collapse.svg"
+            alt=""
+            width={20}
+            height={20}
+            className={`transition-transform ${isOpen ? "" : "-rotate-90"}`}
+          />
+        </button>
+      </div>
+
+      {isOpen && (
+        <div className="bg-white flex flex-col gap-[10px] p-[10px]">
+          {categories.map((category) => {
+            const isChecked = selectedCategories.includes(category.id);
+
+            return (
+              <div
+                key={category.id}
+                className="flex items-center justify-between group"
+              >
+                <button
+                  onClick={() => onToggleCategory(category.id)}
+                  className="flex items-center h-[24px] py-[5px] border-b border-transparent group-hover:border-[#505050] transition-colors duration-200"
+                >
+                  <span
+                    className={`font-plus-jakarta-sans font-normal text-[16px] leading-normal whitespace-nowrap transition-colors duration-200 ${
+                      isChecked
+                        ? "text-[#4ea04c]"
+                        : "text-[#aaaaaa] group-hover:text-[#505050]"
+                    }`}
+                    style={{ fontFamily: "var(--font-plus-jakarta-sans)" }}
+                  >
+                    {category.name}
+                  </span>
+                </button>
+                <span
+                  className="font-plus-jakarta-sans font-light text-[14px] text-[#aaaaaa] leading-normal text-right w-[50px] overflow-hidden text-ellipsis whitespace-nowrap"
+                  style={{ fontFamily: "var(--font-plus-jakarta-sans)" }}
+                >
+                  {category.count > 9999 ? "+9999" : category.count}
+                </span>
+              </div>
+            );
+          })}
+        </div>
+      )}
+    </div>
+  );
+}
+
+interface OverlayLabelSectionProps {
+  labels: FilterLabelOption[];
+  selectedLabels: string[];
+  isOpen: boolean;
+  onToggleOpen: () => void;
+  onToggleLabel: (labelId: string) => void;
+  onClearLabels: () => void;
+}
+
+function OverlayLabelSection({
+  labels,
+  selectedLabels,
+  isOpen,
+  onToggleOpen,
+  onToggleLabel,
+  onClearLabels,
+}: OverlayLabelSectionProps) {
+  return (
+    <div className="bg-white flex flex-col gap-[10px]">
+      <div className="border-b border-[#e3e3e3] flex items-center justify-between py-[5px] pr-[10px]">
+        <div className="flex-1 flex items-center gap-[10px]">
+          <h3
+            className="flex-1 font-poppins font-semibold text-[20px] text-[#4ea04c] leading-normal"
+            style={{ fontFamily: "var(--font-poppins)" }}
+          >
+            Labels
+          </h3>
+          {selectedLabels.length > 0 && (
+            <div className="bg-[#858585] rounded-[60px] w-[20px] h-[20px] flex items-center justify-center">
+              <span
+                className="font-outfit font-semibold text-[14px] text-white leading-normal whitespace-nowrap"
+                style={{ fontFamily: "var(--font-outfit)" }}
+              >
+                +{selectedLabels.length}
+              </span>
+            </div>
+          )}
+        </div>
+        <button onClick={onToggleOpen} className="w-[20px] h-[20px]">
+          <Image
+            src="/icons/chevron-collapse.svg"
+            alt=""
+            width={20}
+            height={20}
+            className={`transition-transform ${isOpen ? "" : "-rotate-90"}`}
+          />
+        </button>
+      </div>
+
+      {isOpen && (
+        <div className="p-[10px] flex flex-col gap-[15px]">
+          <div className="flex flex-col gap-[5px] pl-[5px]">
+            {labels.map((label) => {
+              const isChecked = selectedLabels.includes(label.id);
+
+              return (
+                <button
+                  key={label.id}
+                  onClick={() => onToggleLabel(label.id)}
+                  className="bg-white flex items-center gap-[10px] h-[26px] py-[5px]"
+                >
+                  <div className="w-[16px] h-[16px]">
+                    {isChecked ? (
+                      <div className="bg-white border border-[#4ea04c] rounded-[3px] w-[16px] h-[16px] flex items-center justify-center p-[3px]">
+                        <div className="bg-[#4ea04c] rounded-[2px] w-full h-full" />
+                      </div>
+                    ) : (
+                      <div className="bg-white border border-[#aaaaaa] rounded-[3px] w-[16px] h-[16px]" />
+                    )}
+                  </div>
+                  <span
+                    className={`flex-1 font-plus-jakarta-sans font-normal text-[16px] leading-normal text-left overflow-hidden text-ellipsis whitespace-nowrap ${
+                      isChecked ? "text-[#4ea04c]" : "text-[#aaaaaa]"
+                    }`}
+                    style={{ fontFamily: "var(--font-plus-jakarta-sans)" }}
+                  >
+                    {label.name}
+                  </span>
+                  <span
+                    className={`font-plus-jakarta-sans font-light text-[14px] leading-normal overflow-hidden text-ellipsis whitespace-nowrap ${
+                      isChecked ? "text-[#4ea04c]" : "text-[#aaaaaa]"
+                    }`}
+                    style={{ fontFamily: "var(--font-plus-jakarta-sans)" }}
+                  >
+                    {label.count > 9999 ? "+9999" : label.count}
+                  </span>
+                </button>
+              );
+            })}
+          </div>
+          {selectedLabels.length > 0 && (
+            <button
+              onClick={onClearLabels}
+              className="bg-[rgba(78,160,76,0.1)] h-[34px] rounded-[60px] flex items-center justify-center px-[20px] w-full"
+            >
+              <span
+                className="font-outfit font-normal text-[16px] text-[#4ea04c] leading-normal whitespace-nowrap"
+                style={{ fontFamily: "var(--font-outfit)" }}
+              >
+                Clear filter
+              </span>
+            </button>
+          )}
+        </div>
+      )}
     </div>
   );
 }

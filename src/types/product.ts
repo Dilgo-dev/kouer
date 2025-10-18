@@ -34,6 +34,12 @@ export interface Category {
   count: number;
 }
 
+export interface FilterLabelOption {
+  id: string;
+  name: string;
+  count: number;
+}
+
 export interface FilterState {
   priceRange?: { min: number; max: number };
   selectedLabels: string[];
