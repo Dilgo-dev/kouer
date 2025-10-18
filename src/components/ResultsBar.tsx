@@ -20,7 +20,7 @@ export function ResultsBar({
   activeFiltersCount = 0,
 }: ResultsBarProps) {
   return (
-    <div className="bg-white w-full px-[20px] py-[10px] flex items-center justify-between gap-[10px]">
+    <div className="bg-white w-full px-[20px] py-[10px] flex items-center justify-between gap-[10px] border-b border-[#e3e3e3]">
       <div className="hidden md:flex items-center gap-[5px]">
         <span
           className="font-poppins font-medium text-[16px] text-[#505050] leading-[0]"
