@@ -1,4 +1,4 @@
-'use client';
+"use client";
 
 interface PaginationProps {
   currentPage: number;
@@ -6,7 +6,11 @@ interface PaginationProps {
   onPageChange: (page: number) => void;
 }
 
-export function Pagination({ currentPage, totalPages, onPageChange }: PaginationProps) {
+export function Pagination({
+  currentPage,
+  totalPages,
+  onPageChange,
+}: PaginationProps) {
   const getPageNumbers = () => {
     const pages: (number | string)[] = [];
     const maxVisible = 7;
@@ -19,7 +23,7 @@ export function Pagination({ currentPage, totalPages, onPageChange }: Pagination
       pages.push(1);
 
       if (currentPage > 3) {
-        pages.push('...');
+        pages.push("...");
       }
 
       const start = Math.max(2, currentPage - 1);
@@ -30,7 +34,7 @@ export function Pagination({ currentPage, totalPages, onPageChange }: Pagination
       }
 
       if (currentPage < totalPages - 2) {
-        pages.push('...');
+        pages.push("...");
       }
 
       pages.push(totalPages);
@@ -42,23 +46,44 @@ export function Pagination({ currentPage, totalPages, onPageChange }: Pagination
   const pages = getPageNumbers();
 
   return (
-    <nav className="flex items-center justify-center gap-[10px] p-[10px]" aria-label="Pagination">
+    <nav
+      className="flex items-center justify-center gap-[10px] p-[10px]"
+      aria-label="Pagination"
+    >
       <button
         onClick={() => onPageChange(currentPage - 1)}
         disabled={currentPage === 1}
         className="bg-[#f4f4f4] rounded-[37.5px] w-[25px] h-[25px] flex items-center justify-center disabled:opacity-50 disabled:cursor-not-allowed transition-colors hover:bg-[#e4e4e4]"
         aria-label="Previous page"
       >
-        <svg width="18.75" height="18.75" viewBox="0 0 19 19" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <path d="M11.875 14.25L7.125 9.5L11.875 4.75" stroke="#333333" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+        <svg
+          width="18.75"
+          height="18.75"
+          viewBox="0 0 19 19"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            d="M11.875 14.25L7.125 9.5L11.875 4.75"
+            stroke="#333333"
+            strokeWidth="1.5"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          />
         </svg>
       </button>
 
       {pages.map((page, index) => {
-        if (page === '...') {
+        if (page === "...") {
           return (
-            <div key={`ellipsis-${index}`} className="bg-white h-[40px] flex flex-col items-center justify-center px-[10px]">
-              <p className="font-['var(--font-poppins)'] font-medium text-[20px] text-[#aaaaaa] leading-[0]">
+            <div
+              key={`ellipsis-${index}`}
+              className="bg-white h-[40px] flex flex-col items-center justify-center px-[10px]"
+            >
+              <p
+                className="font-poppins font-medium text-[20px] text-[#aaaaaa] leading-[0]"
+                style={{ fontFamily: "var(--font-poppins)" }}
+              >
                 ...
               </p>
             </div>
@@ -73,11 +98,14 @@ export function Pagination({ currentPage, totalPages, onPageChange }: Pagination
             key={pageNumber}
             onClick={() => onPageChange(pageNumber)}
             className="bg-white h-[40px] flex flex-col items-center justify-center px-[10px] relative hover:bg-gray-50 transition-colors"
-            aria-current={isActive ? 'page' : undefined}
+            aria-current={isActive ? "page" : undefined}
           >
-            <p className={`font-['var(--font-poppins)'] font-medium text-[20px] leading-[0] ${
-              isActive ? 'text-[#4ea04c]' : 'text-[#aaaaaa]'
-            }`}>
+            <p
+              className={`font-poppins font-medium text-[20px] ${
+                isActive ? "text-[#4ea04c]" : "text-[#aaaaaa]"
+              }`}
+              style={{ fontFamily: "var(--font-poppins)" }}
+            >
               {pageNumber}
             </p>
             {isActive && (
@@ -93,8 +121,20 @@ export function Pagination({ currentPage, totalPages, onPageChange }: Pagination
         className="bg-[#f4f4f4] rounded-[37.5px] w-[25px] h-[25px] flex items-center justify-center disabled:opacity-50 disabled:cursor-not-allowed transition-colors hover:bg-[#e4e4e4]"
         aria-label="Next page"
       >
-        <svg width="18.75" height="18.75" viewBox="0 0 19 19" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <path d="M7.125 4.75L11.875 9.5L7.125 14.25" stroke="#333333" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+        <svg
+          width="18.75"
+          height="18.75"
+          viewBox="0 0 19 19"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            d="M7.125 4.75L11.875 9.5L7.125 14.25"
+            stroke="#333333"
+            strokeWidth="1.5"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          />
         </svg>
       </button>
     </nav>
