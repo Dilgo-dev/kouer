@@ -3,12 +3,12 @@
 import { useState, useRef, useEffect } from "react";
 import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
-import type { SortOption } from "@/types/product";
+import type { SortOption, SortValue } from "@/types/product";
 
 interface SortDropdownProps {
   options: SortOption[];
-  currentSort: string;
-  onSortChange: (sortValue: string) => void;
+  currentSort: SortValue;
+  onSortChange: (sortValue: SortValue) => void;
 }
 
 export function SortDropdown({
@@ -125,7 +125,7 @@ interface SortDropdownOptionProps {
   option: SortOption;
   isSelected: boolean;
   animationDelay: number;
-  onSelect: (value: string) => void;
+  onSelect: (value: SortValue) => void;
 }
 
 function SortDropdownOption({

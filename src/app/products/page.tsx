@@ -23,7 +23,7 @@ const SORT_OPTIONS: SortOption[] = [
 
 export default function ProductsPage() {
   const [currentPage, setCurrentPage] = useState(1);
-  const [sortBy, setSortBy] = useState<string>("relevance");
+  const [sortBy, setSortBy] = useState<SortOption["value"]>("relevance");
   const [filters, setFilters] = useState<FilterState>({
     selectedCategories: [],
     selectedLabels: [],
@@ -77,6 +77,21 @@ export default function ProductsPage() {
       case "name-desc":
         filtered.sort((a, b) => b.name.localeCompare(a.name));
         break;
+      case "rating":
+        filtered.sort((a, b) => (b.rating ?? 0) - (a.rating ?? 0));
+        break;
+      case "newest": {
+        const getTimestamp = (product: typeof filtered[number]) => {
+          if (product.createdAt) {
+            return new Date(product.createdAt).getTime();
+          }
+          const parsedId = Number(product.id);
+          return Number.isNaN(parsedId) ? 0 : parsedId;
+        };
+
+        filtered.sort((a, b) => getTimestamp(b) - getTimestamp(a));
+        break;
+      }
       default:
         break;
     }

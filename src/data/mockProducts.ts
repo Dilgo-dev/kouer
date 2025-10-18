@@ -307,11 +307,18 @@ export function generateProducts(count: number): Product[] {
   for (let i = 0; i < count; i++) {
     const template = baseProducts[i % baseProducts.length];
     const imageIndex = i % PRODUCT_IMAGES.length;
+    const rating =
+      template.rating ?? Math.min(5, 3 + ((i % 5) + 1) * 0.4);
+    const createdAt =
+      template.createdAt ??
+      new Date(Date.now() - i * 12 * 60 * 60 * 1000).toISOString();
 
     products.push({
       ...template,
       id: `${i + 1}`,
       imageUrl: PRODUCT_IMAGES[imageIndex],
+      rating,
+      createdAt,
     });
   }
 

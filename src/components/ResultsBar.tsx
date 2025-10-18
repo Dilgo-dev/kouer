@@ -1,12 +1,12 @@
 import Image from "next/image";
 import { SortDropdown } from "./SortDropdown";
-import type { SortOption } from "@/types/product";
+import type { SortOption, SortValue } from "@/types/product";
 
 interface ResultsBarProps {
   resultsCount: number;
   sortOptions: SortOption[];
-  currentSort: string;
-  onSortChange: (sortValue: string) => void;
+  currentSort: SortValue;
+  onSortChange: (sortValue: SortValue) => void;
   onFilterClick?: () => void;
   activeFiltersCount?: number;
 }

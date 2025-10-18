@@ -7,6 +7,8 @@ export interface Product {
   category: string;
   isBio?: boolean;
   isLabelRouge?: boolean;
+  rating?: number;
+  createdAt?: string;
 }
 
 export interface Label {
@@ -46,8 +48,17 @@ export interface FilterState {
   selectedCategories: string[];
 }
 
+export type SortValue =
+  | 'relevance'
+  | 'price-asc'
+  | 'price-desc'
+  | 'name-asc'
+  | 'name-desc'
+  | 'rating'
+  | 'newest';
+
 export interface SortOption {
   id: string;
   label: string;
-  value: 'relevance' | 'price-asc' | 'price-desc' | 'name-asc' | 'name-desc';
+  value: SortValue;
 }
