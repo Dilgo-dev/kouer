@@ -46,12 +46,9 @@ export function ProductCard({ product }: ProductCardProps) {
           sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 20vw"
         />
         <div className="absolute inset-0 p-[20px] flex flex-col gap-[10px] z-10">
-          {visibleLabels.map((label) => {
-            const config = labelConfig[label.type];
-            if (!config) return null;
-
-            return <ProductLabelBadge key={label.id} config={config} />;
-          })}
+          {visibleLabels.map((label) => (
+            <ProductLabelItem key={label.id} label={label} />
+          ))}
         </div>
       </div>
 
@@ -69,6 +66,19 @@ export function ProductCard({ product }: ProductCardProps) {
       </div>
     </article>
   );
+}
+
+interface ProductLabelItemProps {
+  label: Product["labels"][number];
+}
+
+function ProductLabelItem({ label }: ProductLabelItemProps) {
+  const config = labelConfig[label.type];
+  if (!config) {
+    return null;
+  }
+
+  return <ProductLabelBadge config={config} />;
 }
 
 interface ProductLabelBadgeProps {

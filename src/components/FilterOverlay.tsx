@@ -264,25 +264,11 @@ function ActiveFilterSummary({
           }
 
           return (
-            <li key={categoryId} className="bg-white flex items-center gap-[5px]">
-              <button
-                type="button"
-                onClick={() => onRemoveCategory(categoryId)}
-                className="w-[14px] h-[14px] overflow-hidden flex items-center justify-center"
-                aria-label={`Retirer le filtre ${category.name}`}
-              >
-                <Image
-                  src="/icons/close-filter.svg"
-                  alt=""
-                  width={10}
-                  height={10}
-                  aria-hidden="true"
-                />
-              </button>
-              <span className="font-plus-jakarta-sans font-normal text-[16px] text-neutral-400 leading-normal whitespace-nowrap">
-                {category.name}
-              </span>
-            </li>
+            <ActiveFilterSummaryCategoryItem
+              key={categoryId}
+              category={category}
+              onRemove={() => onRemoveCategory(categoryId)}
+            />
           );
         })}
 
@@ -293,25 +279,11 @@ function ActiveFilterSummary({
           }
 
           return (
-            <li className="bg-white flex items-center gap-[5px]" key={labelId}>
-              <button
-                type="button"
-                onClick={() => onRemoveLabel(labelId)}
-                className="w-[14px] h-[14px] overflow-hidden flex items-center justify-center"
-                aria-label={`Retirer le filtre ${label.name}`}
-              >
-                <Image
-                  src="/icons/close-filter.svg"
-                  alt=""
-                  width={10}
-                  height={10}
-                  aria-hidden="true"
-                />
-              </button>
-              <span className="font-plus-jakarta-sans font-normal text-[16px] text-neutral-400 leading-normal whitespace-nowrap">
-                {label.name}
-              </span>
-            </li>
+            <ActiveFilterSummaryLabelItem
+              key={labelId}
+              label={label}
+              onRemove={() => onRemoveLabel(labelId)}
+            />
           );
         })}
       </ul>
@@ -326,6 +298,70 @@ function ActiveFilterSummary({
         </span>
       </button>
     </section>
+  );
+}
+
+interface ActiveFilterSummaryCategoryItemProps {
+  category: Category;
+  onRemove: () => void;
+}
+
+function ActiveFilterSummaryCategoryItem({
+  category,
+  onRemove,
+}: ActiveFilterSummaryCategoryItemProps) {
+  return (
+    <li className="bg-white flex items-center gap-[5px]">
+      <button
+        type="button"
+        onClick={onRemove}
+        className="w-[14px] h-[14px] overflow-hidden flex items-center justify-center"
+        aria-label={`Retirer le filtre ${category.name}`}
+      >
+        <Image
+          src="/icons/close-filter.svg"
+          alt=""
+          width={10}
+          height={10}
+          aria-hidden="true"
+        />
+      </button>
+      <span className="font-plus-jakarta-sans font-normal text-[16px] text-neutral-400 leading-normal whitespace-nowrap">
+        {category.name}
+      </span>
+    </li>
+  );
+}
+
+interface ActiveFilterSummaryLabelItemProps {
+  label: FilterLabelOption;
+  onRemove: () => void;
+}
+
+function ActiveFilterSummaryLabelItem({
+  label,
+  onRemove,
+}: ActiveFilterSummaryLabelItemProps) {
+  return (
+    <li className="bg-white flex items-center gap-[5px]">
+      <button
+        type="button"
+        onClick={onRemove}
+        className="w-[14px] h-[14px] overflow-hidden flex items-center justify-center"
+        aria-label={`Retirer le filtre ${label.name}`}
+      >
+        <Image
+          src="/icons/close-filter.svg"
+          alt=""
+          width={10}
+          height={10}
+          aria-hidden="true"
+        />
+      </button>
+      <span className="font-plus-jakarta-sans font-normal text-[16px] text-neutral-400 leading-normal whitespace-nowrap">
+        {label.name}
+      </span>
+    </li>
   );
 }
 
@@ -385,34 +421,52 @@ function OverlayCategorySection({
             const isChecked = selectedCategories.includes(category.id);
 
             return (
-              <li
+              <OverlayCategoryListItem
                 key={category.id}
-                className="flex items-center justify-between group"
-              >
-                <button
-                  type="button"
-                  onClick={() => onToggleCategory(category.id)}
-                  className="flex items-center h-[24px] py-[5px] border-b border-transparent group-hover:border-neutral-600 transition-colors duration-200"
-                >
-                  <span
-                    className={`font-plus-jakarta-sans font-normal text-[16px] leading-normal whitespace-nowrap transition-colors duration-200 ${
-                      isChecked
-                        ? "text-primary"
-                        : "text-neutral-400 group-hover:text-neutral-600"
-                    }`}
-                  >
-                    {category.name}
-                  </span>
-                </button>
-                <span className="font-plus-jakarta-sans font-light text-[14px] text-neutral-400 leading-normal text-right w-[50px] overflow-hidden text-ellipsis whitespace-nowrap">
-                  {category.count > 9999 ? "+9999" : category.count}
-                </span>
-              </li>
+                category={category}
+                isChecked={isChecked}
+                onToggle={() => onToggleCategory(category.id)}
+              />
             );
           })}
         </ul>
       )}
     </section>
+  );
+}
+
+interface OverlayCategoryListItemProps {
+  category: Category;
+  isChecked: boolean;
+  onToggle: () => void;
+}
+
+function OverlayCategoryListItem({
+  category,
+  isChecked,
+  onToggle,
+}: OverlayCategoryListItemProps) {
+  return (
+    <li className="flex items-center justify-between group">
+      <button
+        type="button"
+        onClick={onToggle}
+        className="flex items-center h-[24px] py-[5px] border-b border-transparent group-hover:border-neutral-600 transition-colors duration-200"
+      >
+        <span
+          className={`font-plus-jakarta-sans font-normal text-[16px] leading-normal whitespace-nowrap transition-colors duration-200 ${
+            isChecked
+              ? "text-primary"
+              : "text-neutral-400 group-hover:text-neutral-600"
+          }`}
+        >
+          {category.name}
+        </span>
+      </button>
+      <span className="font-plus-jakarta-sans font-light text-[14px] text-neutral-400 leading-normal text-right w-[50px] overflow-hidden text-ellipsis whitespace-nowrap">
+        {category.count > 9999 ? "+9999" : category.count}
+      </span>
+    </li>
   );
 }
 
@@ -484,37 +538,12 @@ function OverlayLabelSection({
               const isChecked = selectedLabels.includes(label.id);
 
               return (
-                <li key={label.id}>
-                  <button
-                    type="button"
-                    onClick={() => onToggleLabel(label.id)}
-                    className="bg-white flex items-center gap-[10px] h-[26px] py-[5px]"
-                  >
-                    <div className="w-[16px] h-[16px]">
-                      {isChecked ? (
-                        <div className="bg-white border border-primary rounded-[3px] w-[16px] h-[16px] flex items-center justify-center p-[3px]">
-                          <div className="bg-primary rounded-[2px] w-full h-full" />
-                        </div>
-                      ) : (
-                        <div className="bg-white border border-neutral-400 rounded-[3px] w-[16px] h-[16px]" />
-                      )}
-                    </div>
-                    <span
-                      className={`flex-1 font-plus-jakarta-sans font-normal text-[16px] leading-normal text-left overflow-hidden text-ellipsis whitespace-nowrap ${
-                        isChecked ? "text-primary" : "text-neutral-400"
-                      }`}
-                    >
-                      {label.name}
-                    </span>
-                    <span
-                      className={`font-plus-jakarta-sans font-light text-[14px] leading-normal overflow-hidden text-ellipsis whitespace-nowrap ${
-                        isChecked ? "text-primary" : "text-neutral-400"
-                      }`}
-                    >
-                      {label.count > 9999 ? "+9999" : label.count}
-                    </span>
-                  </button>
-                </li>
+                <OverlayLabelListItem
+                  key={label.id}
+                  label={label}
+                  isChecked={isChecked}
+                  onToggle={() => onToggleLabel(label.id)}
+                />
               );
             })}
           </ul>
@@ -532,5 +561,51 @@ function OverlayLabelSection({
         </div>
       )}
     </section>
+  );
+}
+
+interface OverlayLabelListItemProps {
+  label: FilterLabelOption;
+  isChecked: boolean;
+  onToggle: () => void;
+}
+
+function OverlayLabelListItem({
+  label,
+  isChecked,
+  onToggle,
+}: OverlayLabelListItemProps) {
+  return (
+    <li>
+      <button
+        type="button"
+        onClick={onToggle}
+        className="bg-white flex items-center gap-[10px] h-[26px] py-[5px]"
+      >
+        <div className="w-[16px] h-[16px]">
+          {isChecked ? (
+            <div className="bg-white border border-primary rounded-[3px] w-[16px] h-[16px] flex items-center justify-center p-[3px]">
+              <div className="bg-primary rounded-[2px] w-full h-full" />
+            </div>
+          ) : (
+            <div className="bg-white border border-neutral-400 rounded-[3px] w-[16px] h-[16px]" />
+          )}
+        </div>
+        <span
+          className={`flex-1 font-plus-jakarta-sans font-normal text-[16px] leading-normal text-left overflow-hidden text-ellipsis whitespace-nowrap ${
+            isChecked ? "text-primary" : "text-neutral-400"
+          }`}
+        >
+          {label.name}
+        </span>
+        <span
+          className={`font-plus-jakarta-sans font-light text-[14px] leading-normal overflow-hidden text-ellipsis whitespace-nowrap ${
+            isChecked ? "text-primary" : "text-neutral-400"
+          }`}
+        >
+          {label.count > 9999 ? "+9999" : label.count}
+        </span>
+      </button>
+    </li>
   );
 }
