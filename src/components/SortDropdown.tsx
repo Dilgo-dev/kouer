@@ -59,7 +59,7 @@ export function SortDropdown({
             Trier par
           </span>
         </div>
-        <div className="flex flex-col gap-[5px] items-start pt-[6px] pb-0 px-0 w-[113.5px]">
+        <div className="flex flex-col gap-[5px] items-start pt-[6px] pb-0 px-0 min-w-fit">
           <div className="flex items-center justify-between w-full">
             <div className="flex flex-col justify-center leading-[0]">
               <span
